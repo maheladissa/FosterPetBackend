@@ -1,4 +1,4 @@
-package com.fosterpet.backend.collection;
+package com.fosterpet.backend.common;
 
 import lombok.Builder;
 import lombok.Data;

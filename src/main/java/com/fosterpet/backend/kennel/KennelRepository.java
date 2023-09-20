@@ -1,6 +1,5 @@
-package com.fosterpet.backend.repository;
+package com.fosterpet.backend.kennel;
 
-import com.fosterpet.backend.collection.Kennel;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

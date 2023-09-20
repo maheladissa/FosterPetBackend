@@ -1,14 +1,12 @@
-package com.fosterpet.backend.service;
+package com.fosterpet.backend.kennel;
 
-import com.fosterpet.backend.collection.Kennel;
-import com.fosterpet.backend.repository.KennelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class KennelServiceImpl implements KennelService{
+public class KennelServiceImpl implements KennelService {
 
     @Autowired
     private KennelRepository kennelRepository;

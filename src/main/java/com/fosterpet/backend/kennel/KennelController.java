@@ -1,7 +1,5 @@
-package com.fosterpet.backend.controller;
+package com.fosterpet.backend.kennel;
 
-import com.fosterpet.backend.collection.Kennel;
-import com.fosterpet.backend.service.KennelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
