@@ -1,6 +1,4 @@
-package com.fosterpet.backend.service;
-
-import com.fosterpet.backend.collection.Kennel;
+package com.fosterpet.backend.kennel;
 
 import java.util.List;
 

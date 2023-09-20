@@ -1,6 +1,9 @@
-package com.fosterpet.backend.collection;
+package com.fosterpet.backend.kennel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.common.Address;
+import com.fosterpet.backend.common.Location;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -13,9 +16,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Kennel {
     @Id
     private String kennelID;
+    private User Owner;
     private String kennelName;
-    private String kennelEmail;
     private Address kennelAddress;
-
+    private Location kennelLocation;
 
 }
