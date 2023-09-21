@@ -20,19 +20,27 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
-
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        System.out.println(userRepository.findByEmail(request.getEmail()).isPresent());
+        if(userRepository.findByEmail(request.getEmail()).isPresent()){
+            return AuthenticationResponse.builder()
+                    .status("Email already exist")
+                    .build();
+        }
+        else {
+            var user = User.builder()
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(Role.USER)
+                    .build();
+            userRepository.save(user);
+            var jwtToken = jwtService.generateToken(user);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .status("Success")
+                    .build();
+        }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -41,6 +49,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .status("Success")
                 .build();
     }
 
