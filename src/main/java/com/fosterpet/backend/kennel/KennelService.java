@@ -1,11 +1,15 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.user.User;
+
 import java.util.List;
 
 public interface KennelService {
-    String save (Kennel kennel);
+    KennelResponse save(KennelRequest request);
 
-    List<Kennel> getKennelStartWith(String name);
+    List<KennelResponse> getKennelStartWith(String name);
 
-    List<Kennel> getAllKennels();
+    List<KennelResponse> getAllKennels();
+
+    List<KennelResponse> getKennelsByOwner(String ownerId);
 }

@@ -20,7 +20,6 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        System.out.println(userRepository.findByEmail(request.getEmail()).isPresent());
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
             return AuthenticationResponse.builder()
                     .status("Email already exist")

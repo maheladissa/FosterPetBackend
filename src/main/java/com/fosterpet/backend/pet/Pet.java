@@ -1,4 +1,4 @@
-package com.fosterpet.backend.kennel;
+package com.fosterpet.backend.pet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fosterpet.backend.user.User;
@@ -7,20 +7,22 @@ import com.fosterpet.backend.common.Location;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
-@Document(collection = "kennel")
+@Document(collection = "pet")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Kennel {
+public class Pet {
     @Id
-    private String kennelID;
-    @DBRef
-    private User owner;
-    private String kennelName;
-    private Address kennelAddress;
-    private Location kennelLocation;
+    private String petID;
+    private String petType;
+    private String petName;
+    private String KASL_regNo;
+    private int petAge;
+    private int petWeight;
+    private String petBreed;
+    private String petMediConditions;
+    private String petVaccinationStatus;
 
 }

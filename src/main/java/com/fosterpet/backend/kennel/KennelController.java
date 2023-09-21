@@ -1,6 +1,10 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.user.UserRepository;
+import com.fosterpet.backend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,17 +17,22 @@ public class KennelController {
     private KennelService kennelService;
 
     @PostMapping
-    public String save(@RequestBody Kennel kennel){
-        return kennelService.save(kennel);
+    public ResponseEntity<KennelResponse> save(@RequestBody KennelRequest request){
+        return ResponseEntity.ok(kennelService.save(request));
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<KennelResponse>> getKennelStartWith(@RequestParam("name") String name){
+        return ResponseEntity.ok(kennelService.getKennelStartWith(name));
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<List<KennelResponse>> getKennelsByOwnerId(@RequestParam String ownerId) {
+        return ResponseEntity.ok(kennelService.getKennelsByOwner(ownerId));
     }
 
     @GetMapping
-    public List<Kennel> getKennelStartWith(@RequestParam("name") String name){
-        return kennelService.getKennelStartWith(name);
-    }
-
-    @GetMapping("/all")
-    public List<Kennel> getAllKennels(){
-        return kennelService.getAllKennels();
+    public ResponseEntity<List<KennelResponse>> getAllKennels(){
+        return ResponseEntity.ok(kennelService.getAllKennels());
     }
 }

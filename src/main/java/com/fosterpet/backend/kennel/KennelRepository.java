@@ -8,4 +8,7 @@ import java.util.List;
 @Repository
 public interface KennelRepository extends MongoRepository <Kennel, String> {
     List<Kennel> findByKennelNameStartsWith(String name);
+    List<Kennel> findByOwnerUserId(String ownerId);
+    List<Kennel> findAll();
+
 }
