@@ -7,6 +7,7 @@ import com.fosterpet.backend.common.Location;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Kennel {
     @Id
     private String kennelID;
+    @DBRef
     private User Owner;
     private String kennelName;
     private Address kennelAddress;

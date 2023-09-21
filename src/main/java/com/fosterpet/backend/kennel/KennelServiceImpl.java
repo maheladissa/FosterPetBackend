@@ -1,5 +1,6 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +26,9 @@ public class KennelServiceImpl implements KennelService {
     public List<Kennel> getAllKennels(){
         return kennelRepository.findAll();
     }
+
+//    @Override
+//    public List<Kennel> getKennelsByOwner(String ownerId){
+//        return kennelRepository.findByOwner(owner);
+//    }
 }

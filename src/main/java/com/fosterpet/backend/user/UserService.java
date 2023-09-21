@@ -8,4 +8,6 @@ public interface UserService {
     List<User> getUserFirstNameStartWith(String username);
 
     List<User> getAllUsers();
+
+    User getUserById(String id);
 }

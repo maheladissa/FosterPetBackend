@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fosterpet.backend.common.Address;
 import lombok.Builder;
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +19,8 @@ import java.util.List;
 @Document(collection = "user")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements UserDetails {
-    private String userID;
+    @Id
+    private ObjectId userID;
     private String firstName;
     private String lastName;
     private String email;

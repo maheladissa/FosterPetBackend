@@ -1,6 +1,7 @@
 package com.fosterpet.backend.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class UserController {
         return userService.save(user);
     }
 
-    @GetMapping
-    public List<User> getUsersStartWith(@RequestParam("name") String name){
+    @GetMapping("/name")
+    public List<User> getUsersStartWith(@RequestParam String name){
         return userService.getUserFirstNameStartWith(name);
     }
 
@@ -27,5 +28,8 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-
+    @GetMapping("/id")
+    public ResponseEntity<User> getUserById(@RequestParam String id){
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
 }

@@ -1,5 +1,6 @@
 package com.fosterpet.backend.user;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByFirstName(String name);
 
     Optional<User> findByEmail(String email);
+
+    User findByUserID(ObjectId id);
 }
