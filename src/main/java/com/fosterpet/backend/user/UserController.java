@@ -23,7 +23,7 @@ public class UserController {
         return userService.getUserFirstNameStartWith(name);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }

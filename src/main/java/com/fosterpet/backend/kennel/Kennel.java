@@ -18,7 +18,7 @@ public class Kennel {
     @Id
     private String kennelID;
     @DBRef
-    private User Owner;
+    private User owner;
     private String kennelName;
     private Address kennelAddress;
     private Location kennelLocation;
