@@ -31,6 +31,7 @@ public class User implements UserDetails {
     private String phoneNumber;
     private Address address;
     private Role role;
+    private Boolean isEmailVerified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
