@@ -24,8 +24,8 @@ public class Pet {
     private Address petAddress;
     private Location petLocation;
     private String KASL_regNo;
-    private int petAge;
-    private int petWeight;
+    private Integer petAge;
+    private Integer petWeight;
     private String petBreed;
     private String petMediConditions;
     private String petVaccinationStatus;
