@@ -33,7 +33,7 @@ public class EmailSender {
         EmailAddress toAddress = new EmailAddress(recipient);
 
         EmailMessage emailMessage = new EmailMessage()
-                .setSenderAddress("DoNotReply@43613967-9c29-42d2-b751-4069642bbe18.azurecomm.net")
+                .setSenderAddress("DoNotReply@fosterpet.tech")
                 .setToRecipients(toAddress)
                 .setSubject(subject)
                 .setBodyHtml(body);
