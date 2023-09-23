@@ -26,8 +26,13 @@ public class EmailVerificationService {
     public String sendVerificationCode(String userEmail) {
         Cache cache = cacheManager.getCache("VerificationCode");
         String verificationCode = generateVerificationCode();
-        String subject = "Email Verification Code";
-        String body = "Your verification code is: " + verificationCode;
+        String subject = "FosterPet Email Verification Code";
+        String body = "<H3>Your verification code is: " + verificationCode + "</H3>";
+        body += "<p>It will expire in 15 minutes.</p>";
+        body += "<p>If you did not request this code, please ignore this email.</p>";
+        body += "<p>Thank you for using FosterPet!</p>";
+        body += "<p><b>FosterPet Team<b></p>";
+
 
         // Use custom EmailSender to send the email
         PollResponse<EmailSendResult> result = emailSender.send(userEmail, subject, body);
