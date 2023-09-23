@@ -21,11 +21,6 @@ public class PetController {
         return ResponseEntity.ok(petService.save(request));
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<List<PetResponse>> getPetStartWith(@RequestParam("name") String name){
-        return ResponseEntity.ok(petService.getPetStartWith(name));
-    }
-
     @GetMapping("/owner")
     public ResponseEntity<List<PetResponse>> getPetsByOwnerId(@RequestParam String ownerId) {
         return ResponseEntity.ok(petService.getPetsByOwner(ownerId));

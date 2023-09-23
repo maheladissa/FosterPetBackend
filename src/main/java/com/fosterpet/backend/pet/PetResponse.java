@@ -23,10 +23,5 @@ public class PetResponse {
     private String petBreed;
     private String petMediConditions;
     private String petVaccinationStatus;
-
     private String ownerId;
-    private String ownerAddress;
-    private String ownerName;
-    private String ownerPhone;
-    private String ownerEmail;
 }

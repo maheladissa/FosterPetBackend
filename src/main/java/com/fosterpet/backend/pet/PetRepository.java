@@ -7,7 +7,6 @@ import java.util.List;
 
 @Repository
 public interface PetRepository extends MongoRepository <Pet, String> {
-    List<Pet> findByPetNameStartsWith(String name);
     List<Pet> findByOwnerUserId(String ownerId);
     List<Pet> findAll();
 

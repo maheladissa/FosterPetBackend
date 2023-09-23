@@ -7,8 +7,6 @@ import java.util.List;
 public interface PetService {
     PetResponse save(PetRequest request);
 
-    List<PetResponse> getPetStartWith(String name);
-
     List<PetResponse> getAllPets();
 
     List<PetResponse> getPetsByOwner(String ownerId);

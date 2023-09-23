@@ -44,41 +44,7 @@ public class PetServiceImpl implements PetService {
                 .petMediConditions(saved.getPetMediConditions())
                 .petVaccinationStatus(saved.getPetVaccinationStatus())
                 .ownerId(saved.getOwner().getUserId())
-                .ownerAddress(saved.getOwner().getAddress().toString())
-                .ownerName(saved.getOwner().getFirstName() + " " + saved.getOwner().getLastName())
-                .ownerPhone(saved.getOwner().getPhoneNumber())
-                .ownerEmail(saved.getOwner().getEmail())
                 .build();
-    }
-
-    @Override
-    public List<PetResponse> getPetStartWith(String name) {
-        var pets = petRepository.findByPetNameStartsWith(name);
-        List<PetResponse> petResponses = new ArrayList<>();
-        for (Pet pet : pets) {
-            PetResponse petResponse = PetResponse.builder()
-                    .petID(pet.getPetID())
-                    .petType(pet.getPetType())
-                    .petName(pet.getPetName())
-                    .petAddress(pet.getPetAddress())
-                    .petLocation(pet.getPetLocation())
-                    .KASL_regNo(pet.getKASL_regNo())
-                    .petAge(pet.getPetAge())
-                    .petWeight(pet.getPetWeight())
-                    .petBreed(pet.getPetBreed())
-                    .petMediConditions(pet.getPetMediConditions())
-                    .petVaccinationStatus(pet.getPetVaccinationStatus())
-                    .ownerId(pet.getOwner().getUserId())
-                    .ownerAddress(pet.getOwner().getAddress().toString())
-                    .ownerName(pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName())
-                    .ownerPhone(pet.getOwner().getPhoneNumber())
-                    .ownerEmail(pet.getOwner().getEmail())
-                    .build();
-
-            petResponses.add(petResponse);
-        }
-
-        return petResponses;
     }
 
     @Override
@@ -99,10 +65,6 @@ public class PetServiceImpl implements PetService {
                     .petMediConditions(pet.getPetMediConditions())
                     .petVaccinationStatus(pet.getPetVaccinationStatus())
                     .ownerId(pet.getOwner().getUserId())
-                    .ownerAddress(pet.getOwner().getAddress().toString())
-                    .ownerName(pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName())
-                    .ownerPhone(pet.getOwner().getPhoneNumber())
-                    .ownerEmail(pet.getOwner().getEmail())
                     .build();
 
             petResponses.add(petResponse);
@@ -129,10 +91,6 @@ public class PetServiceImpl implements PetService {
                     .petMediConditions(pet.getPetMediConditions())
                     .petVaccinationStatus(pet.getPetVaccinationStatus())
                     .ownerId(pet.getOwner().getUserId())
-                    .ownerAddress(pet.getOwner().getAddress().toString())
-                    .ownerName(pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName())
-                    .ownerPhone(pet.getOwner().getPhoneNumber())
-                    .ownerEmail(pet.getOwner().getEmail())
                     .build();
 
             petResponses.add(petResponse);
