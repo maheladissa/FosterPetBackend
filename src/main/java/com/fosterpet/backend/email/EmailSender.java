@@ -4,6 +4,8 @@ import com.azure.communication.email.*;
 import com.azure.communication.email.models.*;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 public class EmailSender {
 
@@ -25,7 +27,7 @@ public class EmailSender {
         this.body = body;
 
         // You can get your connection string from your resource in the Azure portal.
-        String connectionString = "endpoint=https://emailservice-fosterpet.asiapacific.communication.azure.com/;accesskey=kGWX6HrNsQkU/SG6N941cXwTym8IEMJw2YeqZji0n23bM95IHvHPYyzV3cWyy7+WpGzK+g4ct2EPGbXIF1N8hw==";
+        String connectionString = System.getenv("EMAIL_CONNECTION");
         EmailClient emailClient = new EmailClientBuilder().connectionString(connectionString).buildClient();
 
         EmailAddress toAddress = new EmailAddress(recipient);
