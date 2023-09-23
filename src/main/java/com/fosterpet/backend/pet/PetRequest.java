@@ -12,8 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetRequest {
+    private String petID;
+    private String petType;
     private String petName;
     private Address petAddress;
     private Location petLocation;
+    private String KASL_regNo;
+    private int petAge;
+    private int petWeight;
+    private String petBreed;
+    private String petMediConditions;
+    private String petVaccinationStatus;
     private String ownerId;
 }
