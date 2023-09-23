@@ -1,4 +1,4 @@
-package com.fosterpet.backend.kennel;
+package com.fosterpet.backend.pet;
 
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class KennelRequest {
-    private String kennelName;
-    private Address kennelAddress;
-    private Location kennelLocation;
+public class PetRequest {
+    private String petName;
+    private Address petAddress;
+    private Location petLocation;
     private String ownerId;
 }
