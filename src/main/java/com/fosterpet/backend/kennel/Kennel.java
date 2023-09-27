@@ -6,6 +6,7 @@ import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
 import lombok.Builder;
 import lombok.Data;
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,5 +23,6 @@ public class Kennel {
     private String kennelName;
     private Address kennelAddress;
     private Location kennelLocation;
+    private Binary image;
 
 }
