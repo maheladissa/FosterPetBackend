@@ -1,6 +1,8 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.common.ImageToBase64Converter;
 import com.fosterpet.backend.user.User;
+import org.apache.commons.io.FilenameUtils;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -27,23 +30,17 @@ public class KennelServiceImpl implements KennelService {
             User owner = new User();
             owner.setUserId(request.getOwnerId());
             MultipartFile image = request.getImage();
-            byte[] imageBytes = image.getBytes();
+            InputStream inputStream = image.getInputStream();
 
             Kennel kennel = Kennel.builder()
                     .kennelName(request.getKennelName())
                     .kennelAddress(request.getKennelAddress())
                     .kennelLocation(request.getKennelLocation())
                     .owner(owner)
-                    .image(new Binary(imageBytes))
+                    .image("image/"+ FilenameUtils.getExtension(image.getOriginalFilename()) +";base64,"+ImageToBase64Converter.convert(inputStream))
                     .build();
 
             var saved = kennelRepository.save(kennel);
-            byte[] savedBytes = saved.getImage().getData();
-            File temporaryFile = File.createTempFile("profile-image", ".jpg");
-            FileOutputStream fileOutputStream = new FileOutputStream(temporaryFile);
-            fileOutputStream.write(imageBytes);
-            fileOutputStream.close();
-
             return KennelResponse.builder()
                     .kennelId(saved.getKennelID())
                     .kennelName(saved.getKennelName())
@@ -53,6 +50,7 @@ public class KennelServiceImpl implements KennelService {
                     .ownerName(saved.getOwner().getFirstName()+saved.getOwner().getLastName())
                     //.ownerPhone(saved.getOwner().getPhoneNumber())
                     .ownerEmail(saved.getOwner().getEmail())
+                    .image(saved.getImage().toString())
                     .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -64,18 +62,6 @@ public class KennelServiceImpl implements KennelService {
         var kennels = kennelRepository.findByKennelNameStartsWith(name);
         List<KennelResponse> kennelResponses = new ArrayList<>();
         for (Kennel kennel : kennels) {
-            byte[] imageBytes = kennel.getImage().getData();
-            // Save the decoded image to a temporary location on the server.
-            File temporaryFile = null;
-            try {
-                temporaryFile = File.createTempFile("profile-image", ".jpg");
-                FileOutputStream fileOutputStream = new FileOutputStream(temporaryFile);
-                fileOutputStream.write(imageBytes);
-                fileOutputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             KennelResponse kennelResponse = KennelResponse.builder()
                     .kennelId(kennel.getKennelID())
                     .kennelName(kennel.getKennelName())
@@ -86,7 +72,7 @@ public class KennelServiceImpl implements KennelService {
                     .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
                     .ownerPhone(kennel.getOwner().getPhoneNumber())
                     .ownerEmail(kennel.getOwner().getEmail())
-                    .image(temporaryFile.toURI().toString())
+                    .image(kennel.getImage().toString())
                     .build();
 
             kennelResponses.add(kennelResponse);
@@ -100,18 +86,6 @@ public class KennelServiceImpl implements KennelService {
         var kennels =  kennelRepository.findAll();
         List<KennelResponse> kennelResponses = new ArrayList<>();
         for (Kennel kennel : kennels) {
-            byte[] imageBytes = kennel.getImage().getData();
-            // Save the decoded image to a temporary location on the server.
-            File temporaryFile = null;
-            try {
-                temporaryFile = File.createTempFile("profile-image", ".jpg");
-                FileOutputStream fileOutputStream = new FileOutputStream(temporaryFile);
-                fileOutputStream.write(imageBytes);
-                fileOutputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             KennelResponse kennelResponse = KennelResponse.builder()
                     .kennelId(kennel.getKennelID())
                     .kennelName(kennel.getKennelName())
@@ -122,7 +96,7 @@ public class KennelServiceImpl implements KennelService {
                     .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
                     .ownerPhone(kennel.getOwner().getPhoneNumber())
                     .ownerEmail(kennel.getOwner().getEmail())
-                    .image(temporaryFile.toURI().toString())
+                    .image(kennel.getImage().toString())
                     .build();
 
             kennelResponses.add(kennelResponse);
@@ -136,18 +110,6 @@ public class KennelServiceImpl implements KennelService {
         var kennels =   kennelRepository.findByOwnerUserId(ownerId);
         List<KennelResponse> kennelResponses = new ArrayList<>();
         for (Kennel kennel : kennels) {
-            byte[] imageBytes = kennel.getImage().getData();
-            // Save the decoded image to a temporary location on the server.
-            File temporaryFile = null;
-            try {
-                temporaryFile = File.createTempFile("profile-image", ".jpg");
-                FileOutputStream fileOutputStream = new FileOutputStream(temporaryFile);
-                fileOutputStream.write(imageBytes);
-                fileOutputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             KennelResponse kennelResponse = KennelResponse.builder()
                     .kennelId(kennel.getKennelID())
                     .kennelName(kennel.getKennelName())
@@ -158,7 +120,7 @@ public class KennelServiceImpl implements KennelService {
                     .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
                     .ownerPhone(kennel.getOwner().getPhoneNumber())
                     .ownerEmail(kennel.getOwner().getEmail())
-                    .image(temporaryFile.toURI().toString())
+                    .image(kennel.getImage())
                     .build();
 
             kennelResponses.add(kennelResponse);

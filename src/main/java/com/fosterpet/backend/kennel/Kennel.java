@@ -23,6 +23,6 @@ public class Kennel {
     private String kennelName;
     private Address kennelAddress;
     private Location kennelLocation;
-    private Binary image;
+    private String image;
 
 }
