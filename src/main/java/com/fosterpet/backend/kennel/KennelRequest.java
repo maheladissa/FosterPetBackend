@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -16,4 +17,5 @@ public class KennelRequest {
     private Address kennelAddress;
     private Location kennelLocation;
     private String ownerId;
+    private MultipartFile image;
 }

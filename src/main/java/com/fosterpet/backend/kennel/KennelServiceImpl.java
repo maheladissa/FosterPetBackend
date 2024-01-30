@@ -1,10 +1,21 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.common.ImageToBase64Converter;
 import com.fosterpet.backend.user.User;
+import org.apache.commons.io.FilenameUtils;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -15,26 +26,35 @@ public class KennelServiceImpl implements KennelService {
 
     @Override
     public KennelResponse save(KennelRequest request){
-        User owner = new User();
-        owner.setUserId(request.getOwnerId());
-        Kennel kennel = Kennel.builder()
-                .kennelName(request.getKennelName())
-                .kennelAddress(request.getKennelAddress())
-                .kennelLocation(request.getKennelLocation())
-                .owner(owner)
-                .build();
-        var saved = kennelRepository.save(kennel);
-        return KennelResponse.builder()
-                .kennelId(saved.getKennelID())
-                .kennelName(saved.getKennelName())
-                .kennelAddress(saved.getKennelAddress())
-                .kennelLocation(saved.getKennelLocation())
-                .ownerId(saved.getOwner().getUserId())
-                .ownerAddress(saved.getOwner().getAddress().toString())
-                .ownerName(saved.getOwner().getFirstName()+saved.getOwner().getLastName())
-                .ownerPhone(saved.getOwner().getPhoneNumber())
-                .ownerEmail(saved.getOwner().getEmail())
-                .build();
+        try {
+            User owner = new User();
+            owner.setUserId(request.getOwnerId());
+            MultipartFile image = request.getImage();
+            InputStream inputStream = image.getInputStream();
+
+            Kennel kennel = Kennel.builder()
+                    .kennelName(request.getKennelName())
+                    .kennelAddress(request.getKennelAddress())
+                    .kennelLocation(request.getKennelLocation())
+                    .owner(owner)
+                    .image("image/"+ FilenameUtils.getExtension(image.getOriginalFilename()) +";base64,"+ImageToBase64Converter.convert(inputStream))
+                    .build();
+
+            var saved = kennelRepository.save(kennel);
+            return KennelResponse.builder()
+                    .kennelId(saved.getKennelID())
+                    .kennelName(saved.getKennelName())
+                    .kennelAddress(saved.getKennelAddress())
+                    .kennelLocation(saved.getKennelLocation())
+                    .ownerId(saved.getOwner().getUserId())
+                    .ownerName(saved.getOwner().getFirstName()+saved.getOwner().getLastName())
+                    //.ownerPhone(saved.getOwner().getPhoneNumber())
+                    .ownerEmail(saved.getOwner().getEmail())
+                    .image(saved.getImage().toString())
+                    .build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -48,10 +68,11 @@ public class KennelServiceImpl implements KennelService {
                     .kennelAddress(kennel.getKennelAddress())
                     .kennelLocation(kennel.getKennelLocation())
                     .ownerId(kennel.getOwner().getUserId())
-                    .ownerAddress(kennel.getOwner().getAddress().toString())
+                    //.ownerAddress(kennel.getOwner().getAddress().toString())
                     .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
                     .ownerPhone(kennel.getOwner().getPhoneNumber())
                     .ownerEmail(kennel.getOwner().getEmail())
+                    .image(kennel.getImage().toString())
                     .build();
 
             kennelResponses.add(kennelResponse);
@@ -71,10 +92,11 @@ public class KennelServiceImpl implements KennelService {
                     .kennelAddress(kennel.getKennelAddress())
                     .kennelLocation(kennel.getKennelLocation())
                     .ownerId(kennel.getOwner().getUserId())
-                    .ownerAddress(kennel.getOwner().getAddress().toString())
+                    //.ownerAddress(kennel.getOwner().getAddress().toString())
                     .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
                     .ownerPhone(kennel.getOwner().getPhoneNumber())
                     .ownerEmail(kennel.getOwner().getEmail())
+                    .image(kennel.getImage().toString())
                     .build();
 
             kennelResponses.add(kennelResponse);
@@ -94,10 +116,11 @@ public class KennelServiceImpl implements KennelService {
                     .kennelAddress(kennel.getKennelAddress())
                     .kennelLocation(kennel.getKennelLocation())
                     .ownerId(kennel.getOwner().getUserId())
-                    .ownerAddress(kennel.getOwner().getAddress().toString())
+                    //.ownerAddress(kennel.getOwner().getAddress().toString())
                     .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
                     .ownerPhone(kennel.getOwner().getPhoneNumber())
                     .ownerEmail(kennel.getOwner().getEmail())
+                    .image(kennel.getImage())
                     .build();
 
             kennelResponses.add(kennelResponse);
