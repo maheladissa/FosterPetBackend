@@ -18,6 +18,7 @@ public class KennelResponse {
     private String kennelName;
     private Address kennelAddress;
     private Location kennelLocation;
+
     private String ownerId;
     private String ownerName;
     private String ownerPhone;

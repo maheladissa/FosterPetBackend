@@ -1,6 +1,10 @@
 package com.fosterpet.backend.pet;
 
+import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.user.UserRepository;
+import com.fosterpet.backend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,17 +17,17 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    public String save(@RequestBody Pet pet){
-        return petService.save(pet);
+    public ResponseEntity<PetResponse> save(@RequestBody PetRequest request){
+        return ResponseEntity.ok(petService.save(request));
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<List<PetResponse>> getPetsByOwnerId(@RequestParam String ownerId) {
+        return ResponseEntity.ok(petService.getPetsByOwner(ownerId));
     }
 
     @GetMapping
-    public List<Pet> getPetStartWith(@RequestParam("name") String name){
-        return petService.getPetStartWith(name);
-    }
-
-    @GetMapping("/all")
-    public List<Pet> getAllPets(){
-        return petService.getAllPets();
+    public ResponseEntity<List<PetResponse>> getAllPets(){
+        return ResponseEntity.ok(petService.getAllPets());
     }
 }
