@@ -25,4 +25,5 @@ public class Kennel {
     private Location kennelLocation;
     private String image;
 
+
 }
