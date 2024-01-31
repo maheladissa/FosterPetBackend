@@ -1,6 +1,8 @@
 package com.fosterpet.backend.booking;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.kennel.Kennel;
+import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +19,13 @@ public class Booking {
     @Id
     private String bookingID;
     @DBRef
-    private String petID;
-    private String ownerID;
-    private String kennelID;
-    private String volunteerID;
+    private Pet pet;
+    @DBRef
+    private User owner;
+    @DBRef
+    private Kennel kennel;
+    @DBRef
+    private User volunteer;
     private Date startDate;
     private Date endDate;
 

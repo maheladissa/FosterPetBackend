@@ -1,5 +1,7 @@
 package com.fosterpet.backend.booking;
 
+import com.fosterpet.backend.kennel.Kennel;
+import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,60 +19,63 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse save(BookingRequest request) {
         User owner = new User();
         owner.setUserId(request.getOwnerID());
+
+        Pet pet = new Pet();
+        pet.setPetID(request.getPetID());
+
+        Kennel kennel = new Kennel();
+        kennel.setKennelID(request.getKennelID());
+
+        User volunteer = new User();
+        volunteer.setUserId(request.getVolunteerID());
+
+
         Booking booking = Booking.builder()
-                .petID(request.getPetID())
-                .ownerID(request.getOwnerID())
-                .kennelID(request.getKennelID())
-                .volunteerID(request.getVolunteerID())
+                .pet(pet)
+                .owner(owner)
+                .kennel(kennel)
+                .volunteer(volunteer)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
                 .build();
         var saved = bookingRepository.save(booking);
         return BookingResponse.builder()
                 .bookingID(saved.getBookingID())
-                .petID(saved.getPetID())
-                .ownerID(saved.getOwnerID())
-                .kennelID(saved.getKennelID())
-                .volunteerID(saved.getVolunteerID())
+                .petID(saved.getPet().getPetID())
+                .ownerID(saved.getOwner().getUserId())
+                .kennelID(saved.getKennel().getKennelID())
+                .volunteerID(saved.getVolunteer().getUserId())
                 .startDate(saved.getStartDate())
                 .endDate(saved.getEndDate())
                 .build();
     }
-    @Override
-    public List<BookingResponse> getAllBookings() {
-        var bookings = bookingRepository.findAll();
+
+    private List<BookingResponse> buildBookingResponses(List<Booking> bookings) {
         List<BookingResponse> bookingResponses = new ArrayList<>();
         for (Booking booking : bookings) {
             BookingResponse bookingResponse = BookingResponse.builder()
-                .petID(booking.getPetID())
-                .ownerID(booking.getOwnerID())
-                .kennelID(booking.getKennelID())
-                .volunteerID(booking.getVolunteerID())
-                .startDate(booking.getStartDate())
-                .endDate(booking.getEndDate())
-                .build();
+                    .petID(booking.getPet().getPetID())
+                    .ownerID(booking.getOwner().getUserId())
+                    .kennelID(booking.getKennel().getKennelID())
+                    .volunteerID(booking.getVolunteer().getUserId())
+                    .startDate(booking.getStartDate())
+                    .endDate(booking.getEndDate())
+                    .build();
             bookingResponses.add(bookingResponse);
         }
 
         return bookingResponses;
+    }
+
+    @Override
+    public List<BookingResponse> getAllBookings() {
+        var bookings = bookingRepository.findAll();
+        return buildBookingResponses(bookings);
     }
 
     @Override
     public List<BookingResponse> getBookingsByOwner(String ownerId) {
         var bookings = bookingRepository.findByOwnerUserId(ownerId);
-        List<BookingResponse> bookingResponses = new ArrayList<>();
-        for (Booking booking : bookings) {
-            BookingResponse bookingResponse = BookingResponse.builder()
-                .petID(booking.getPetID())
-                .ownerID(booking.getOwnerID())
-                .kennelID(booking.getKennelID())
-                .volunteerID(booking.getVolunteerID())
-                .startDate(booking.getStartDate())
-                .endDate(booking.getEndDate())
-                .build();
-            bookingResponses.add(bookingResponse);
-        }
-
-        return bookingResponses;
+        return buildBookingResponses(bookings);
     }
 }
