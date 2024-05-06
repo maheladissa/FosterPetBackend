@@ -128,4 +128,28 @@ public class KennelServiceImpl implements KennelService {
 
         return kennelResponses;
     }
+
+    @Override
+    public List<KennelResponse> getKennelsNear(double longitude, double latitude, double maxDistance){
+        var kennels = kennelRepository.findByLocationNear(longitude, latitude, maxDistance);
+        List<KennelResponse> kennelResponses = new ArrayList<>();
+        for (Kennel kennel : kennels) {
+            KennelResponse kennelResponse = KennelResponse.builder()
+                    .kennelId(kennel.getKennelID())
+                    .kennelName(kennel.getKennelName())
+                    .kennelAddress(kennel.getKennelAddress())
+                    .kennelLocation(kennel.getKennelLocation())
+                    .ownerId(kennel.getOwner().getUserId())
+                    //.ownerAddress(kennel.getOwner().getAddress().toString())
+                    .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
+                    .ownerPhone(kennel.getOwner().getPhoneNumber())
+                    .ownerEmail(kennel.getOwner().getEmail())
+                    .image(kennel.getImage())
+                    .build();
+
+            kennelResponses.add(kennelResponse);
+        }
+
+        return kennelResponses;
+    }
 }

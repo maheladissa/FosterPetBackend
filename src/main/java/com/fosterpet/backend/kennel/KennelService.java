@@ -12,4 +12,7 @@ public interface KennelService {
     List<KennelResponse> getAllKennels();
 
     List<KennelResponse> getKennelsByOwner(String ownerId);
+
+    List<KennelResponse> getKennelsNear(double longitude, double latitude, double maxDistance);
+
 }
