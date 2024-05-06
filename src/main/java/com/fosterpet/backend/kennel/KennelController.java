@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/kennel")
+@CrossOrigin
 public class KennelController {
 
     @Autowired
@@ -32,8 +33,8 @@ public class KennelController {
                                                @RequestParam String kennelAddress2,
                                                @RequestParam String kennelCity,
                                                @RequestParam String kennelZip,
-                                               @RequestParam String kennelLongitude,
-                                               @RequestParam String kennelLatitude,
+                                               @RequestParam Double kennelLongitude,
+                                               @RequestParam Double kennelLatitude,
                                                @RequestParam MultipartFile image){
         Address kennelAddress = Address.builder()
                 .address1(kennelAddress1)
@@ -43,8 +44,8 @@ public class KennelController {
                 .build();
 
         Location kennelLocation = Location.builder()
-                .longitude(kennelLongitude)
-                .latitude(kennelLatitude)
+                .type("Point")
+                .coordinates(new double[]{kennelLongitude, kennelLatitude})
                 .build();
 
         KennelRequest request = KennelRequest.builder()
@@ -70,5 +71,10 @@ public class KennelController {
     @GetMapping
     public ResponseEntity<List<KennelResponse>> getAllKennels(){
         return ResponseEntity.ok(kennelService.getAllKennels());
+    }
+
+    @GetMapping("/near")
+    public ResponseEntity<List<KennelResponse>> getKennelsNear(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
+        return ResponseEntity.ok(kennelService.getKennelsNear(longitude, latitude, maxDistance));
     }
 }
