@@ -1,7 +1,5 @@
 package com.fosterpet.backend.kennel;
 
-import com.fosterpet.backend.user.User;
-
 import java.util.List;
 
 public interface KennelService {
