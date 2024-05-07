@@ -1,12 +1,10 @@
 package com.fosterpet.backend.booking;
 
-import com.fosterpet.backend.common.Address;
-import com.fosterpet.backend.common.Location;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Date;
 

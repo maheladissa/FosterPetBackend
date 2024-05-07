@@ -20,12 +20,6 @@ public class KennelController {
     @Autowired
     private KennelService kennelService;
 
-//    @PostMapping
-//    public ResponseEntity<KennelResponse> save(@RequestBody KennelRequest request){
-//
-//        return ResponseEntity.ok(kennelService.save(request));
-//    }
-
     @PostMapping
     public ResponseEntity<KennelResponse> save(@RequestParam String ownerId,
                                                @RequestParam String kennelName,

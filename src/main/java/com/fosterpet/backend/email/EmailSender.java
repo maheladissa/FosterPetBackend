@@ -4,8 +4,6 @@ import com.azure.communication.email.*;
 import com.azure.communication.email.models.*;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 public class EmailSender {
 
