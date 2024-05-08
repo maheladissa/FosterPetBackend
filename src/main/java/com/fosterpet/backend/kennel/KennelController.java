@@ -21,7 +21,7 @@ public class KennelController {
     private KennelService kennelService;
 
     @PostMapping
-    public ResponseEntity<KennelResponse> save(@RequestBody KennelRequest request){
+    public ResponseEntity<KennelResponse> save(@ModelAttribute KennelRequest request){
         return ResponseEntity.ok(kennelService.save(request));
     }
 
