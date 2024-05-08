@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KennelRequest {
+    private String kennelId;
     private String kennelName;
     private String kennelAddress1;
     private String kennelAddress2;

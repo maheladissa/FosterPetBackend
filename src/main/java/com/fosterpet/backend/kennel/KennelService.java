@@ -13,6 +13,6 @@ public interface KennelService {
 
     List<KennelResponse> getKennelsNear(double longitude, double latitude, double maxDistance);
 
-    KennelResponse update(String kennelId, KennelRequest request);
+    KennelResponse update(KennelRequest request);
 
 }

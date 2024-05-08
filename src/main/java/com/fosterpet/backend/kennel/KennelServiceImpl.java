@@ -82,8 +82,51 @@ public class KennelServiceImpl implements KennelService {
     }
 
     @Override
-    public KennelResponse update(String kennelId, KennelRequest request){
-        return null;
+    public KennelResponse update(KennelRequest request){
+        try {
+            var kennel = kennelRepository.findByKennelID(request.getKennelId());
+            User owner = new User();
+            owner.setUserId(request.getOwnerId());
+            MultipartFile image = request.getImage();
+            InputStream inputStream = image.getInputStream();
+
+            if(request.getKennelName()!=null) {kennel.setKennelName(request.getKennelName());}
+            if (request.getKennelAddress1()!=null || request.getKennelAddress2()!=null || request.getKennelCity()!=null || request.getKennelZip()!=null) {
+                kennel.setKennelAddress(Address.builder()
+                        .address1(request.getKennelAddress1())
+                        .address2(request.getKennelAddress2())
+                        .city(request.getKennelCity())
+                        .zipCode(Integer.parseInt(request.getKennelZip()))
+                        .build());
+            }
+            if (request.getKennelLatitude()!=null || request.getKennelLongitude()!=null) {
+                kennel.setKennelLocation(Location.builder()
+                        .type("Point")
+                        .coordinates(new double[]{request.getKennelLongitude(), request.getKennelLatitude()})
+                        .build());
+            }
+            if (request.getOwnerId()!=null) {kennel.setOwner(owner);}
+            if (request.getImage()!=null && !request.getImage().isEmpty()) {
+                kennel.setImage("image/"+ FilenameUtils.getExtension(image.getOriginalFilename()) +";base64,"+ImageToBase64Converter.convert(inputStream));
+            }
+
+            var saved = kennelRepository.save(kennel);
+
+            return KennelResponse.builder()
+                    .kennelId(saved.getKennelID())
+                    .kennelName(saved.getKennelName())
+                    .kennelAddress(saved.getKennelAddress())
+                    .kennelLocation(saved.getKennelLocation())
+                    .ownerId(saved.getOwner().getUserId())
+                    .image(saved.getImage().toString())
+                    .build();
+
+        }
+
+        catch (IOException e) {
+            throw new RuntimeException(e);
+
+        }
     }
 
 

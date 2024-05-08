@@ -12,6 +12,8 @@ public interface KennelRepository extends MongoRepository <Kennel, String> {
     List<Kennel> findByOwnerUserId(String ownerId);
     List<Kennel> findAll();
 
+    Kennel findByKennelID(String kennelId);
+
     @Query("{ 'kennelLocation' : { $near : { $geometry: { type: 'Point', coordinates: [ ?0, ?1 ] }, $maxDistance: ?2 } } }")
     List<Kennel> findByLocationNear(double longitude, double latitude, double maxDistance);
 

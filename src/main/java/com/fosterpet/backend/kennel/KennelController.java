@@ -46,15 +46,7 @@ public class KennelController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<KennelResponse> updateKennel(@RequestParam String kennelId,
-                                                       @RequestParam String kennelName,
-                                                       @RequestParam String kennelAddress1,
-                                                       @RequestParam String kennelAddress2,
-                                                       @RequestParam String kennelCity,
-                                                       @RequestParam String kennelZip,
-                                                       @RequestParam Double kennelLongitude,
-                                                       @RequestParam Double kennelLatitude,
-                                                       @RequestParam MultipartFile image){
-        return null;
+    public ResponseEntity<KennelResponse> updateKennel(@ModelAttribute KennelRequest request){
+        return ResponseEntity.ok(kennelService.update(request));
     }
 }
