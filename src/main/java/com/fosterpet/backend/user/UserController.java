@@ -14,22 +14,28 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public String save(@RequestBody User user){
-        return userService.save(user);
+    public ResponseEntity<UserResponse> save(@ModelAttribute UserRequest userRequest){
+        return ResponseEntity.ok(userService.save(userRequest));
     }
 
     @GetMapping("/name")
-    public List<User> getUsersStartWith(@RequestParam String name){
-        return userService.getUserFirstNameStartWith(name);
+    public ResponseEntity<List<UserResponse>> getUsersStartWith(@RequestParam String name){
+        return ResponseEntity.ok(userService.getUserFirstNameStartWith(name));
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/id")
-    public ResponseEntity<User> getUserById(@RequestParam String id){
+    public ResponseEntity<UserResponse> getUserById(@RequestParam String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<UserResponse> updateUser(@ModelAttribute UserRequest userRequest){
+        return ResponseEntity.ok(userService.update(userRequest));
+    }
+
 }
