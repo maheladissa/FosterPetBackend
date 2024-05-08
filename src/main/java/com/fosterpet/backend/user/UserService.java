@@ -3,11 +3,13 @@ package com.fosterpet.backend.user;
 import java.util.List;
 
 public interface UserService {
-    String save (User user);
+    UserResponse save (UserRequest userRequest);
 
-    List<User> getUserFirstNameStartWith(String username);
+    List<UserResponse> getUserFirstNameStartWith(String username);
 
-    List<User> getAllUsers();
+    List<UserResponse> getAllUsers();
 
-    User getUserById(String id);
+    UserResponse getUserById(String id);
+
+    UserResponse update(UserRequest userRequest);
 }

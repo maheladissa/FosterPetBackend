@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -15,13 +16,16 @@ public class PetRequest {
     private String petID;
     private String petType;
     private String petName;
-    private Address petAddress;
-    private Location petLocation;
+    private String petAddress1;
+    private String petAddress2;
+    private String petCity;
+    private String petZip;
     private String KASL_regNo;
-    private int petAge;
-    private int petWeight;
+    private Integer petAge;
+    private Integer petWeight;
     private String petBreed;
     private String petMediConditions;
     private String petVaccinationStatus;
     private String ownerId;
+    private MultipartFile petImage;
 }

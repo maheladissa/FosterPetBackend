@@ -26,12 +26,12 @@ public class Pet {
     private String petType;
     private String petName;
     private Address petAddress;
-    private Location petLocation;
     private String KASL_regNo;
     private Integer petAge;
     private Integer petWeight;
     private String petBreed;
     private String petMediConditions;
     private String petVaccinationStatus;
+    private String petImage;
 
 }

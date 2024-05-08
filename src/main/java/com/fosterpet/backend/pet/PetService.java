@@ -8,4 +8,8 @@ public interface PetService {
     List<PetResponse> getAllPets();
 
     List<PetResponse> getPetsByOwner(String ownerId);
+
+    PetResponse getPetById(String petId);
+
+    PetResponse updatePet(PetRequest request);
 }
