@@ -21,34 +21,7 @@ public class KennelController {
     private KennelService kennelService;
 
     @PostMapping
-    public ResponseEntity<KennelResponse> save(@RequestParam String ownerId,
-                                               @RequestParam String kennelName,
-                                               @RequestParam String kennelAddress1,
-                                               @RequestParam String kennelAddress2,
-                                               @RequestParam String kennelCity,
-                                               @RequestParam String kennelZip,
-                                               @RequestParam Double kennelLongitude,
-                                               @RequestParam Double kennelLatitude,
-                                               @RequestParam MultipartFile image){
-        Address kennelAddress = Address.builder()
-                .address1(kennelAddress1)
-                .address2(kennelAddress2)
-                .city(kennelCity)
-                .zipCode(Integer.parseInt(kennelZip))
-                .build();
-
-        Location kennelLocation = Location.builder()
-                .type("Point")
-                .coordinates(new double[]{kennelLongitude, kennelLatitude})
-                .build();
-
-        KennelRequest request = KennelRequest.builder()
-                .ownerId(ownerId)
-                .kennelName(kennelName)
-                .kennelAddress(kennelAddress)
-                .kennelLocation(kennelLocation)
-                .image(image)
-                .build();
+    public ResponseEntity<KennelResponse> save(@ModelAttribute KennelRequest request){
         return ResponseEntity.ok(kennelService.save(request));
     }
 
@@ -70,5 +43,10 @@ public class KennelController {
     @GetMapping("/near")
     public ResponseEntity<List<KennelResponse>> getKennelsNear(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
         return ResponseEntity.ok(kennelService.getKennelsNear(longitude, latitude, maxDistance));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<KennelResponse> updateKennel(@ModelAttribute KennelRequest request){
+        return ResponseEntity.ok(kennelService.update(request));
     }
 }
