@@ -11,8 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class KennelRequest {
     private String kennelName;
-    private Address kennelAddress;
-    private Location kennelLocation;
+    private String kennelAddress1;
+    private String kennelAddress2;
+    private String kennelCity;
+    private String kennelZip;
+    private Double kennelLongitude;
+    private Double kennelLatitude;
     private String ownerId;
     private MultipartFile image;
 }

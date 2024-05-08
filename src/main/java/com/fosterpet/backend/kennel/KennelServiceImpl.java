@@ -1,6 +1,8 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.ImageToBase64Converter;
+import com.fosterpet.backend.common.Location;
 import com.fosterpet.backend.user.User;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,16 @@ public class KennelServiceImpl implements KennelService {
 
             Kennel kennel = Kennel.builder()
                     .kennelName(request.getKennelName())
-                    .kennelAddress(request.getKennelAddress())
-                    .kennelLocation(request.getKennelLocation())
+                    .kennelAddress(Address.builder()
+                            .address1(request.getKennelAddress1())
+                            .address2(request.getKennelAddress2())
+                            .city(request.getKennelCity())
+                            .zipCode(Integer.parseInt(request.getKennelZip()))
+                            .build())
+                    .kennelLocation(Location.builder()
+                            .type("Point")
+                            .coordinates(new double[]{request.getKennelLongitude(), request.getKennelLatitude()})
+                            .build())
                     .owner(owner)
                     .image("image/"+ FilenameUtils.getExtension(image.getOriginalFilename()) +";base64,"+ImageToBase64Converter.convert(inputStream))
                     .build();
@@ -70,6 +80,12 @@ public class KennelServiceImpl implements KennelService {
         var kennels = kennelRepository.findByLocationNear(longitude, latitude, maxDistance);
         return createKennelResponsesFromKennels(kennels);
     }
+
+    @Override
+    public KennelResponse update(String kennelId, KennelRequest request){
+        return null;
+    }
+
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {
         List<KennelResponse> kennelResponses = new ArrayList<>();
