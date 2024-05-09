@@ -15,4 +15,6 @@ public interface KennelService {
 
     KennelResponse update(KennelRequest request);
 
+    KennelResponse getKennelById(String kennelId);
+
 }

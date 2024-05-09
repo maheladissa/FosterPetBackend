@@ -121,6 +121,12 @@ public class KennelServiceImpl implements KennelService {
         }
     }
 
+    @Override
+    public KennelResponse getKennelById(String kennelId){
+        var kennel = kennelRepository.findByKennelID(kennelId);
+        return kennelResponseBuilder(kennel);
+    }
+
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {
         List<KennelResponse> kennelResponses = new ArrayList<>();
