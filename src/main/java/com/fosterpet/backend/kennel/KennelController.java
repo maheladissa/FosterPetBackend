@@ -49,4 +49,9 @@ public class KennelController {
     public ResponseEntity<KennelResponse> updateKennel(@ModelAttribute KennelRequest request){
         return ResponseEntity.ok(kennelService.update(request));
     }
+
+    @GetMapping("/id")
+    public ResponseEntity<KennelResponse> getKennelById(@RequestParam String kennelId){
+        return ResponseEntity.ok(kennelService.getKennelById(kennelId));
+    }
 }
