@@ -18,7 +18,6 @@ public class PetResponse {
     private String petType;
     private String petName;
     private Address petAddress;
-    private Location petLocation;
     private String KASL_regNo;
     private int petAge;
     private int petWeight;
