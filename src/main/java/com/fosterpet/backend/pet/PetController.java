@@ -14,7 +14,7 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    public ResponseEntity<PetResponse> save(@RequestBody PetRequest request){
+    public ResponseEntity<PetResponse> save(@ModelAttribute PetRequest request){
         return ResponseEntity.ok(petService.save(request));
     }
 
@@ -26,5 +26,15 @@ public class PetController {
     @GetMapping
     public ResponseEntity<List<PetResponse>> getAllPets(){
         return ResponseEntity.ok(petService.getAllPets());
+    }
+
+    @GetMapping("/id")
+    public ResponseEntity<PetResponse> getPetById(@RequestParam String petId){
+        return ResponseEntity.ok(petService.getPetById(petId));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<PetResponse> updatePet(@ModelAttribute PetRequest request){
+        return ResponseEntity.ok(petService.updatePet(request));
     }
 }
