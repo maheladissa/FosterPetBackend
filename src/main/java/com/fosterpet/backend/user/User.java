@@ -2,11 +2,13 @@ package com.fosterpet.backend.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fosterpet.backend.common.Address;
+import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +31,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String phoneNumber;
-    private String profileImage;
+    @DBRef
+    private ImageMetadata profileImage;
     private Address address;
     private Role role;
     private Boolean isEmailVerified;

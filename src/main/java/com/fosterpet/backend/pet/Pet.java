@@ -1,6 +1,7 @@
 package com.fosterpet.backend.pet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.user.User;
 
 import lombok.AllArgsConstructor;
@@ -12,6 +13,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
+
+import java.util.List;
+
 @Data
 @Builder
 @Document(collection = "pet")
@@ -32,6 +36,7 @@ public class Pet {
     private String petBreed;
     private String petMediConditions;
     private String petVaccinationStatus;
-    private String petImage;
+    @DBRef
+    private List<ImageMetadata> petImages;
 
 }

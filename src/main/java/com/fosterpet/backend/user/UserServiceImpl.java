@@ -1,14 +1,11 @@
 package com.fosterpet.backend.user;
 
 import com.fosterpet.backend.common.Address;
-import com.fosterpet.backend.common.ImageToBase64Converter;
-import org.apache.commons.io.FilenameUtils;
+import com.fosterpet.backend.imagemetadata.ImageMetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +18,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ImageMetadataService imageMetadataService;
+
     @Override
     public UserResponse save(UserRequest userRequest){
         try {
-            MultipartFile profileImage = userRequest.getProfileImage();
-            InputStream inputStream = profileImage.getInputStream();
-
             User user = User.builder()
                     .firstName(userRequest.getFirstName())
                     .lastName(userRequest.getLastName())
@@ -40,7 +37,7 @@ public class UserServiceImpl implements UserService {
                             .zipCode(Integer.parseInt(userRequest.getUserZip()))
                             .build())
                     .role(Role.USER)
-                    .profileImage("image/"+ FilenameUtils.getExtension(profileImage.getOriginalFilename()) +";base64,"+ ImageToBase64Converter.convert(inputStream))
+                    .profileImage(imageMetadataService.save(userRequest.getProfileImage()))
                     .build();
             userRepository.save(user);
             return UserResponse.builder()
@@ -87,8 +84,6 @@ public class UserServiceImpl implements UserService {
     public UserResponse update(UserRequest userRequest){
         try {
             var user = userRepository.findByUserId(userRequest.getUserId());
-            MultipartFile profileImage = userRequest.getProfileImage();
-            InputStream inputStream = profileImage.getInputStream();
 
             if (userRequest.getFirstName() != null) {
                 user.setFirstName(userRequest.getFirstName());
@@ -114,7 +109,7 @@ public class UserServiceImpl implements UserService {
                         .build());
             }
             if (userRequest.getProfileImage() != null && !userRequest.getProfileImage().isEmpty()) {
-                user.setProfileImage("image/"+ FilenameUtils.getExtension(profileImage.getOriginalFilename()) +";base64,"+ ImageToBase64Converter.convert(inputStream));
+                user.setProfileImage(imageMetadataService.save(userRequest.getProfileImage()));
             }
             var saved = userRepository.save(user);
 

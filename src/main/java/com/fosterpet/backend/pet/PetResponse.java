@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,5 +29,5 @@ public class PetResponse {
     private String ownerName;
     private String ownerPhone;
     private String ownerEmail;
-    private String petImage;
+    private List<String> petImages;
 }
