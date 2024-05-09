@@ -5,6 +5,8 @@ import com.fosterpet.backend.common.Location;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,5 +21,5 @@ public class KennelRequest {
     private Double kennelLongitude;
     private Double kennelLatitude;
     private String ownerId;
-    private MultipartFile image;
+    private List<MultipartFile> images;
 }

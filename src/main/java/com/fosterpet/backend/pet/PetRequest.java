@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,5 +29,5 @@ public class PetRequest {
     private String petMediConditions;
     private String petVaccinationStatus;
     private String ownerId;
-    private MultipartFile petImage;
+    private List<MultipartFile> petImages;
 }

@@ -1,6 +1,7 @@
 package com.fosterpet.backend.kennel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.user.User;
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -26,7 +29,8 @@ public class Kennel {
     private String kennelName;
     private Address kennelAddress;
     private Location kennelLocation;
-    private String image;
+    @DBRef
+    private List<ImageMetadata> images;
 
 
 }

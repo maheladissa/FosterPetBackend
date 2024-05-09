@@ -1,6 +1,7 @@
 package com.fosterpet.backend.user;
 
 import com.fosterpet.backend.common.Address;
+import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,6 @@ public class UserResponse {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String profileImage;
+    private ImageMetadata profileImage;
     private Address address;
 }

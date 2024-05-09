@@ -4,6 +4,8 @@ import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,5 +20,5 @@ public class KennelResponse {
     private String ownerName;
     private String ownerPhone;
     private String ownerEmail;
-    private String image;
+    private List<String> images;
 }

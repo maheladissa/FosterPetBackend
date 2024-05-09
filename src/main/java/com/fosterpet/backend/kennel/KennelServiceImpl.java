@@ -1,15 +1,13 @@
 package com.fosterpet.backend.kennel;
 
 import com.fosterpet.backend.common.Address;
-import com.fosterpet.backend.common.ImageToBase64Converter;
 import com.fosterpet.backend.common.Location;
+import com.fosterpet.backend.imagemetadata.ImageMetadata;
+import com.fosterpet.backend.imagemetadata.ImageMetadataService;
 import com.fosterpet.backend.user.User;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +17,19 @@ public class KennelServiceImpl implements KennelService {
     @Autowired
     private KennelRepository kennelRepository;
 
+    @Autowired
+    private ImageMetadataService imageMetadataService;
+
     @Override
     public KennelResponse save(KennelRequest request){
         try {
             User owner = new User();
             owner.setUserId(request.getOwnerId());
-            MultipartFile image = request.getImage();
-            InputStream inputStream = image.getInputStream();
+            ArrayList<ImageMetadata> images = new ArrayList<>();
+            for (MultipartFile image : request.getImages()) {
+                ImageMetadata imageMetadata = imageMetadataService.save(image);
+                images.add(imageMetadata);
+            }
 
             Kennel kennel = Kennel.builder()
                     .kennelName(request.getKennelName())
@@ -40,19 +44,13 @@ public class KennelServiceImpl implements KennelService {
                             .coordinates(new double[]{request.getKennelLongitude(), request.getKennelLatitude()})
                             .build())
                     .owner(owner)
-                    .image("image/"+ FilenameUtils.getExtension(image.getOriginalFilename()) +";base64,"+ImageToBase64Converter.convert(inputStream))
+                    .images(images)
                     .build();
 
             var saved = kennelRepository.save(kennel);
-            return KennelResponse.builder()
-                    .kennelId(saved.getKennelID())
-                    .kennelName(saved.getKennelName())
-                    .kennelAddress(saved.getKennelAddress())
-                    .kennelLocation(saved.getKennelLocation())
-                    .ownerId(saved.getOwner().getUserId())
-                    .image(saved.getImage().toString())
-                    .build();
-        } catch (IOException e) {
+
+            return kennelResponseBuilder(saved);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -85,13 +83,20 @@ public class KennelServiceImpl implements KennelService {
     public KennelResponse update(KennelRequest request){
         try {
             var kennel = kennelRepository.findByKennelID(request.getKennelId());
-            User owner = new User();
-            owner.setUserId(request.getOwnerId());
-            MultipartFile image = request.getImage();
-            InputStream inputStream = image.getInputStream();
 
-            if(request.getKennelName()!=null) {kennel.setKennelName(request.getKennelName());}
-            if (request.getKennelAddress1()!=null || request.getKennelAddress2()!=null || request.getKennelCity()!=null || request.getKennelZip()!=null) {
+            if (request.getImages() != null) {
+                ArrayList<ImageMetadata> images = new ArrayList<>();
+                for (MultipartFile image : request.getImages()) {
+                    ImageMetadata imageMetadata = imageMetadataService.save(image);
+                    images.add(imageMetadata);
+                }
+                kennel.setImages(images);
+            }
+
+            if (request.getKennelName() != null) {
+                kennel.setKennelName(request.getKennelName());
+            }
+            if (request.getKennelAddress1() != null) {
                 kennel.setKennelAddress(Address.builder()
                         .address1(request.getKennelAddress1())
                         .address2(request.getKennelAddress2())
@@ -99,33 +104,20 @@ public class KennelServiceImpl implements KennelService {
                         .zipCode(Integer.parseInt(request.getKennelZip()))
                         .build());
             }
-            if (request.getKennelLatitude()!=null || request.getKennelLongitude()!=null) {
+            if (request.getKennelLongitude() != 0) {
                 kennel.setKennelLocation(Location.builder()
                         .type("Point")
                         .coordinates(new double[]{request.getKennelLongitude(), request.getKennelLatitude()})
                         .build());
             }
-            if (request.getOwnerId()!=null) {kennel.setOwner(owner);}
-            if (request.getImage()!=null && !request.getImage().isEmpty()) {
-                kennel.setImage("image/"+ FilenameUtils.getExtension(image.getOriginalFilename()) +";base64,"+ImageToBase64Converter.convert(inputStream));
-            }
 
             var saved = kennelRepository.save(kennel);
 
-            return KennelResponse.builder()
-                    .kennelId(saved.getKennelID())
-                    .kennelName(saved.getKennelName())
-                    .kennelAddress(saved.getKennelAddress())
-                    .kennelLocation(saved.getKennelLocation())
-                    .ownerId(saved.getOwner().getUserId())
-                    .image(saved.getImage().toString())
-                    .build();
+            return kennelResponseBuilder(saved);
 
         }
-
-        catch (IOException e) {
+        catch (Exception e) {
             throw new RuntimeException(e);
-
         }
     }
 
@@ -133,21 +125,29 @@ public class KennelServiceImpl implements KennelService {
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {
         List<KennelResponse> kennelResponses = new ArrayList<>();
         for (Kennel kennel : kennels) {
-            KennelResponse kennelResponse = KennelResponse.builder()
-                    .kennelId(kennel.getKennelID())
-                    .kennelName(kennel.getKennelName())
-                    .kennelAddress(kennel.getKennelAddress())
-                    .kennelLocation(kennel.getKennelLocation())
-                    .ownerId(kennel.getOwner().getUserId())
-                    .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
-                    .ownerPhone(kennel.getOwner().getPhoneNumber())
-                    .ownerEmail(kennel.getOwner().getEmail())
-                    .image(kennel.getImage().toString())
-                    .build();
+            KennelResponse kennelResponse = kennelResponseBuilder(kennel);
 
             kennelResponses.add(kennelResponse);
         }
 
         return kennelResponses;
+    }
+
+    private KennelResponse kennelResponseBuilder (Kennel kennel){
+        return KennelResponse.builder()
+                .kennelId(kennel.getKennelID())
+                .kennelName(kennel.getKennelName())
+                .kennelAddress(kennel.getKennelAddress())
+                .kennelLocation(kennel.getKennelLocation())
+                .ownerId(kennel.getOwner().getUserId())
+                .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
+                .ownerPhone(kennel.getOwner().getPhoneNumber())
+                .ownerEmail(kennel.getOwner().getEmail())
+                .images(new ArrayList<>() {{
+                    for (ImageMetadata image : kennel.getImages()) {
+                        add(image.getImageUrl());
+                    }
+                }})
+                .build();
     }
 }
