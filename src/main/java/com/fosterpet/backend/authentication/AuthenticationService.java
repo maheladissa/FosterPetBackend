@@ -63,6 +63,7 @@ public class AuthenticationService {
         else {
             var jwtToken = jwtService.generateToken(user);
             return AuthenticationResponse.builder()
+                    .userId(user.getUserId())
                     .token(jwtToken)
                     .status("Success")
                     .build();
@@ -82,6 +83,7 @@ public class AuthenticationService {
                 userRepository.save(user);
                 var jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
+                        .userId(user.getUserId())
                         .token(jwtToken)
                         .status("Success")
                         .build();
