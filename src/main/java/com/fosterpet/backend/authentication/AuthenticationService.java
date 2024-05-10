@@ -1,5 +1,6 @@
 package com.fosterpet.backend.authentication;
 
+import com.fosterpet.backend.common.AzureIdentityGenerator;
 import com.fosterpet.backend.config.JwtService;
 import com.fosterpet.backend.user.EmailVerificationService;
 import com.fosterpet.backend.user.Role;
@@ -22,6 +23,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final EmailVerificationService emailVerificationService;
+    private final AzureIdentityGenerator azureIdentityGenerator;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -36,6 +38,7 @@ public class AuthenticationService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(Role.USER)
+                    .azureCommunicationId(azureIdentityGenerator.createUser().getId())
                     .build();
             if(Objects.equals(emailVerificationService.sendVerificationCode(request.getEmail()), "SUCCESSFULLY_COMPLETED")){
                 user.setIsEmailVerified(false);

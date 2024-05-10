@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private Address address;
     private Role role;
     private Boolean isEmailVerified;
+    private String azureCommunicationId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
