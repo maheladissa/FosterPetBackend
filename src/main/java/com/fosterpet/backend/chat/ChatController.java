@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.CommunicationException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -20,37 +18,63 @@ public class ChatController {
     private ImageMetadataService imageMetadataService;
 
     @GetMapping("/create-chat-thread")
-    public ResponseEntity<String> createChatThread(@RequestParam String userId1, @RequestParam String userId2) throws CommunicationException {
-        return ResponseEntity.ok(chatService.createChatThread(userId1, userId2));
+    public ResponseEntity<?> createChatThread(@RequestParam String userId1, @RequestParam String userId2) {
+        try {
+            return ResponseEntity.ok(chatService.createChatThread(userId1, userId2));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/get-chat-threads")
-    public ResponseEntity<List<String>> getChatThread() {
-        return ResponseEntity.ok(chatService.getAllChatThreads());
+    public ResponseEntity<?> getChatThread() {
+        try {
+            return ResponseEntity.ok(chatService.getAllChatThreads());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/send-message")
-    public ResponseEntity<String> sendMessage(@ModelAttribute ChatMessageRequest chatMessageRequest) throws Exception {
-        String attachmentUrl = null;
-        if(chatMessageRequest.getAttachment() != null && !chatMessageRequest.getAttachment().isEmpty()){
-            attachmentUrl = imageMetadataService.save(chatMessageRequest.getAttachment()).getImageUrl();
+    public ResponseEntity<?> sendMessage(@ModelAttribute ChatMessageRequest chatMessageRequest) {
+        try {
+            String attachmentUrl = null;
+            if(chatMessageRequest.getAttachment() != null && !chatMessageRequest.getAttachment().isEmpty()){
+                attachmentUrl = imageMetadataService.save(chatMessageRequest.getAttachment()).getImageUrl();
+            }
+            return ResponseEntity.ok(chatService.sendMessage(chatMessageRequest.getChatThreadId(), chatMessageRequest.getSenderId(), chatMessageRequest.getMessage(), attachmentUrl));
         }
-        return ResponseEntity.ok(chatService.sendMessage(chatMessageRequest.getChatThreadId(), chatMessageRequest.getSenderId(), chatMessageRequest.getMessage(), attachmentUrl));
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/get-participants")
-    public ResponseEntity<List<String>> getChatParticipants(@RequestParam String chatThreadId){
-        return ResponseEntity.ok(chatService.getTreadParticipants(chatThreadId));
+    public ResponseEntity<?> getChatParticipants(@RequestParam String chatThreadId){
+        try {
+            return ResponseEntity.ok(chatService.getTreadParticipants(chatThreadId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/get-messages")
-    public ResponseEntity<List<ChatMessageResponse>> getChatMessages(@RequestParam String chatThreadId){
-        return ResponseEntity.ok(chatService.getMessages(chatThreadId));
+    public ResponseEntity<?> getChatMessages(@RequestParam String chatThreadId){
+        try {
+            return ResponseEntity.ok(chatService.getMessages(chatThreadId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/get-chat-threads-by-user")
-    public ResponseEntity<List<String>> getChatThreadsByUser(@RequestParam String userId){
-        return ResponseEntity.ok(chatService.getChatThreadsByUser(userId));
+    public ResponseEntity<?> getChatThreadsByUser(@RequestParam String userId){
+        try {
+            return ResponseEntity.ok(chatService.getChatThreadsByUser(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

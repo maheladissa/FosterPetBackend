@@ -14,28 +14,54 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> save(@ModelAttribute UserRequest userRequest){
-        return ResponseEntity.ok(userService.save(userRequest));
+    public ResponseEntity<?> save(@ModelAttribute UserRequest userRequest){
+        try {
+            return ResponseEntity.ok(userService.save(userRequest));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/name")
-    public ResponseEntity<List<UserResponse>> getUsersStartWith(@RequestParam String name){
-        return ResponseEntity.ok(userService.getUserFirstNameStartWith(name));
+    public ResponseEntity<?> getUsersStartWith(@RequestParam String name){
+        try {
+            return ResponseEntity.ok(userService.getUserFirstNameStartWith(name));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers(){
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<?> getAllUsers(){
+        try {
+            return ResponseEntity.ok(userService.getAllUsers());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/id")
-    public ResponseEntity<UserResponse> getUserById(@RequestParam String id){
-        return ResponseEntity.ok(userService.getUserById(id));
+    public ResponseEntity<?> getUserById(@RequestParam String id){
+        try {
+            return ResponseEntity.ok(userService.getUserById(id));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/update")
-    public ResponseEntity<UserResponse> updateUser(@ModelAttribute UserRequest userRequest){
-        return ResponseEntity.ok(userService.update(userRequest));
+    public ResponseEntity<?> updateUser(@ModelAttribute UserRequest userRequest){
+        try {
+            return ResponseEntity.ok(userService.update(userRequest));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

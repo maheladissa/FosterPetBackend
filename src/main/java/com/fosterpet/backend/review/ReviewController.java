@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/review")
 public class ReviewController {
@@ -15,38 +13,74 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<ReviewResponse> save(@RequestBody ReviewRequest request){
-        return ResponseEntity.ok(reviewService.save(request));
+    public ResponseEntity<?> save(@RequestBody ReviewRequest request){
+        try {
+            return ResponseEntity.ok(reviewService.save(request));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping
-    public ResponseEntity<List<ReviewResponse>> getAllReviews(){
-        return ResponseEntity.ok(reviewService.getAllReviews());
+    public ResponseEntity<?> getAllReviews(){
+        try {
+            return ResponseEntity.ok(reviewService.getAllReviews());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<ReviewResponse>> getAllReviewsByUser(@RequestParam String userId){
-        return ResponseEntity.ok(reviewService.getAllReviewsByUser(userId));
+    public ResponseEntity<?> getAllReviewsByUser(@RequestParam String userId){
+        try {
+            return ResponseEntity.ok(reviewService.getAllReviewsByUser(userId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/kennel")
-    public ResponseEntity<List<ReviewResponse>> getAllReviewsByKennel(@RequestParam String kennelId){
-        return ResponseEntity.ok(reviewService.getAllReviewsByKennel(kennelId));
+    public ResponseEntity<?> getAllReviewsByKennel(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(reviewService.getAllReviewsByKennel(kennelId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/volunteer")
-    public ResponseEntity<List<ReviewResponse>> getAllReviewsByVolunteer(@RequestParam String volunteerId){
-        return ResponseEntity.ok(reviewService.getAllReviewsByVolunteer(volunteerId));
+    public ResponseEntity<?> getAllReviewsByVolunteer(@RequestParam String volunteerId){
+        try {
+            return ResponseEntity.ok(reviewService.getAllReviewsByVolunteer(volunteerId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/kennel/average")
-    public ResponseEntity<Integer> getAverageRatingByKennel(@RequestParam String kennelId){
-        return ResponseEntity.ok(reviewService.getAverageRatingByKennel(kennelId));
+    public ResponseEntity<?> getAverageRatingByKennel(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(reviewService.getAverageRatingByKennel(kennelId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/volunteer/average")
-    public ResponseEntity<Integer> getAverageRatingByVolunteer(@RequestParam String volunteerId){
-        return ResponseEntity.ok(reviewService.getAverageRatingByVolunteer(volunteerId));
+    public ResponseEntity<?> getAverageRatingByVolunteer(@RequestParam String volunteerId){
+        try {
+            return ResponseEntity.ok(reviewService.getAverageRatingByVolunteer(volunteerId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
