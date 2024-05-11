@@ -12,23 +12,40 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<?> register(
         @RequestBody RegisterRequest request)
         {
-        return ResponseEntity.ok(authenticationService.register(request));
+            try {
+                return ResponseEntity.ok(authenticationService.register(request));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+
         }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public ResponseEntity<?> authenticate(
             @RequestBody AuthenticationRequest request)
         {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+            try {
+                return ResponseEntity.ok(authenticationService.authenticate(request));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+
+            }
         }
 
     @PostMapping("/verify")
-    public ResponseEntity<AuthenticationResponse> verify(
+    public ResponseEntity<?> verify(
             @RequestBody VerificationRequest request)
         {
-        return ResponseEntity.ok(authenticationService.verify(request));
+            try {
+                return ResponseEntity.ok(authenticationService.verify(request));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }
 }

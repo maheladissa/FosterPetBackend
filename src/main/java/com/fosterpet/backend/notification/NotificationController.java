@@ -16,13 +16,23 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @PostMapping
-    public ResponseEntity<NotificationResponse> save(@RequestBody NotificationRequest request){
-        return ResponseEntity.ok(notificationService.save(request));
+    public ResponseEntity<?> save(@RequestBody NotificationRequest request){
+        try {
+            return ResponseEntity.ok(notificationService.save(request));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<NotificationResponse>> getNotificationsByReceiver(@PathVariable String userId){
-        return ResponseEntity.ok(notificationService.getNotificationsByReceiver(userId));
+    public ResponseEntity<?> getNotificationsByReceiver(@PathVariable String userId){
+        try {
+            return ResponseEntity.ok(notificationService.getNotificationsByReceiver(userId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-
 }

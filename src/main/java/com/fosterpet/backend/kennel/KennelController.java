@@ -1,18 +1,8 @@
 package com.fosterpet.backend.kennel;
 
-import com.fosterpet.backend.common.Address;
-import com.fosterpet.backend.common.Location;
-import com.fosterpet.backend.user.User;
-import com.fosterpet.backend.user.UserRepository;
-import com.fosterpet.backend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import java.util.HashMap;
-import java.util.Map;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/kennel")
@@ -28,44 +18,68 @@ public class KennelController {
             return ResponseEntity.ok(kennelService.save(request));
         }
         catch (Exception e){
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(errorResponse);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/name")
-    public ResponseEntity<List<KennelResponse>> getKennelStartWith(@RequestParam("name") String name){
-        return ResponseEntity.ok(kennelService.getKennelStartWith(name));
+    public ResponseEntity<?> getKennelStartWith(@RequestParam("name") String name){
+        try {
+            return ResponseEntity.ok(kennelService.getKennelStartWith(name));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<List<KennelResponse>> getKennelsByOwnerId(@RequestParam String ownerId) {
-        return ResponseEntity.ok(kennelService.getKennelsByOwner(ownerId));
+    public ResponseEntity<?> getKennelsByOwnerId(@RequestParam String ownerId) {
+        try {
+            return ResponseEntity.ok(kennelService.getKennelsByOwner(ownerId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<KennelResponse>> getAllKennels(){
+    public ResponseEntity<?> getAllKennels(){
         try {
             return ResponseEntity.ok(kennelService.getAllKennels());
         }
         catch (Exception e){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/near")
-    public ResponseEntity<List<KennelResponse>> getKennelsNear(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
-        return ResponseEntity.ok(kennelService.getKennelsNear(longitude, latitude, maxDistance));
+    public ResponseEntity<?> getKennelsNear(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
+        try {
+            return ResponseEntity.ok(kennelService.getKennelsNear(longitude, latitude, maxDistance));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/update")
-    public ResponseEntity<KennelResponse> updateKennel(@ModelAttribute KennelRequest request){
-        return ResponseEntity.ok(kennelService.update(request));
+    public ResponseEntity<?> updateKennel(@ModelAttribute KennelRequest request){
+        try {
+            return ResponseEntity.ok(kennelService.update(request));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
     }
 
     @GetMapping("/id")
-    public ResponseEntity<KennelResponse> getKennelById(@RequestParam String kennelId){
-        return ResponseEntity.ok(kennelService.getKennelById(kennelId));
+    public ResponseEntity<?> getKennelById(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(kennelService.getKennelById(kennelId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

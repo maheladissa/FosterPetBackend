@@ -14,27 +14,47 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    public ResponseEntity<PetResponse> save(@ModelAttribute PetRequest request){
-        return ResponseEntity.ok(petService.save(request));
+    public ResponseEntity<?> save(@ModelAttribute PetRequest request){
+        try {
+            return ResponseEntity.ok(petService.save(request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<List<PetResponse>> getPetsByOwnerId(@RequestParam String ownerId) {
-        return ResponseEntity.ok(petService.getPetsByOwner(ownerId));
+    public ResponseEntity<?> getPetsByOwnerId(@RequestParam String ownerId) {
+        try {
+            return ResponseEntity.ok(petService.getPetsByOwner(ownerId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<PetResponse>> getAllPets(){
-        return ResponseEntity.ok(petService.getAllPets());
+    public ResponseEntity<?> getAllPets(){
+        try {
+            return ResponseEntity.ok(petService.getAllPets());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/id")
-    public ResponseEntity<PetResponse> getPetById(@RequestParam String petId){
-        return ResponseEntity.ok(petService.getPetById(petId));
+    public ResponseEntity<?> getPetById(@RequestParam String petId){
+        try {
+            return ResponseEntity.ok(petService.getPetById(petId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/update")
-    public ResponseEntity<PetResponse> updatePet(@ModelAttribute PetRequest request){
-        return ResponseEntity.ok(petService.updatePet(request));
+    public ResponseEntity<?> updatePet(@ModelAttribute PetRequest request){
+        try {
+            return ResponseEntity.ok(petService.updatePet(request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
