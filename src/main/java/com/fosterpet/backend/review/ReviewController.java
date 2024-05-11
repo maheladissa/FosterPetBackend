@@ -34,9 +34,19 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getAllReviewsByKennel(kennelId));
     }
 
+    @GetMapping("/volunteer")
+    public ResponseEntity<List<ReviewResponse>> getAllReviewsByVolunteer(@RequestParam String volunteerId){
+        return ResponseEntity.ok(reviewService.getAllReviewsByVolunteer(volunteerId));
+    }
+
     @GetMapping("/kennel/average")
     public ResponseEntity<Integer> getAverageRatingByKennel(@RequestParam String kennelId){
         return ResponseEntity.ok(reviewService.getAverageRatingByKennel(kennelId));
+    }
+
+    @GetMapping("/volunteer/average")
+    public ResponseEntity<Integer> getAverageRatingByVolunteer(@RequestParam String volunteerId){
+        return ResponseEntity.ok(reviewService.getAverageRatingByVolunteer(volunteerId));
     }
 
 }

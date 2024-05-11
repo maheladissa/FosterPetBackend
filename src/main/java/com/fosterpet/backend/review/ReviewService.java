@@ -11,6 +11,10 @@ public interface ReviewService {
 
     List<ReviewResponse> getAllReviewsByKennel(String kennelId);
 
+    List<ReviewResponse> getAllReviewsByVolunteer(String volunteerId);
+
     Integer getAverageRatingByKennel(String kennelId);
+
+    Integer getAverageRatingByVolunteer(String volunteerId);
 
 }

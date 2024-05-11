@@ -14,6 +14,7 @@ public class ReviewRequest {
     private Integer rating;
     private String message;
     private String kennelId;
+    private String volunteerId;
     private String reviewerId;
     private String bookingId;
 }
