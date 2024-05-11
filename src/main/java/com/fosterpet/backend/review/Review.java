@@ -1,8 +1,8 @@
-package com.fosterpet.backend.booking;
+package com.fosterpet.backend.review;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.booking.Booking;
 import com.fosterpet.backend.kennel.Kennel;
-import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,26 +11,24 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.Date;
 
 @Data
 @Builder
-@Document(collection = "booking")
+@Document(collection = "review")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Booking {
+public class Review {
     @Id
-    private String bookingID;
+    private String reviewId;
     @DBRef
-    private Pet pet;
-    @DBRef
-    private User owner;
+    private User reviewer;
     @DBRef
     private Kennel kennel;
-//    @DBRef
-//    private User volunteer;
-    private Date startDate;
-    private Date endDate;
+    @DBRef
+    private Booking booking;
+    private String message;
+    private Integer rating;
+
 
 }
