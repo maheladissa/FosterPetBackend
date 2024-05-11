@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.List;
 
@@ -21,8 +23,15 @@ public class KennelController {
     private KennelService kennelService;
 
     @PostMapping
-    public ResponseEntity<KennelResponse> save(@ModelAttribute KennelRequest request){
-        return ResponseEntity.ok(kennelService.save(request));
+    public ResponseEntity<?> save(@ModelAttribute KennelRequest request){
+        try {
+            return ResponseEntity.ok(kennelService.save(request));
+        }
+        catch (Exception e){
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
     }
 
     @GetMapping("/name")
@@ -37,7 +46,12 @@ public class KennelController {
 
     @GetMapping
     public ResponseEntity<List<KennelResponse>> getAllKennels(){
-        return ResponseEntity.ok(kennelService.getAllKennels());
+        try {
+            return ResponseEntity.ok(kennelService.getAllKennels());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/near")

@@ -13,7 +13,10 @@ public interface BookingService {
 
     List<BookingResponse> getBookingsByKennel(String kennelId);
 
+    List<BookingResponse> getBookingsByVolunteer(String kennelId);
+
     List<BookingResponse> getBookingsByPet(String petId);
 
     BookingResponse updateBooking(BookingRequest request);
+
 }

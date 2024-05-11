@@ -13,7 +13,10 @@ public class ComplaintRequest {
     private String complaintId;
     private String message;
     private String kennelId;
+    private String volunteerId;
     private String userId;
     private String bookingId;
     private String status;
+    private String adminID;
+    private String remarks;
 }

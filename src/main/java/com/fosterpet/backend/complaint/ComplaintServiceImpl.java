@@ -3,6 +3,7 @@ package com.fosterpet.backend.complaint;
 import com.fosterpet.backend.booking.Booking;
 import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.volunteer.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,15 +36,49 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    public List<ComplaintResponse> getAllComplaintsByVolunteer(String volunteerId) {
+        List<Complaint> complaints = complaintRepository.findByVolunteerVolunteerId(volunteerId);
+        return buildComplaintResponses(complaints);
+    }
+
+    @Override
     public ComplaintResponse getComplaintById(String complaintId) {
         var complaint = complaintRepository.findByComplaintId(complaintId);
         return buildComplaintResponse(complaint);
     }
 
     @Override
+    public List<ComplaintResponse> getAllComplaintsByBooking(String bookingId) {
+        List<Complaint> complaints = complaintRepository.findByBookingBookingID(bookingId);
+        return buildComplaintResponses(complaints);
+    }
+
+    @Override
+    public List<ComplaintResponse> getAllComplaintsByStatus(String status) {
+        List<Complaint> complaints = complaintRepository.findByStatus(status);
+        return buildComplaintResponses(complaints);
+    }
+
+    @Override
     public ComplaintResponse updateComplaintStatus(ComplaintRequest complaintRequest) {
         var complaint = complaintRepository.findByComplaintId(complaintRequest.getComplaintId());
         complaint.setStatus(complaintRequest.getStatus());
+        var saved = complaintRepository.save(complaint);
+        return buildComplaintResponse(saved);
+    }
+
+    @Override
+    public ComplaintResponse updateComplaintAdmin(ComplaintRequest complaintRequest) {
+        var complaint = complaintRepository.findByComplaintId(complaintRequest.getComplaintId());
+        complaint.setAdminID(complaintRequest.getAdminID());
+        var saved = complaintRepository.save(complaint);
+        return buildComplaintResponse(saved);
+    }
+
+    @Override
+    public ComplaintResponse updateComplaintRemarks(ComplaintRequest complaintRequest) {
+        var complaint = complaintRepository.findByComplaintId(complaintRequest.getComplaintId());
+        complaint.setRemarks(complaintRequest.getRemarks());
         var saved = complaintRepository.save(complaint);
         return buildComplaintResponse(saved);
     }
@@ -59,9 +94,13 @@ public class ComplaintServiceImpl implements ComplaintService {
         Booking booking = new Booking();
         booking.setBookingID(complaintRequest.getBookingId());
 
+        Volunteer volunteer = new Volunteer();
+        volunteer.setVolunteerId(complaintRequest.getVolunteerId());
+
         Complaint complaint = Complaint.builder()
                 .user(user)
                 .kennel(kennel)
+                .volunteer(volunteer)
                 .booking(booking)
                 .message(complaintRequest.getMessage())
                 .status("PENDING")
@@ -75,6 +114,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     private ComplaintResponse buildComplaintResponse(Complaint complaint) {
         return ComplaintResponse.builder()
                 .complaintId(complaint.getComplaintId())
+                .bookingId(complaint.getBooking().getBookingID())
+                .kennelId(complaint.getKennel() != null ? complaint.getKennel().getKennelID() : null)
+                .volunteerId(complaint.getVolunteer() != null ? complaint.getVolunteer().getVolunteerId() : null)
+                .userId(complaint.getUser().getUserId())
+                .status(complaint.getStatus())
                 .message(complaint.getMessage())
                 .build();
 

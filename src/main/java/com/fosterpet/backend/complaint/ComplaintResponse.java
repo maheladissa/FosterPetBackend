@@ -14,12 +14,14 @@ public class ComplaintResponse {
     private String message;
     private String status;
 
-
     private String kennelId;
-    private String kennelName;
+
+    private String volunteerId;
 
     private String userId;
-    private String userName;
 
     private String bookingId;
+
+    private String adminID;
+    private String remarks;
 }
