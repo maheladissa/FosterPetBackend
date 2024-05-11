@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingRequest {
+    private String bookingID;
     private String petID;
     private String ownerID;
     private String kennelID;
