@@ -1,4 +1,4 @@
-package com.fosterpet.backend.review;
+package com.fosterpet.backend.complaint;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewRequest {
-    private String reviewId;
-    private Integer rating;
+public class ComplaintResponse {
+    private String complaintId;
     private String message;
+    private String status;
+
+
     private String kennelId;
-    private String reviewerId;
+    private String kennelName;
+
+    private String userId;
+    private String userName;
+
     private String bookingId;
 }
