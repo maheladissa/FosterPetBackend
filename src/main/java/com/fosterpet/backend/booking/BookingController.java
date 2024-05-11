@@ -27,4 +27,24 @@ public class BookingController {
     public ResponseEntity<List<BookingResponse>> getAllBookings(){
         return ResponseEntity.ok(bookingService.getAllBookings());
     }
+
+    @GetMapping("/bookingId")
+    public ResponseEntity<BookingResponse> getBookingById(@PathVariable String bookingId){
+        return ResponseEntity.ok(bookingService.getBookingById(bookingId));
+    }
+
+    @GetMapping("/kennelId")
+    public ResponseEntity<List<BookingResponse>> getBookingsByKennel(@RequestParam String kennelId){
+        return ResponseEntity.ok(bookingService.getBookingsByKennel(kennelId));
+    }
+
+    @GetMapping("/petId")
+    public ResponseEntity<List<BookingResponse>> getBookingsByPet(@RequestParam String petId){
+        return ResponseEntity.ok(bookingService.getBookingsByPet(petId));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<BookingResponse> updateBooking(@RequestBody BookingRequest request){
+        return ResponseEntity.ok(bookingService.updateBooking(request));
+    }
 }
