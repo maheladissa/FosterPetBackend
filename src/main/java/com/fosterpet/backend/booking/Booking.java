@@ -28,8 +28,8 @@ public class Booking {
     private User owner;
     @DBRef
     private Kennel kennel;
-//    @DBRef
-//    private User volunteer;
+    @DBRef
+    private User volunteer;
     private Date startDate;
     private Date endDate;
 

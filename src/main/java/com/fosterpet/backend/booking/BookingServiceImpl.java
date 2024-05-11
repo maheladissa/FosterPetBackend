@@ -26,15 +26,15 @@ public class BookingServiceImpl implements BookingService {
         Kennel kennel = new Kennel();
         kennel.setKennelID(request.getKennelID());
 
-//        User volunteer = new User();
-//        volunteer.setUserId(request.getVolunteerID());
+        User volunteer = new User();
+        volunteer.setUserId(request.getVolunteerID());
 
 
         Booking booking = Booking.builder()
                 .pet(pet)
                 .owner(owner)
                 .kennel(kennel)
-//                .volunteer(volunteer)
+                .volunteer(volunteer)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
                 .build();
@@ -73,6 +73,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<BookingResponse> getBookingsByVolunteer(String volunteerId) {
+        var bookings = bookingRepository.findByVolunteerUserId(volunteerId);
+        return buildBookingResponses(bookings);
+    }
+
+    @Override
     public BookingResponse updateBooking(BookingRequest request) {
         var booking = bookingRepository.findByBookingID(request.getBookingID());
         booking.setStartDate(request.getStartDate());
@@ -87,8 +93,8 @@ public class BookingServiceImpl implements BookingService {
                 .bookingID(booking.getBookingID())
                 .petID(booking.getPet().getPetID())
                 .ownerID(booking.getOwner().getUserId())
-                .kennelID(booking.getKennel().getKennelID())
-//                .volunteerID(booking.getVolunteer().getUserId())
+                .kennelID(booking.getKennel() != null ? booking.getKennel().getKennelID() : null)
+                .volunteerID(booking.getVolunteer() != null ? booking.getVolunteer().getUserId() : null)
                 .startDate(booking.getStartDate())
                 .endDate(booking.getEndDate())
                 .build();

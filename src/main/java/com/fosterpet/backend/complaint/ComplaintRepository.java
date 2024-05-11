@@ -8,6 +8,7 @@ import java.util.List;
 @Repository
 public interface ComplaintRepository extends MongoRepository<Complaint, String>{
     List<Complaint> findByKennelKennelID(String kennelId);
+    List<Complaint> findByVolunteerVolunteerId(String volunteerId);
     List<Complaint> findByUserUserId(String ownerId);
     List<Complaint> findByBookingBookingID(String bookingId);
     List<Complaint> findByStatus(String status);

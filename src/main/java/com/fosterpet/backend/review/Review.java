@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fosterpet.backend.booking.Booking;
 import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.volunteer.Volunteer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +27,12 @@ public class Review {
     @DBRef
     private Kennel kennel;
     @DBRef
+    private Volunteer volunteer;
+
+    @DBRef
     private Booking booking;
+
+
     private String message;
     private Integer rating;
 

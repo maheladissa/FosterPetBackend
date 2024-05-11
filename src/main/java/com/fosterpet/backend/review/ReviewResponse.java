@@ -16,10 +16,10 @@ public class ReviewResponse {
     private String message;
 
     private String kennelId;
-    private String kennelName;
 
     private String reviewerId;
-    private String reviewerName;
+
+    private String volunteerId;
 
     private String bookingId;
 }
