@@ -29,6 +29,7 @@ jobs:
           AZURE_COMMUNICATION_CHAT_ENDPOINT: ${{ secrets.AZURE_COMMUNICATION_CHAT_ENDPOINT }}
           AZURE_COMMUNICATION_CHAT_ACCESS_KEY: ${{ secrets.AZURE_COMMUNICATION_CHAT_ACCESS_KEY }}
           AZURE_COMMUNICATION_CHAT_ADMIN_USER_ID: ${{ secrets.AZURE_COMMUNICATION_CHAT_ADMIN_USER_ID }}
+          STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
