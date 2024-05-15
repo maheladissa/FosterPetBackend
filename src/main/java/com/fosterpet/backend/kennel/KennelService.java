@@ -17,4 +17,6 @@ public interface KennelService {
 
     KennelResponse getKennelById(String kennelId);
 
+    List<KennelResponse> updatePaymentRate(KennelPaymentRateRequest request);
+
 }

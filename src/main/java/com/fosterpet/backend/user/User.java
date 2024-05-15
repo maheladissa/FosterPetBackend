@@ -37,6 +37,7 @@ public class User implements UserDetails {
     private Role role;
     private Boolean isEmailVerified;
     private String azureCommunicationId;
+    private String stripeCustomerId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

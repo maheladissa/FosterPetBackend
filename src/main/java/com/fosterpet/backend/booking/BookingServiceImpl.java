@@ -1,7 +1,9 @@
 package com.fosterpet.backend.booking;
 
 import com.fosterpet.backend.kennel.Kennel;
+import com.fosterpet.backend.kennel.KennelRepository;
 import com.fosterpet.backend.pet.Pet;
+import com.fosterpet.backend.pet.PetRepository;
 import com.fosterpet.backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,16 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private KennelRepository kennelRepository;
+
+    @Autowired
+    private PetRepository petRepository;
+
     @Override
     public BookingResponse save(BookingRequest request) {
         User owner = new User();
-        owner.setUserId(request.getOwnerID());
+        owner.setUserId(petRepository.findByPetID(request.getPetID()).getOwner().getUserId());
 
         Pet pet = new Pet();
         pet.setPetID(request.getPetID());
@@ -33,10 +41,12 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = Booking.builder()
                 .pet(pet)
                 .owner(owner)
-                .kennel(kennel)
-                .volunteer(volunteer)
+                .kennel(request.getKennelID() != null ? kennel : null)
+                .volunteer(request.getVolunteerID() != null ? volunteer : null)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
+                .rate(kennelRepository.findByKennelID(request.getKennelID()).getRate(petRepository.findByPetID(request.getPetID()).getPetType()))
+                .status("PENDING")
                 .build();
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
@@ -87,6 +97,49 @@ public class BookingServiceImpl implements BookingService {
         return buildBookingResponse(saved);
     }
 
+    @Override
+    public BookingResponse confirmBooking(String bookingId) {
+        var booking = bookingRepository.findByBookingID(bookingId);
+        if (booking.getStatus()=="PENDING"){
+            booking.setStatus("CONFIRMED");
+        }
+        var saved = bookingRepository.save(booking);
+        return buildBookingResponse(saved);
+    }
+
+    @Override
+    public BookingResponse cancelBooking(String bookingId) {
+        var booking = bookingRepository.findByBookingID(bookingId);
+        if (booking.getStatus()=="PENDING"){booking.setStatus("CANCELLED");}
+        var saved = bookingRepository.save(booking);
+        return buildBookingResponse(saved);
+    }
+
+    @Override
+    public BookingResponse completeBooking(String bookingId) {
+        var booking = bookingRepository.findByBookingID(bookingId);
+        if (booking.getStatus()=="ONGOING"){booking.setStatus("COMPLETED");}
+        booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
+        var saved = bookingRepository.save(booking);
+        return buildBookingResponse(saved);
+    }
+
+    @Override
+    public BookingResponse rejectBooking(String bookingId) {
+        var booking = bookingRepository.findByBookingID(bookingId);
+        if (booking.getStatus()=="PENDING"){booking.setStatus("REJECTED");}
+        var saved = bookingRepository.save(booking);
+        return buildBookingResponse(saved);
+    }
+
+    @Override
+    public BookingResponse ongoingBooking(String bookingId) {
+        var booking = bookingRepository.findByBookingID(bookingId);
+        if (booking.getStatus()=="CONFIRMED"){booking.setStatus("ONGOING");}
+        var saved = bookingRepository.save(booking);
+        return buildBookingResponse(saved);
+    }
+
 
     private BookingResponse buildBookingResponse(Booking booking) {
         return BookingResponse.builder()
@@ -97,6 +150,9 @@ public class BookingServiceImpl implements BookingService {
                 .volunteerID(booking.getVolunteer() != null ? booking.getVolunteer().getUserId() : null)
                 .startDate(booking.getStartDate())
                 .endDate(booking.getEndDate())
+                .rate(booking.getRate())
+                .total(booking.getTotal())
+                .status(booking.getStatus())
                 .build();
     }
 

@@ -20,4 +20,7 @@ public class BookingResponse {
     private String volunteerID;
     private Date startDate;
     private Date endDate;
+    private Double rate;
+    private Double total;
+    private String status;
 }

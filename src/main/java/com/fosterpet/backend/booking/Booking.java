@@ -32,5 +32,9 @@ public class Booking {
     private User volunteer;
     private Date startDate;
     private Date endDate;
+    private Double rate;
+    private Double total;
+    private String status;
+    private String paymentIntentId;
 
 }

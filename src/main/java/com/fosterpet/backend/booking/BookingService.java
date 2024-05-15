@@ -19,4 +19,16 @@ public interface BookingService {
 
     BookingResponse updateBooking(BookingRequest request);
 
+    BookingResponse confirmBooking(String bookingId);
+
+    BookingResponse cancelBooking(String bookingId);
+
+    BookingResponse completeBooking(String bookingId);
+
+    BookingResponse rejectBooking(String bookingId);
+
+    BookingResponse ongoingBooking(String bookingId);
+
+
+
 }

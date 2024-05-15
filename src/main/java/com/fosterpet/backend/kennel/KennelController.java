@@ -1,5 +1,6 @@
 package com.fosterpet.backend.kennel;
 
+import com.fosterpet.backend.common.PaymentRates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,4 +83,16 @@ public class KennelController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/update/rate")
+    public ResponseEntity<?> updateRate(@RequestBody KennelPaymentRateRequest rate){
+        try {
+            return ResponseEntity.ok(kennelService.updatePaymentRate(rate));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 }
