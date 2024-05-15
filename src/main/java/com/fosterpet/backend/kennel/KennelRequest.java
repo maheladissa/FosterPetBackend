@@ -1,7 +1,5 @@
 package com.fosterpet.backend.kennel;
 
-import com.fosterpet.backend.common.Address;
-import com.fosterpet.backend.common.Location;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 

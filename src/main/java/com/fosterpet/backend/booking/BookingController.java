@@ -57,10 +57,64 @@ public class BookingController {
         }
     }
 
+    @GetMapping("/volunteerId")
+    public ResponseEntity<?> getBookingsByVolunteer(@RequestParam String volunteerId){
+        try {
+            return ResponseEntity.ok(bookingService.getBookingsByVolunteer(volunteerId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/petId")
     public ResponseEntity<?> getBookingsByPet(@RequestParam String petId){
         try {
             return ResponseEntity.ok(bookingService.getBookingsByPet(petId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmBooking(@RequestParam String bookingId){
+        try {
+            return ResponseEntity.ok(bookingService.confirmBooking(bookingId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelBooking(@RequestParam String bookingId){
+        try {
+            return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/complete")
+    public ResponseEntity<?> completeBooking(@RequestParam String bookingId){
+        try {
+            return ResponseEntity.ok(bookingService.completeBooking(bookingId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectBooking(@RequestParam String bookingId){
+        try {
+            return ResponseEntity.ok(bookingService.rejectBooking(bookingId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/ongoing")
+    public ResponseEntity<?> ongoingBooking(@RequestParam String bookingId){
+        try {
+            return ResponseEntity.ok(bookingService.ongoingBooking(bookingId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

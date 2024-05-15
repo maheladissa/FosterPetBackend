@@ -2,10 +2,12 @@ package com.fosterpet.backend.authentication;
 
 import com.fosterpet.backend.common.AzureIdentityGenerator;
 import com.fosterpet.backend.config.JwtService;
+import com.fosterpet.backend.payment.PaymentService;
 import com.fosterpet.backend.user.EmailVerificationService;
 import com.fosterpet.backend.user.Role;
 import com.fosterpet.backend.user.User;
 import com.fosterpet.backend.user.UserRepository;
+import com.stripe.exception.StripeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,8 +26,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final EmailVerificationService emailVerificationService;
     private final AzureIdentityGenerator azureIdentityGenerator;
+    private final PaymentService paymentService;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request) throws StripeException {
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
             return AuthenticationResponse.builder()
                     .status("Email already exist")
@@ -42,7 +45,9 @@ public class AuthenticationService {
                     .build();
             if(Objects.equals(emailVerificationService.sendVerificationCode(request.getEmail()), "SUCCESSFULLY_COMPLETED")){
                 user.setIsEmailVerified(false);
-                userRepository.save(user);
+                User saved = userRepository.save(user);
+                saved.setStripeCustomerId(paymentService.createStripeCustomer(request.getEmail(), request.getFirstName() + " " + request.getLastName(), saved.getUserId()));
+                userRepository.save(saved);
                 return AuthenticationResponse.builder()
                         .status("Success")
                         .build();

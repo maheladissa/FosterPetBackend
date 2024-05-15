@@ -1,76 +1,51 @@
 package com.fosterpet.backend.payment;
 
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
-import com.stripe.model.EphemeralKey;
-import com.stripe.model.PaymentIntent;
-import com.stripe.net.ApiResource;
-import com.stripe.net.RequestOptions;
-import com.stripe.param.CustomerCreateParams;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/payment")
 @CrossOrigin
 public class PaymentController {
 
-    @Value("${stripe.api.key}")
-    private String stripeApiKey;
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping("/create-payment-intent")
-    public ResponseEntity<?> createPaymentIntent() throws StripeException {
-        System.out.println("Creating Payment Intent");
+    public ResponseEntity<?> createPaymentIntent() {
         try {
-            Stripe.apiKey = stripeApiKey;
-
-            CustomerCreateParams customerParams =
-                    CustomerCreateParams.builder()
-                            .setEmail("abc@gmail.com")
-                            .setName("John Doe")
-                            .setDescription("Customer for John Doe")
-                            .build();
-
-            Customer customer = Customer.create(customerParams);
-
-            // Create a PaymentIntent with the order amount and currency
-            Map<String, Object> params = new HashMap<>();
-            params.put("amount", 1099); // amount in cents
-            params.put("currency", "usd");
-            params.put("payment_method_types", List.of("card"));
-            params.put("customer", customer.getId());
-
-
-            PaymentIntent paymentIntent = PaymentIntent.create(params);
-
-            RequestOptions requestOptions = RequestOptions.builder()
-                    .setStripeVersionOverride("2024-04-10")
-                    .setApiKey(stripeApiKey)
-                    .build();
-
-            // Create an ephemeral key for the customer
-            Map<String, Object> ephemeralKeyParams = new HashMap<>();
-            ephemeralKeyParams.put("customer", paymentIntent.getCustomer());
-
-            EphemeralKey ephemeralKey = EphemeralKey.create(ephemeralKeyParams, requestOptions);
-
-            Map<String, String> responseData = new HashMap<>();
-            responseData.put("paymentIntent", paymentIntent.getClientSecret());
-            responseData.put("ephemeralKey", ephemeralKey.getSecret());
-            responseData.put("customer", paymentIntent.getCustomer());
-
-            return ResponseEntity.ok(responseData);
+            return ResponseEntity.ok(paymentService.createPaymentIntent("6643b0229d659c135875a786"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/get-payment-intent")
+    public ResponseEntity<?> getPaymentIntent(@RequestParam String paymentIntentId) {
+        try {
+            return ResponseEntity.ok(paymentService.getPaymentIntent(paymentIntentId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/create-invoice")
+    public ResponseEntity<?> createInvoice(@RequestParam String paymentIntentId) {
+        try {
+            return ResponseEntity.ok(paymentService.createPaymentInvoice(paymentIntentId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-invoice")
+    public ResponseEntity<?> getInvoice(@RequestParam String invoiceId) {
+        try {
+            return ResponseEntity.ok(paymentService.getPaymentInvoice(invoiceId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

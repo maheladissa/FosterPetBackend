@@ -1,6 +1,7 @@
 package com.fosterpet.backend.kennel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.common.PaymentRates;
 import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.user.User;
 import com.fosterpet.backend.common.Address;
@@ -31,6 +32,13 @@ public class Kennel {
     private Location kennelLocation;
     @DBRef
     private List<ImageMetadata> images;
+    private List<PaymentRates> paymentRates;
 
-
+    public Double getRate(String animalType) {
+        return paymentRates.stream()
+                .filter(paymentRate -> paymentRate.getAnimalType().equals(animalType))
+                .findFirst()
+                .map(PaymentRates::getRate)
+                .orElse(null);
+    }
 }

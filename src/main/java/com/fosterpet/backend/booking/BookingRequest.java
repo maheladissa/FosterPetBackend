@@ -14,7 +14,6 @@ import java.util.Date;
 public class BookingRequest {
     private String bookingID;
     private String petID;
-    private String ownerID;
     private String kennelID;
     private String volunteerID;
     private Date startDate;

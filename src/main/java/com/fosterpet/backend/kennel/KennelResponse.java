@@ -2,6 +2,7 @@ package com.fosterpet.backend.kennel;
 
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
+import com.fosterpet.backend.common.PaymentRates;
 import lombok.*;
 
 import java.util.List;
@@ -21,4 +22,5 @@ public class KennelResponse {
     private String ownerPhone;
     private String ownerEmail;
     private List<String> images;
+    private List<PaymentRates> paymentRates;
 }

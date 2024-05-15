@@ -2,6 +2,7 @@ package com.fosterpet.backend.kennel;
 
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
+import com.fosterpet.backend.common.PaymentRates;
 import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.imagemetadata.ImageMetadataService;
 import com.fosterpet.backend.user.User;
@@ -127,6 +128,21 @@ public class KennelServiceImpl implements KennelService {
         return kennelResponseBuilder(kennel);
     }
 
+    @Override
+    public List<KennelResponse> updatePaymentRate(KennelPaymentRateRequest request){
+        List<PaymentRates> paymentRates = new ArrayList<>();
+        var kennel = kennelRepository.findByKennelID(request.getKennelId());
+        for (PaymentRates paymentRate : request.getPaymentRates()) {
+            paymentRates.add(paymentRate);
+        }
+
+        kennel.setPaymentRates(paymentRates);
+
+        var saved = kennelRepository.save(kennel);
+
+        return createKennelResponsesFromKennels(List.of(saved));
+    }
+
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {
         List<KennelResponse> kennelResponses = new ArrayList<>();
@@ -154,6 +170,7 @@ public class KennelServiceImpl implements KennelService {
                         add(image.getImageUrl());
                     }
                 }})
+                .paymentRates(kennel.getPaymentRates())
                 .build();
     }
 }
