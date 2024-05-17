@@ -90,6 +90,11 @@ public class VolunteerServiceImpl implements VolunteerService{
         return volunteerResponseBuilder(volunteerRepository.findByUserUserId(userId).get(0));
     }
 
+    @Override
+    public List<VolunteerResponse> getVolunteersNear(double longitude, double latitude, double maxDistance) {
+        return createVolunteerResponsesFromVolunteers(volunteerRepository.findByLocationNear(longitude, latitude, maxDistance));
+    }
+
     private VolunteerResponse volunteerResponseBuilder(Volunteer volunteer) {
         return VolunteerResponse.builder()
                 .volunteerId(volunteer.getVolunteerId())

@@ -63,4 +63,14 @@ public class VolunteerController {
         }
     }
 
+    @PostMapping
+    public ResponseEntity<?> getVolunteersByLocation(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
+        try {
+            return ResponseEntity.ok(volunteerService.getVolunteersNear(longitude, latitude, maxDistance));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
