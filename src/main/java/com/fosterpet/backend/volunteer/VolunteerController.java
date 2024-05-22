@@ -63,7 +63,7 @@ public class VolunteerController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/location")
     public ResponseEntity<?> getVolunteersByLocation(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
         try {
             return ResponseEntity.ok(volunteerService.getVolunteersNear(longitude, latitude, maxDistance));
