@@ -9,4 +9,5 @@ public interface VolunteerService {
     List<VolunteerResponse> findAll();
     VolunteerResponse findById(String volunteerId);
     VolunteerResponse findByUserId(String userId);
+    List<VolunteerResponse> getVolunteersNear(double longitude, double latitude, double maxDistance);
 }
