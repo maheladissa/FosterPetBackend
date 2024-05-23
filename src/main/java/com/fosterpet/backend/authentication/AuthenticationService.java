@@ -104,4 +104,48 @@ public class AuthenticationService {
         }
     }
 
+    public AuthenticationResponse sendResetPasswordCode(ForgotPasswordRequest request) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        if (!user.getIsEmailVerified()){
+            return AuthenticationResponse.builder()
+                    .status("Email not verified")
+                    .build();
+        }
+        else {
+            if(Objects.equals(emailVerificationService.sendVerificationCode(request.getEmail()), "SUCCESSFULLY_COMPLETED")){
+                return AuthenticationResponse.builder()
+                        .status("Success")
+                        .build();
+            }
+            else{
+                return AuthenticationResponse.builder()
+                        .status("Email Sending Failed")
+                        .build();
+            }
+        }
+    }
+
+    public AuthenticationResponse resetPassword(ResetPasswordRequest request) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        if (!user.getIsEmailVerified()){
+            return AuthenticationResponse.builder()
+                    .status("Email not verified")
+                    .build();
+        }
+        else {
+            if(emailVerificationService.verifyCode(request.getEmail(), request.getVerificationCode())){
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+                userRepository.save(user);
+                return AuthenticationResponse.builder()
+                        .status("Success")
+                        .build();
+            }
+            else{
+                return AuthenticationResponse.builder()
+                        .status("Email Verification Failed")
+                        .build();
+            }
+        }
+    }
+
 }

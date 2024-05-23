@@ -48,4 +48,28 @@ public class AuthenticationController {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(
+            @RequestBody ResetPasswordRequest request)
+        {
+            try {
+                return ResponseEntity.ok(authenticationService.resetPassword(request));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
+
+    @PostMapping("/send-reset-password-code")
+    public ResponseEntity<?> sendResetPasswordCode(
+            @RequestBody ForgotPasswordRequest request)
+        {
+            try {
+                return ResponseEntity.ok(authenticationService.sendResetPasswordCode(request));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
 }

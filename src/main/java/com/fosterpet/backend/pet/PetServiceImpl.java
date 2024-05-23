@@ -142,6 +142,8 @@ public class PetServiceImpl implements PetService {
                 .petMediConditions(pet.getPetMediConditions())
                 .petVaccinationStatus(pet.getPetVaccinationStatus())
                 .ownerId(pet.getOwner().getUserId())
+                .ownerName(pet.getOwner().getFirstName()+" "+pet.getOwner().getLastName())
+                .ownerEmail(pet.getOwner().getEmail())
                 .petImages(new ArrayList<>() {{
                     for (ImageMetadata image : pet.getPetImages()) {
                         add(image.getImageUrl());
