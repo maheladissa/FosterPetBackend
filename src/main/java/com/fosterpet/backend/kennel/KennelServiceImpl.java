@@ -46,6 +46,7 @@ public class KennelServiceImpl implements KennelService {
                             .build())
                     .owner(owner)
                     .images(images)
+                    .isActive(true)
                     .build();
 
             var saved = kennelRepository.save(kennel);

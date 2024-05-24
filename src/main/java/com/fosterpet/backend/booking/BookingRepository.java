@@ -15,4 +15,5 @@ public interface BookingRepository extends MongoRepository <Booking, String> {
     List<Booking> findByVolunteerUserId(String volunteerId);
     List<Booking> findByPetPetID(String petId);
 
+    Integer countAllByStatus(String ongoing);
 }

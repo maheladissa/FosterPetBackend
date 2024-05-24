@@ -42,6 +42,7 @@ public class AuthenticationService {
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(Role.USER)
                     .azureCommunicationId(azureIdentityGenerator.createUser().getId())
+                    .isAccountActive(true)
                     .build();
             if(Objects.equals(emailVerificationService.sendVerificationCode(request.getEmail()), "SUCCESSFULLY_COMPLETED")){
                 user.setIsEmailVerified(false);

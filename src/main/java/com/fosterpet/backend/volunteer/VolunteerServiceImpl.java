@@ -39,6 +39,7 @@ public class VolunteerServiceImpl implements VolunteerService{
             Volunteer volunteer = Volunteer.builder()
                     .nicNumber(volunteerRequest.getNicNumber())
                     .user(user)
+                    .isActive(true)
                     .build();
 
             if (!images.isEmpty()) {
