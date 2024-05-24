@@ -15,6 +15,9 @@ public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private ExpoNotificationService expoPushNotificationService;
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody NotificationRequest request){
         try {
@@ -30,6 +33,16 @@ public class NotificationController {
     public ResponseEntity<?> getNotificationsByReceiver(@PathVariable String userId){
         try {
             return ResponseEntity.ok(notificationService.getNotificationsByReceiver(userId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/expoNotification")
+    public ResponseEntity<?> sendExpoNotification(@RequestBody ExpoNotification expoNotification){
+        try {
+            return ResponseEntity.ok(expoPushNotificationService.sendExpoNotification(expoNotification.getTo(), expoNotification.getTitle(), expoNotification.getBody()));
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
