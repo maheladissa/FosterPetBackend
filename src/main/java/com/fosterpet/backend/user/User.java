@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private Address address;
     private Role role;
     private Boolean isEmailVerified;
+    private Boolean isAccountActive;
     private String azureCommunicationId;
     private String stripeCustomerId;
 

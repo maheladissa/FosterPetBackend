@@ -16,4 +16,6 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
 
     User findByUserId(String id);
+
+    Integer countUserByIsAccountActive(Boolean isAccountActive);
 }

@@ -30,4 +30,5 @@ public class Volunteer {
     private String nicNumber;
     @DBRef
     private List<ImageMetadata> images;
+    private Boolean isActive;
 }
