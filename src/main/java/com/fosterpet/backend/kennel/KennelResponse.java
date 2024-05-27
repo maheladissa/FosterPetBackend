@@ -5,6 +5,7 @@ import com.fosterpet.backend.common.Location;
 import com.fosterpet.backend.common.PaymentRates;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -16,6 +17,7 @@ public class KennelResponse {
     private String kennelName;
     private Address kennelAddress;
     private Location kennelLocation;
+    private Instant createdDate;
 
     private String ownerId;
     private String ownerName;

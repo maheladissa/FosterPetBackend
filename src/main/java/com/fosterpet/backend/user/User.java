@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class User implements UserDetails {
     private Boolean isAccountActive;
     private String azureCommunicationId;
     private String stripeCustomerId;
+    private Instant createdAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

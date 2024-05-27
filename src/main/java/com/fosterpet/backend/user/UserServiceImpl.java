@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,18 +38,11 @@ public class UserServiceImpl implements UserService {
                             .zipCode(Integer.parseInt(userRequest.getUserZip()))
                             .build())
                     .role(Role.USER)
+                    .createdAt(Instant.now())
                     .profileImage(imageMetadataService.save(userRequest.getProfileImage()))
                     .build();
-            userRepository.save(user);
-            return UserResponse.builder()
-                    .userId(user.getUserId())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .email(user.getEmail())
-                    .phoneNumber(user.getPhoneNumber())
-                    .address(user.getAddress())
-                    .profileImage(user.getProfileImage())
-                    .build();
+            var saved = userRepository.save(user);
+            return UserResponseBuilder(saved);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -69,15 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getUserById(String userId){
         var user = userRepository.findByUserId(userId);
-        return UserResponse.builder()
-                .userId(user.getUserId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
-                .address(user.getAddress())
-                .profileImage(user.getProfileImage())
-                .build();
+        return UserResponseBuilder(user);
     }
 
     @Override
@@ -113,15 +99,7 @@ public class UserServiceImpl implements UserService {
             }
             var saved = userRepository.save(user);
 
-            return UserResponse.builder()
-                    .userId(saved.getUserId())
-                    .firstName(saved.getFirstName())
-                    .lastName(saved.getLastName())
-                    .email(saved.getEmail())
-                    .phoneNumber(saved.getPhoneNumber())
-                    .address(saved.getAddress())
-                    .profileImage(saved.getProfileImage())
-                    .build();
+            return UserResponseBuilder(saved);
 
 
         } catch (Exception e) {
@@ -129,20 +107,24 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private UserResponse UserResponseBuilder(User user) {
+        return UserResponse.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .profileImage(user.getProfileImage())
+                .createdAt(user.getCreatedAt())
+                .build();
+    }
+
 
     private List<UserResponse> createUserResponsesFromUsers(List<User> users) {
         List<UserResponse> userResponses = new ArrayList<>();
         for (User user : users) {
-            UserResponse userResponse = UserResponse.builder()
-                    .userId(user.getUserId())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .email(user.getEmail())
-                    .phoneNumber(user.getPhoneNumber())
-                    .address(user.getAddress())
-                    .profileImage(user.getProfileImage())
-                    .build();
-
+            UserResponse userResponse = UserResponseBuilder(user);
             userResponses.add(userResponse);
         }
 

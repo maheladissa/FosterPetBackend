@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.common.Location;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -38,5 +39,6 @@ public class Pet {
     private String petVaccinationStatus;
     @DBRef
     private List<ImageMetadata> petImages;
+    private Instant createdAt;
 
 }

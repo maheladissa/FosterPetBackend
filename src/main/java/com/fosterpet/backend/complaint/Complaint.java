@@ -13,6 +13,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @Document(collection = "complaint")
@@ -37,6 +39,8 @@ public class Complaint {
 
     private String adminID;
     private String remarks;
+
+    private Instant createdAt;
 
 
 }

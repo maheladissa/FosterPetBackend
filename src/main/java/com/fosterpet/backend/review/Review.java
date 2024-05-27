@@ -13,6 +13,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @Document(collection = "review")
@@ -35,6 +37,8 @@ public class Review {
 
     private String message;
     private Integer rating;
+
+    private Instant createdAt;
 
 
 }

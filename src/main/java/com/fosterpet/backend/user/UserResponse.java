@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,4 +21,5 @@ public class UserResponse {
     private String phoneNumber;
     private ImageMetadata profileImage;
     private Address address;
+    private Instant createdAt;
 }

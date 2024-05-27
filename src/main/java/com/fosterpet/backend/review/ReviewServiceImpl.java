@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .booking(booking)
                 .rating(reviewRequest.getRating())
                 .message(reviewRequest.getMessage())
+                .createdAt(Instant.now())
                 .build();
         var saved = reviewRepository.save(review);
 
@@ -98,6 +100,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .bookingId(review.getBooking().getBookingID())
                 .rating(review.getRating())
                 .message(review.getMessage())
+                .createdAt(review.getCreatedAt())
                 .build();
     }
 
