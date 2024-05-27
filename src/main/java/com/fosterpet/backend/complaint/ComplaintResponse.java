@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -24,4 +26,6 @@ public class ComplaintResponse {
 
     private String adminID;
     private String remarks;
+
+    private Instant createdAt;
 }

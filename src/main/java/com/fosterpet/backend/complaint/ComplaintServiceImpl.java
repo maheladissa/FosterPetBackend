@@ -7,6 +7,7 @@ import com.fosterpet.backend.volunteer.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +105,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .booking(booking)
                 .message(complaintRequest.getMessage())
                 .status("PENDING")
+                .createdAt(Instant.now())
                 .build();
         var saved = complaintRepository.save(complaint);
 
@@ -120,6 +122,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .userId(complaint.getUser().getUserId())
                 .status(complaint.getStatus())
                 .message(complaint.getMessage())
+                .createdAt(complaint.getCreatedAt())
                 .build();
 
     }

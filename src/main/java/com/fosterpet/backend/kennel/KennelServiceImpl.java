@@ -9,6 +9,8 @@ import com.fosterpet.backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class KennelServiceImpl implements KennelService {
                     .owner(owner)
                     .images(images)
                     .isActive(true)
+                    .createdDate(Instant.now())
                     .build();
 
             var saved = kennelRepository.save(kennel);
@@ -172,6 +175,7 @@ public class KennelServiceImpl implements KennelService {
                     }
                 }})
                 .paymentRates(kennel.getPaymentRates())
+                .createdDate(kennel.getCreatedDate())
                 .build();
     }
 }

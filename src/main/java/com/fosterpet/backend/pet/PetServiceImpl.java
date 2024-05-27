@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class PetServiceImpl implements PetService {
                     .petVaccinationStatus(request.getPetVaccinationStatus())
                     .owner(owner)
                     .petImages(images)
+                    .createdAt(Instant.now())
                     .build();
 
             var saved = petRepository.save(pet);
@@ -144,6 +146,7 @@ public class PetServiceImpl implements PetService {
                 .ownerId(pet.getOwner().getUserId())
                 .ownerName(pet.getOwner().getFirstName()+" "+pet.getOwner().getLastName())
                 .ownerEmail(pet.getOwner().getEmail())
+                .createdAt(pet.getCreatedAt())
                 .petImages(new ArrayList<>() {{
                     for (ImageMetadata image : pet.getPetImages()) {
                         add(image.getImageUrl());

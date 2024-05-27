@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Objects;
 
 @Service
@@ -43,6 +44,7 @@ public class AuthenticationService {
                     .role(Role.USER)
                     .azureCommunicationId(azureIdentityGenerator.createUser().getId())
                     .isAccountActive(true)
+                    .createdAt(Instant.now())
                     .build();
             if(Objects.equals(emailVerificationService.sendVerificationCode(request.getEmail()), "SUCCESSFULLY_COMPLETED")){
                 user.setIsEmailVerified(false);

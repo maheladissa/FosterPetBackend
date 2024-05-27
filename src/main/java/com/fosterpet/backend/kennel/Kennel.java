@@ -14,6 +14,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -34,6 +35,7 @@ public class Kennel {
     private List<ImageMetadata> images;
     private List<PaymentRates> paymentRates;
     private Boolean isActive;
+    private Instant createdDate;
 
     public Double getRate(String animalType) {
         return paymentRates.stream()
