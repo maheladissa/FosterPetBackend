@@ -1,27 +1,20 @@
 package com.fosterpet.backend.notification;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExpoNotification {
-    private final String to;
-    private final String title;
-    private final String body;
-
-    public ExpoNotification(String to, String title, String body) {
-        this.to = to;
-        this.title = title;
-        this.body = body;
-    }
-
-
-    public String getTo() {
-        return to;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBody() {
-        return body;
-    }
+    private List<String> to;
+    private String title;
+    private String body;
 
 }

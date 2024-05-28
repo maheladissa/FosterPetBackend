@@ -1,6 +1,7 @@
 package com.fosterpet.backend.notification;
 
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private NotificationRepository notificationRepository;
 
-    @Override
-    public NotificationResponse save(NotificationRequest request) {
+    @Autowired
+    private ExpoNotificationService expoPushNotificationService;
+
+    @Autowired
+    private UserService userService;
+
+    private NotificationResponse save(NotificationRequest request) {
         try{
             User sender = new User();
             sender.setUserId(request.getSenderId());
@@ -34,16 +40,17 @@ public class NotificationServiceImpl implements NotificationService {
 
             var saved = notificationRepository.save(notification);
 
-            return NotificationResponse.builder()
-                    .notificationID(saved.getNotificationID())
-                    .senderName(saved.getSender().getFirstName()+" "+saved.getSender().getLastName())
-                    .receiverId(saved.getReceiver().getUserId())
-                    .heading(saved.getHeading())
-                    .message(saved.getMessage())
-                    .type(saved.getType())
-                    .createdAt(saved.getCreatedAt().toString())
-                    .isRead(saved.isRead())
+            List<String> receiverList = userService.getExpoTokensByUserId(request.getReceiverId());
+
+            ExpoNotification expoNotification = ExpoNotification.builder()
+                    .to(receiverList)
+                    .title(request.getHeading())
+                    .body(request.getMessage())
                     .build();
+
+            return null;
+
+
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -67,5 +74,17 @@ public class NotificationServiceImpl implements NotificationService {
                                 .build());
         }
         return notificationResponses;
+    }
+
+    @Override
+    public NotificationResponse sendAccountVerificationNotification(String receiverId) {
+        NotificationRequest request = NotificationRequest.builder()
+                .senderId("000000000000000000000000")
+                .receiverId(receiverId)
+                .heading("Your account is verified!")
+                .message("Thank you for verifying your email/phone number. You can now book pet care services.")
+                .type(NotificationType.SYSTEM)
+                .build();
+        return save(request);
     }
 }

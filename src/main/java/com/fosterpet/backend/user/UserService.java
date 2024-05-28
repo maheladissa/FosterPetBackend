@@ -12,4 +12,6 @@ public interface UserService {
     UserResponse getUserById(String id);
 
     UserResponse update(UserRequest userRequest);
+
+    List<String> getExpoTokensByUserId(String userId);
 }

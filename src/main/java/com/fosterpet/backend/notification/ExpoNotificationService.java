@@ -12,12 +12,6 @@ public class ExpoNotificationService {
 
     public String sendExpoNotification(String token, String title, String body) throws InterruptedException, PushClientException {
 
-
-        //  ExponentPushToken[]
-
-
-
-
         if (!PushClient.isExponentPushToken(token))
             throw new Error("Token:" + token + " is not a valid token.");
 
