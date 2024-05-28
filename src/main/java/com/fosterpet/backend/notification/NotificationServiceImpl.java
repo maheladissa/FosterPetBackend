@@ -87,4 +87,15 @@ public class NotificationServiceImpl implements NotificationService {
                 .build();
         return save(request);
     }
+    @Override
+    public NotificationResponse passwordResetNotification(String receiverId) {
+        NotificationRequest request = NotificationRequest.builder()
+                .senderId("000000000000000000000000")
+                .receiverId(receiverId)
+                .heading("Password reset requested")
+                .message("We received a request to reset your password. Please check your email for instructions.")
+                .type(NotificationType.SYSTEM)
+                .build();
+        return save(request);
+    }
 }

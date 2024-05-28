@@ -6,5 +6,6 @@ public interface NotificationService {
     List<NotificationResponse> getNotificationsByReceiver(String userId);
 
     NotificationResponse sendAccountVerificationNotification(String receiverId);
+    NotificationResponse passwordResetNotification(String receiverId);
 
 }
