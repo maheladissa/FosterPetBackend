@@ -19,4 +19,8 @@ public interface KennelService {
 
     List<KennelResponse> updatePaymentRate(KennelPaymentRateRequest request);
 
+    List<KennelResponse> getAllKennelsPendingApproval();
+
+    KennelResponse approveKennel(String kennelId);
+
 }

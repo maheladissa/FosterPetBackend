@@ -34,8 +34,10 @@ public class Kennel {
     @DBRef
     private List<ImageMetadata> images;
     private List<PaymentRates> paymentRates;
+    private Boolean isApproved;
     private Boolean isActive;
     private Instant createdDate;
+
 
     public Double getRate(String animalType) {
         return paymentRates.stream()

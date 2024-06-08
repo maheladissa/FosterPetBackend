@@ -94,5 +94,15 @@ public class KennelController {
         }
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<?> getAllKennelsPendingApproval(){
+        try {
+            return ResponseEntity.ok(kennelService.getAllKennelsPendingApproval());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 }
