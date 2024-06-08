@@ -18,4 +18,6 @@ public interface KennelRepository extends MongoRepository <Kennel, String> {
     List<Kennel> findByLocationNear(double longitude, double latitude, double maxDistance);
 
     Integer countKennelByIsActive(boolean isActive);
+
+    List<Kennel> findByIsApproved(boolean isApproved);
 }
