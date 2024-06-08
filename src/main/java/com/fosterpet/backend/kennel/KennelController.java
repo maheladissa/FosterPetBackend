@@ -104,5 +104,15 @@ public class KennelController {
         }
     }
 
+    @PostMapping("/approve")
+    public ResponseEntity<?> approveKennel(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(kennelService.approveKennel(kennelId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 }
