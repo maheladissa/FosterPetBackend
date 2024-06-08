@@ -49,6 +49,7 @@ public class KennelServiceImpl implements KennelService {
                     .owner(owner)
                     .images(images)
                     .isActive(true)
+                    .isApproved(false)
                     .createdDate(Instant.now())
                     .build();
 
