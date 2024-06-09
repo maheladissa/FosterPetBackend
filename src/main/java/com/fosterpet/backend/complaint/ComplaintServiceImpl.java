@@ -100,8 +100,8 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint complaint = Complaint.builder()
                 .user(user)
-                .kennel(kennel)
-                .volunteer(volunteer)
+                .kennel(complaintRequest.getKennelId() != null ? kennel : null)
+                .volunteer(complaintRequest.getVolunteerId() != null ? volunteer : null)
                 .booking(booking)
                 .message(complaintRequest.getMessage())
                 .status("PENDING")
