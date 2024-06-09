@@ -17,10 +17,13 @@ public class ComplaintResponse {
     private String status;
 
     private String kennelId;
+    private String kennelName;
 
     private String volunteerId;
+    private String volunteerName;
 
     private String userId;
+    private String userName;
 
     private String bookingId;
 
