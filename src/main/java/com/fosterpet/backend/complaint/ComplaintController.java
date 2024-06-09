@@ -123,4 +123,14 @@ public class ComplaintController {
         }
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<?> getPendingComplaints(){
+        try {
+            return ResponseEntity.ok(complaintService.getAllComplaintsByStatus("PENDING"));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
