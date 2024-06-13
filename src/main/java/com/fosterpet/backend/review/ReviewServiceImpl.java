@@ -34,8 +34,8 @@ public class ReviewServiceImpl implements ReviewService{
 
         Review review = Review.builder()
                 .reviewer(reviewer)
-                .kennel(kennel)
-                .volunteer(volunteer)
+                .kennel(reviewRequest.getKennelId() != null ? kennel : null)
+                .volunteer(reviewRequest.getVolunteerId() != null ? volunteer : null)
                 .booking(booking)
                 .rating(reviewRequest.getRating())
                 .message(reviewRequest.getMessage())
