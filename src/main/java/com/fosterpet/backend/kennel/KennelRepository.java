@@ -8,7 +8,11 @@ import java.util.List;
 
 @Repository
 public interface KennelRepository extends MongoRepository <Kennel, String> {
+
+    @Query("{ 'kennelName' : { $regex: '^?0', $options: 'i' } }")
     List<Kennel> findByKennelNameStartsWith(String name);
+
+
     List<Kennel> findByOwnerUserId(String ownerId);
     List<Kennel> findAll();
 
