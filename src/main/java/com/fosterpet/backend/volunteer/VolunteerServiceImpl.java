@@ -101,6 +101,8 @@ public class VolunteerServiceImpl implements VolunteerService{
                 .volunteerId(volunteer.getVolunteerId())
                 .nicNumber(volunteer.getNicNumber())
                 .userId(volunteer.getUser().getUserId())
+                .volunteerName(volunteer.getUser().getFirstName() + " " + volunteer.getUser().getLastName())
+                .volunteerAddress(volunteer.getUser().getAddress())
                 .images(Optional.ofNullable(volunteer.getImages())
                         .map(images -> images.stream()
                                 .map(ImageMetadata::getImageUrl)
