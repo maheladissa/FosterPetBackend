@@ -13,9 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessageResponse {
     private String id;
-    private UserResponse sender;
+
+    private String senderId;
+    private String senderName;
+    private String senderType;
+
     private String message;
+
     private String attachment;
+
     private String time;
 
 
