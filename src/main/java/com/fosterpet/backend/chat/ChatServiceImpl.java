@@ -5,9 +5,13 @@ import com.azure.communication.chat.ChatThreadClient;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.PagedIterable;
+import com.fosterpet.backend.kennel.Kennel;
+import com.fosterpet.backend.kennel.KennelRepository;
 import com.fosterpet.backend.user.User;
 import com.fosterpet.backend.user.UserRepository;
 import com.fosterpet.backend.user.UserResponse;
+import com.fosterpet.backend.volunteer.Volunteer;
+import com.fosterpet.backend.volunteer.VolunteerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,22 +32,36 @@ public class ChatServiceImpl implements ChatService{
     @Autowired
     private ChatRepository chatRepository;
 
-    @Override
-    public String createChatThread(String userId1, String userId2) {
+    @Autowired
+    private KennelRepository kennelRepository;
 
-        User user1 = userRepository.findByUserId(userId1);
-        User user2 = userRepository.findByUserId(userId2);
+    @Autowired
+    private VolunteerRepository volunteerRepository;
+
+    @Override
+    public String createChatThread(String userId, String kennelId, String volunteerId) {
+
+        User user1 = userRepository.findByUserId(userId);
+        User user2 = null;
+        if (kennelId != null) {
+            Kennel kennel = kennelRepository.findByKennelID(kennelId);
+            user2 = kennel.getOwner();
+        }
+        else {
+            Volunteer volunteer = volunteerRepository.findByVolunteerId(volunteerId);
+            user2 = volunteer.getUser();
+        }
 
         CommunicationUserIdentifier identity1 = new CommunicationUserIdentifier(user1.getAzureCommunicationId());
         CommunicationUserIdentifier identity2 = new CommunicationUserIdentifier(user2.getAzureCommunicationId());
 
         ChatParticipant firstThreadParticipant = new ChatParticipant()
                 .setCommunicationIdentifier(identity1)
-                .setDisplayName(userId1);
+                .setDisplayName(userId);
 
         ChatParticipant secondThreadParticipant = new ChatParticipant()
                 .setCommunicationIdentifier(identity2)
-                .setDisplayName(userId2);
+                .setDisplayName(kennelId != null ? kennelId : volunteerId);
 
         CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions("Topic")
                 .addParticipant(firstThreadParticipant)
@@ -54,8 +72,9 @@ public class ChatServiceImpl implements ChatService{
 
         Chat chat = Chat.builder()
                 .chatThreadId(chatThreadId)
-                .user1(user1)
-                .user2(user2)
+                .user(user1)
+                .kennel(kennelId != null ? kennelRepository.findByKennelID(kennelId) : null)
+                .volunteer(volunteerId != null ? volunteerRepository.findByVolunteerId(volunteerId) : null)
                 .build();
 
         chatRepository.save(chat);
@@ -75,7 +94,7 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<String> getChatThreadsByUser(String userId) {
-        List<Chat> chats = chatRepository.findByUser1UserIdOrUser2UserId(userId, userId);
+        List<Chat> chats = chatRepository.findByUserUserId(userId);
         ArrayList<String> chatThreadIds = new ArrayList<>();
         chats.forEach(chat -> {
             chatThreadIds.add(chat.getChatThreadId());
@@ -84,7 +103,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public String sendMessage(String chatThreadId, String senderId, String message, String attachment) {
+    public String sendMessage(String chatThreadId, String senderId, String senderType, String message, String attachment) {
         ChatThreadClient chatThreadClient = chatClient.getChatThreadClient(chatThreadId);
 
         Map<String, String> metadata = new HashMap<String, String>();
@@ -99,7 +118,7 @@ public class ChatServiceImpl implements ChatService{
         SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
                 .setContent(message)
                 .setType(ChatMessageType.TEXT)
-                .setSenderDisplayName(senderId)
+                .setSenderDisplayName(senderType+":"+senderId)
                 .setMetadata(metadata);
 
         SendChatMessageResult sendChatMessageResult = chatThreadClient.sendMessage(sendChatMessageOptions);
@@ -127,25 +146,116 @@ public class ChatServiceImpl implements ChatService{
         chatMessages.forEach(chatMessage -> {
             String attachmentUrl = (chatMessage.getMetadata() == null) ? null : chatMessage.getMetadata().get("attachmentUrl");
             String senderDisplayName = chatMessage.getSenderDisplayName();
-            User sender = null;
+
             if (senderDisplayName != null) {
-                sender = userRepository.findByUserId(senderDisplayName);
+                // Split the string based on the colon separator
+                String[] parts = senderDisplayName.split(":");
+
+                String senderName;
+                String senderId;
+                String senderType;
+
+                if (parts.length == 2) {
+                    // Assign the parts to the respective variables
+                    senderType = parts[0];
+                    senderId = parts[1];
+
+                    // Check the senderType and assign the sender object accordingly
+                    if (senderType.equals("User")) {
+                        User sender = userRepository.findByUserId(senderId);
+                        senderName = sender.getFirstName() + " " + sender.getLastName();
+                    } else if (senderType.equals("Kennel")) {
+                        Kennel sender = kennelRepository.findByKennelID(senderId);
+                        senderName = sender.getKennelName();
+                    } else if (senderType.equals("Volunteer")) {
+                        Volunteer sender = volunteerRepository.findByVolunteerId(senderId);
+                        senderName = sender.getUser().getFirstName() + " " + sender.getUser().getLastName();
+                    } else {
+                        // Handle the case where the senderType is not recognized
+                        throw new IllegalArgumentException("Invalid senderType");
+                    }
+
+                    // Now you have senderType and senderId extracted from senderDisplayName
+                } else {
+                    // Handle the case where the format is unexpected
+                    throw new IllegalArgumentException("Invalid senderDisplayName format");
+                }
+
+
+
+                chatMessageResponses.add(ChatMessageResponse.builder()
+                        .id(chatMessage.getId())
+                        .message(chatMessage.getContent().getMessage())
+                        .senderName(senderName)
+                        .senderId(senderId)
+                        .senderType(senderType)
+                        .attachment(attachmentUrl)
+                        .time(chatMessage.getCreatedOn().toString())
+                        .build());
             }
-            chatMessageResponses.add(ChatMessageResponse.builder()
-                    .id(chatMessage.getId())
-                    .sender((sender != null) ?
-                            UserResponse.builder()
-                                    .userId(sender.getUserId())
-                                    .firstName(sender.getFirstName())
-                                    .lastName(sender.getLastName())
-                                    .build() :
-                            null)
-                    .message(chatMessage.getContent().getMessage())
-                    .attachment(attachmentUrl)
-                    .time(chatMessage.getCreatedOn().toString())
+            });
+        return chatMessageResponses;
+    }
+
+    @Override
+    public List<ChatPreviewResponse> getChatPreviewByUser(String userId) {
+        List<Chat> chats = chatRepository.findByUserUserId(userId);
+        ArrayList<ChatPreviewResponse> chatPreviewResponses = new ArrayList<>();
+        chats.forEach(chat -> {
+            ChatThreadClient chatThreadClient = chatClient.getChatThreadClient(chat.getChatThreadId());
+            PagedIterable<ChatMessage> chatMessages = chatThreadClient.listMessages();
+            ChatMessage lastMessage = chatMessages.iterator().next();
+            String attachmentUrl = (lastMessage.getMetadata() == null) ? null : lastMessage.getMetadata().get("attachmentUrl");
+            String senderDisplayName = lastMessage.getSenderDisplayName();
+            // Split the string based on the colon separator
+            String[] parts = senderDisplayName.split(":");
+
+            String senderName;
+            String senderId;
+            String senderType;
+
+            if (parts.length == 2) {
+                // Assign the parts to the respective variables
+                senderType = parts[0];
+                senderId = parts[1];
+
+                // Check the senderType and assign the sender object accordingly
+                if (senderType.equals("User")) {
+                    User sender = userRepository.findByUserId(senderId);
+                    senderName = sender.getFirstName() + " " + sender.getLastName();
+                } else if (senderType.equals("Kennel")) {
+                    Kennel sender = kennelRepository.findByKennelID(senderId);
+                    senderName = sender.getKennelName();
+                } else if (senderType.equals("Volunteer")) {
+                    Volunteer sender = volunteerRepository.findByVolunteerId(senderId);
+                    senderName = sender.getUser().getFirstName() + " " + sender.getUser().getLastName();
+                } else {
+                    // Handle the case where the senderType is not recognized
+                    throw new IllegalArgumentException("Invalid senderType");
+                }
+
+                // Now you have senderType and senderId extracted from senderDisplayName
+            } else {
+                // Handle the case where the format is unexpected
+                throw new IllegalArgumentException("Invalid senderDisplayName format");
+            }
+            chatPreviewResponses.add(ChatPreviewResponse.builder()
+                    .chatThreadId(chat.getChatThreadId())
+                    .chatThreadName(chat.getKennel() != null ?
+                            chat.getKennel().getKennelName() :
+                            chat.getVolunteer().getUser().getFirstName() + " " + chat.getVolunteer().getUser().getLastName())
+
+                    .lastMessage(ChatMessageResponse.builder()
+                            .id(lastMessage.getId())
+                            .senderName(senderName)
+                            .senderId(senderId)
+                            .message(lastMessage.getContent().getMessage())
+                            .attachment(attachmentUrl)
+                            .time(lastMessage.getCreatedOn().toString())
+                            .build())
                     .build());
         });
-        return chatMessageResponses;
+        return chatPreviewResponses;
     }
 
 

@@ -1,7 +1,9 @@
 package com.fosterpet.backend.chat;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.volunteer.Volunteer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +22,12 @@ public class Chat {
     @Id
     private String id;
     @DBRef
-    private User user1;
+    private User user;
     @DBRef
-    private User user2;
+    private Kennel kennel;
+    @DBRef
+    private Volunteer volunteer;
+
+
     private String chatThreadId;
 }

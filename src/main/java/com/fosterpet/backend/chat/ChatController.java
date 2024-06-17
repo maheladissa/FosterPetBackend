@@ -18,9 +18,9 @@ public class ChatController {
     private ImageMetadataService imageMetadataService;
 
     @GetMapping("/create-chat-thread")
-    public ResponseEntity<?> createChatThread(@RequestParam String userId1, @RequestParam String userId2) {
+    public ResponseEntity<?> createChatThread(@RequestParam String userId, @RequestParam String kennelId, @RequestParam String volunteerId) {
         try {
-            return ResponseEntity.ok(chatService.createChatThread(userId1, userId2));
+            return ResponseEntity.ok(chatService.createChatThread(userId, kennelId, volunteerId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -42,7 +42,7 @@ public class ChatController {
             if(chatMessageRequest.getAttachment() != null && !chatMessageRequest.getAttachment().isEmpty()){
                 attachmentUrl = imageMetadataService.save(chatMessageRequest.getAttachment()).getImageUrl();
             }
-            return ResponseEntity.ok(chatService.sendMessage(chatMessageRequest.getChatThreadId(), chatMessageRequest.getSenderId(), chatMessageRequest.getMessage(), attachmentUrl));
+            return ResponseEntity.ok(chatService.sendMessage(chatMessageRequest.getChatThreadId(), chatMessageRequest.getSenderId(), chatMessageRequest.getSenderType() , chatMessageRequest.getMessage(), attachmentUrl));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -76,5 +76,16 @@ public class ChatController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/get-chat-previews-by-user")
+    public ResponseEntity<?> getChatPreviewByUser(@RequestParam String userId){
+        try {
+            return ResponseEntity.ok(chatService.getChatPreviewByUser(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 
 }
