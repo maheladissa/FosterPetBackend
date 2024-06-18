@@ -10,13 +10,17 @@ import java.util.stream.Collectors;
 @Service
 public class ExpoNotificationService {
 
-    public String sendExpoNotification(String token, String title, String body) throws InterruptedException, PushClientException {
+    public String sendExpoNotification(List<String> token, String title, String body) throws InterruptedException, PushClientException {
 
-        if (!PushClient.isExponentPushToken(token))
-            throw new Error("Token:" + token + " is not a valid token.");
+        for (String t : token) {
+            if (!PushClient.isExponentPushToken(t))
+                throw new Error("Token:" + t + " is not a valid token.");
+        }
 
         ExpoPushMessage expoPushMessage = new ExpoPushMessage();
-        expoPushMessage.getTo().add(token);
+        for (String t : token) {
+            expoPushMessage.getTo().add(t);
+        }
         expoPushMessage.setTitle(title);
         expoPushMessage.setBody(body);
 
