@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ChatRepository extends MongoRepository<Chat, String>{
     List<Chat> findByUserUserId(String userId);
+    List<Chat> findByKennelKennelID(String kennelId);
+    Chat findByChatThreadId(String chatThreadId);
 }

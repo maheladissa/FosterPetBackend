@@ -7,6 +7,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.PagedIterable;
 import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.kennel.KennelRepository;
+import com.fosterpet.backend.notification.NotificationService;
 import com.fosterpet.backend.user.User;
 import com.fosterpet.backend.user.UserRepository;
 import com.fosterpet.backend.user.UserResponse;
@@ -27,6 +28,9 @@ public class ChatServiceImpl implements ChatService{
     private ChatClient chatClient;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -42,8 +46,8 @@ public class ChatServiceImpl implements ChatService{
     public String createChatThread(String userId, String kennelId, String volunteerId) {
 
         User user1 = userRepository.findByUserId(userId);
-        User user2 = null;
-        if (kennelId != null) {
+        User user2;
+        if (kennelId != "") {
             Kennel kennel = kennelRepository.findByKennelID(kennelId);
             user2 = kennel.getOwner();
         }
@@ -73,8 +77,8 @@ public class ChatServiceImpl implements ChatService{
         Chat chat = Chat.builder()
                 .chatThreadId(chatThreadId)
                 .user(user1)
-                .kennel(kennelId != null ? kennelRepository.findByKennelID(kennelId) : null)
-                .volunteer(volunteerId != null ? volunteerRepository.findByVolunteerId(volunteerId) : null)
+                .kennel(kennelId != "" ? kennelRepository.findByKennelID(kennelId) : null)
+                .volunteer(volunteerId != "" ? volunteerRepository.findByVolunteerId(volunteerId) : null)
                 .build();
 
         chatRepository.save(chat);
@@ -123,6 +127,23 @@ public class ChatServiceImpl implements ChatService{
 
         SendChatMessageResult sendChatMessageResult = chatThreadClient.sendMessage(sendChatMessageOptions);
         String chatMessageId = sendChatMessageResult.getId();
+
+        //Send notification to the other user
+        Chat chat = chatRepository.findByChatThreadId(chatThreadId);
+        String receiverId;
+        String senderName;
+        if (senderType.equals("User")) {
+            receiverId = chat.getKennel().getOwner().getUserId();
+            senderName = chat.getUser().getFirstName() + " " + chat.getUser().getLastName();
+        }
+        else {
+            receiverId = chat.getUser().getUserId();
+            senderName = chat.getKennel().getKennelName();
+        }
+
+        notificationService.chatMessageNotification(receiverId, senderName, message);
+
+
 
         return chatMessageId;
     }

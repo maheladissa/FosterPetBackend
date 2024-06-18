@@ -20,6 +20,9 @@ public class ChatController {
     @GetMapping("/create-chat-thread")
     public ResponseEntity<?> createChatThread(@RequestParam String userId, @RequestParam String kennelId, @RequestParam String volunteerId) {
         try {
+            System.out.println("userId: " + userId);
+            System.out.println("kennelId: " + kennelId);
+            System.out.println("volunteerId: " + volunteerId);
             return ResponseEntity.ok(chatService.createChatThread(userId, kennelId, volunteerId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
