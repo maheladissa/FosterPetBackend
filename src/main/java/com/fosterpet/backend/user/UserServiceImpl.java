@@ -107,6 +107,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public List<String> getExpoTokensByUserId(String userId) {
+        var user = userRepository.findByUserId(userId);
+        return null;
+    }
+
     private UserResponse UserResponseBuilder(User user) {
         return UserResponse.builder()
                 .userId(user.getUserId())

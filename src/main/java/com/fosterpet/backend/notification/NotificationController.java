@@ -18,17 +18,6 @@ public class NotificationController {
     @Autowired
     private ExpoNotificationService expoPushNotificationService;
 
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody NotificationRequest request){
-        try {
-            return ResponseEntity.ok(notificationService.save(request));
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<?> getNotificationsByReceiver(@PathVariable String userId){
         try {
