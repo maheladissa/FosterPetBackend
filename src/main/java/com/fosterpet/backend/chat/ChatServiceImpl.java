@@ -136,9 +136,13 @@ public class ChatServiceImpl implements ChatService{
             receiverId = chat.getKennel().getOwner().getUserId();
             senderName = chat.getUser().getFirstName() + " " + chat.getUser().getLastName();
         }
-        else {
+        else if(senderType.equals("Kennel")){
             receiverId = chat.getUser().getUserId();
             senderName = chat.getKennel().getKennelName();
+        }
+        else {
+            receiverId = chat.getVolunteer().getUser().getUserId();
+            senderName = chat.getVolunteer().getUser().getFirstName() + " " + chat.getVolunteer().getUser().getLastName();
         }
 
         notificationService.chatMessageNotification(receiverId, senderName, message);
