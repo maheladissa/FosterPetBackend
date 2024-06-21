@@ -224,6 +224,7 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<ChatPreviewResponse> getChatPreviewByUser(String userId) {
+        System.out.println(userId);
         List<Chat> chats = chatRepository.findByUserUserId(userId);
         ArrayList<ChatPreviewResponse> chatPreviewResponses = new ArrayList<>();
         chats.forEach(chat -> {
