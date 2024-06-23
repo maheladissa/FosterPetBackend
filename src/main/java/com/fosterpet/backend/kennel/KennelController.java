@@ -84,7 +84,7 @@ public class KennelController {
         }
     }
 
-    @PostMapping("/update/rate")
+    @PostMapping("/update-rates")
     public ResponseEntity<?> updateRate(@RequestBody KennelPaymentRateRequest rate){
         try {
             return ResponseEntity.ok(kennelService.updatePaymentRate(rate));
