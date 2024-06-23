@@ -83,7 +83,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Your account is verified!")
                 .message("Thank you for verifying your email/phone number. You can now book pet care services.")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.ACCOUNT)
                 .build();
         return save(request);
     }
@@ -94,7 +94,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Password reset requested")
                 .message("We received a request to reset your password. Please check your email for instructions.")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.ACCOUNT)
                 .build();
         return save(request);
     }
@@ -106,7 +106,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Booking confirmed")
                 .message("Your booking with "+kennelName+" has been confirmed. See details in the app.")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.BOOKING)
                 .build();
         return save(request);
     }
@@ -118,7 +118,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Booking updated")
                 .message("Your booking with "+kennelName+" has been rescheduled/cancelled (details in app).")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.BOOKING)
                 .build();
         return save(request);
     }
@@ -130,7 +130,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Your account is verified!")
                 .message("Thank you for verifying your email/phone number. You can now accept bookings.")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.ACCOUNT)
                 .build();
         return save(request);
     }
@@ -142,7 +142,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("New booking request")
                 .message("You have a new booking request from "+ownerName+" for "+petName+".")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.BOOKING)
                 .build();
         return save(request);
     }
@@ -154,7 +154,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Booking confirmed")
                 .message("You have confirmed the booking for "+petName+" owned by "+ownerName+".")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.BOOKING)
                 .build();
         return save(request);
     }
@@ -166,7 +166,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Booking updated")
                 .message("You have updated the booking for "+petName+" owned by "+ownerName+".")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.BOOKING)
                 .build();
         return save(request);
     }
@@ -178,7 +178,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Booking reminder")
                 .message("Reminder: You have a booking for "+petName+" owned by "+ownerName+" tomorrow.")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.BOOKING)
                 .build();
         return save(request);
     }
@@ -190,7 +190,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("Payment received")
                 .message("Payment for booking "+bookingId+" has been received.")
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.PAYMENT)
                 .build();
         return save(request);
     }
@@ -202,7 +202,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiverId(receiverId)
                 .heading("New message from "+senderName)
                 .message(message)
-                .type(NotificationType.SYSTEM)
+                .type(NotificationType.CHAT)
                 .build();
         return save(request);
     }
