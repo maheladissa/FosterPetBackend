@@ -100,7 +100,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse confirmBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
-        if (booking.getStatus()=="PENDING"){
+        if ("PENDING".equals(booking.getStatus())){
             booking.setStatus("CONFIRMED");
         }
         var saved = bookingRepository.save(booking);
@@ -110,7 +110,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse cancelBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
-        if (booking.getStatus()=="PENDING"){booking.setStatus("CANCELLED");}
+        if ("PENDING".equals(booking.getStatus())){booking.setStatus("CANCELLED");}
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }
@@ -118,7 +118,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse completeBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
-        if (booking.getStatus()=="ONGOING"){booking.setStatus("COMPLETED");}
+        if ("ONGOING".equals(booking.getStatus())){booking.setStatus("COMPLETED");}
         booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
@@ -127,7 +127,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse rejectBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
-        if (booking.getStatus()=="PENDING"){booking.setStatus("REJECTED");}
+        if ("PENDING".equals(booking.getStatus())){booking.setStatus("REJECTED");}
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }
@@ -135,7 +135,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse ongoingBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
-        if (booking.getStatus()=="CONFIRMED"){booking.setStatus("ONGOING");}
+        if ("CONFIRMED".equals(booking.getStatus())){booking.setStatus("ONGOING");}
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }
