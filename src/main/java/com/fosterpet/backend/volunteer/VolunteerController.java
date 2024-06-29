@@ -1,6 +1,7 @@
 package com.fosterpet.backend.volunteer;
 
 
+import com.fosterpet.backend.kennel.KennelPaymentRateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,16 @@ public class VolunteerController {
     public ResponseEntity<?> getVolunteersByLocation(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance){
         try {
             return ResponseEntity.ok(volunteerService.getVolunteersNear(longitude, latitude, maxDistance));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update-rates")
+    public ResponseEntity<?> updateRate(@RequestBody VolunteerPaymentRateRequest rate){
+        try {
+            return ResponseEntity.ok(volunteerService.updatePaymentRate(rate));
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
