@@ -3,6 +3,7 @@ package com.fosterpet.backend.volunteer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fosterpet.backend.common.Location;
+import com.fosterpet.backend.common.PaymentRates;
 import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.user.User;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,6 @@ public class Volunteer {
     private String nicNumber;
     @DBRef
     private List<ImageMetadata> images;
+    private List<PaymentRates> paymentRates;
     private Boolean isActive;
 }

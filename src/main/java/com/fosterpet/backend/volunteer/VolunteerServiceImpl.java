@@ -1,5 +1,6 @@
 package com.fosterpet.backend.volunteer;
 
+import com.fosterpet.backend.common.PaymentRates;
 import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.imagemetadata.ImageMetadataService;
 import com.fosterpet.backend.user.User;
@@ -95,6 +96,22 @@ public class VolunteerServiceImpl implements VolunteerService{
     public List<VolunteerResponse> getVolunteersNear(double longitude, double latitude, double maxDistance) {
         return createVolunteerResponsesFromVolunteers(volunteerRepository.findByLocationNear(longitude, latitude, maxDistance));
     }
+
+    @Override
+    public VolunteerResponse updatePaymentRate(VolunteerPaymentRateRequest request) {
+        List<PaymentRates> paymentRates = new ArrayList<>();
+        var volunteer = volunteerRepository.findByVolunteerId(request.getVolunteerId());
+        for (PaymentRates paymentRate : request.getPaymentRates()) {
+            paymentRates.add(paymentRate);
+        }
+
+        volunteer.setPaymentRates(paymentRates);
+
+        var saved = volunteerRepository.save(volunteer);
+
+        return volunteerResponseBuilder(saved);
+    }
+
 
     private VolunteerResponse volunteerResponseBuilder(Volunteer volunteer) {
         return VolunteerResponse.builder()
