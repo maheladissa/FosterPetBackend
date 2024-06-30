@@ -84,4 +84,14 @@ public class VolunteerController {
         }
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteVolunteer(@RequestParam String volunteerId){
+        try {
+            return ResponseEntity.ok(volunteerService.deleteVolunteer(volunteerId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

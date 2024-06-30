@@ -114,5 +114,25 @@ public class KennelController {
         }
     }
 
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectKennel(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(kennelService.rejectKennel(kennelId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteKennel(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(kennelService.deleteKennel(kennelId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 }

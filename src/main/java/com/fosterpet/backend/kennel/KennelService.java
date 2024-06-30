@@ -23,4 +23,8 @@ public interface KennelService {
 
     KennelResponse approveKennel(String kennelId);
 
+    KennelResponse rejectKennel(String kennelId);
+
+    KennelResponse deleteKennel(String kennelId);
+
 }

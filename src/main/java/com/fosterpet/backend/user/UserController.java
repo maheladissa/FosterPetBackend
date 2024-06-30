@@ -64,4 +64,14 @@ public class UserController {
         }
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUser(@RequestParam String id){
+        try {
+            return ResponseEntity.ok(userService.deleteUser(id));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

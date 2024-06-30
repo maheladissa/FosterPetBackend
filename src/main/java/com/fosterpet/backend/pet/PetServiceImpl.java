@@ -120,6 +120,14 @@ public class PetServiceImpl implements PetService {
         }
     }
 
+    @Override
+    public PetResponse deletePet(String petId){
+        Pet pet = petRepository.findByPetID(petId);
+        pet.setIsActive(false);
+        var saved = petRepository.save(pet);
+        return petResponseBuilder(saved);
+    }
+
     private List<PetResponse> createPetResponsesFromPets(List<Pet> pets) {
         List<PetResponse> petResponses = new ArrayList<>();
         for (Pet pet : pets) {

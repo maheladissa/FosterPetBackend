@@ -162,6 +162,22 @@ public class KennelServiceImpl implements KennelService {
         return kennelResponseBuilder(saved);
     }
 
+    @Override
+    public KennelResponse rejectKennel(String kennelId){
+        var kennel = kennelRepository.findByKennelID(kennelId);
+        kennel.setIsApproved(false);
+        var saved = kennelRepository.save(kennel);
+        return kennelResponseBuilder(saved);
+    }
+
+    @Override
+    public KennelResponse deleteKennel(String kennelId){
+        var kennel = kennelRepository.findByKennelID(kennelId);
+        kennel.setIsActive(false);
+        var saved = kennelRepository.save(kennel);
+        return kennelResponseBuilder(saved);
+    }
+
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {
         List<KennelResponse> kennelResponses = new ArrayList<>();

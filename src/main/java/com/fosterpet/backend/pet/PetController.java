@@ -57,4 +57,13 @@ public class PetController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deletePet(@RequestParam String petId){
+        try {
+            return ResponseEntity.ok(petService.deletePet(petId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

@@ -13,4 +13,6 @@ public interface VolunteerService {
     VolunteerResponse findByUserId(String userId);
     List<VolunteerResponse> getVolunteersNear(double longitude, double latitude, double maxDistance);
     VolunteerResponse updatePaymentRate(VolunteerPaymentRateRequest request);
+
+    VolunteerResponse deleteVolunteer(String volunteerId);
 }

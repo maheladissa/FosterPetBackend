@@ -113,6 +113,14 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserResponse deleteUser(String userId) {
+        var user = userRepository.findByUserId(userId);
+        user.setIsAccountActive(false);
+        var saved = userRepository.save(user);
+        return UserResponseBuilder(saved);
+    }
+
     private UserResponse UserResponseBuilder(User user) {
         return UserResponse.builder()
                 .userId(user.getUserId())
