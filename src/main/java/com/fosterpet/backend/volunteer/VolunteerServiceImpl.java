@@ -120,6 +120,8 @@ public class VolunteerServiceImpl implements VolunteerService{
                 .userId(volunteer.getUser().getUserId())
                 .volunteerName(volunteer.getUser().getFirstName() + " " + volunteer.getUser().getLastName())
                 .volunteerAddress(volunteer.getUser().getAddress())
+                .paymentRates(Optional.ofNullable(volunteer.getPaymentRates())
+                        .orElse(null))
                 .images(Optional.ofNullable(volunteer.getImages())
                         .map(images -> images.stream()
                                 .map(ImageMetadata::getImageUrl)
