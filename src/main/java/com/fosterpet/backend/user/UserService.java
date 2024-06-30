@@ -14,4 +14,6 @@ public interface UserService {
     UserResponse update(UserRequest userRequest);
 
     List<String> getExpoTokensByUserId(String userId);
+
+    UserResponse deleteUser(String id);
 }

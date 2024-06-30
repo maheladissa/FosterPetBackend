@@ -112,6 +112,14 @@ public class VolunteerServiceImpl implements VolunteerService{
         return volunteerResponseBuilder(saved);
     }
 
+    @Override
+    public VolunteerResponse deleteVolunteer(String volunteerId) {
+        var volunteer = volunteerRepository.findByVolunteerId(volunteerId);
+        volunteer.setIsActive(false);
+        var saved = volunteerRepository.save(volunteer);
+        return volunteerResponseBuilder(saved);
+    }
+
 
     private VolunteerResponse volunteerResponseBuilder(Volunteer volunteer) {
         return VolunteerResponse.builder()

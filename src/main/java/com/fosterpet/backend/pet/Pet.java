@@ -40,5 +40,6 @@ public class Pet {
     @DBRef
     private List<ImageMetadata> petImages;
     private Instant createdAt;
+    private Boolean isActive;
 
 }

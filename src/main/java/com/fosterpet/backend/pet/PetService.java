@@ -12,4 +12,6 @@ public interface PetService {
     PetResponse getPetById(String petId);
 
     PetResponse updatePet(PetRequest request);
+
+    PetResponse deletePet(String petId);
 }
