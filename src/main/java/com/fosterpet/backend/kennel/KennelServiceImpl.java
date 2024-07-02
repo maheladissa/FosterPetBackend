@@ -81,7 +81,7 @@ public class KennelServiceImpl implements KennelService {
 
     @Override
     public List<KennelResponse> getKennelsNear(double longitude, double latitude, double maxDistance){
-        var kennels = kennelRepository.findByLocationNear(longitude, latitude, maxDistance);
+        var kennels = kennelRepository.findByLocationNearAndIsActive(longitude, latitude, maxDistance);
         return createKennelResponsesFromKennels(kennels);
     }
 
@@ -191,22 +191,27 @@ public class KennelServiceImpl implements KennelService {
     }
 
     private KennelResponse kennelResponseBuilder (Kennel kennel){
-        return KennelResponse.builder()
-                .kennelId(kennel.getKennelID())
-                .kennelName(kennel.getKennelName())
-                .kennelAddress(kennel.getKennelAddress())
-                .kennelLocation(kennel.getKennelLocation())
-                .ownerId(kennel.getOwner().getUserId())
-                .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
-                .ownerPhone(kennel.getOwner().getPhoneNumber())
-                .ownerEmail(kennel.getOwner().getEmail())
-                .images(new ArrayList<>() {{
-                    for (ImageMetadata image : kennel.getImages()) {
-                        add(image.getImageUrl());
-                    }
-                }})
-                .paymentRates(kennel.getPaymentRates())
-                .createdDate(kennel.getCreatedDate())
-                .build();
+        if (kennel.getIsActive()==false) {
+            return null;
+        }
+        else {
+            return KennelResponse.builder()
+                    .kennelId(kennel.getKennelID())
+                    .kennelName(kennel.getKennelName())
+                    .kennelAddress(kennel.getKennelAddress())
+                    .kennelLocation(kennel.getKennelLocation())
+                    .ownerId(kennel.getOwner().getUserId())
+                    .ownerName(kennel.getOwner().getFirstName() + " " + kennel.getOwner().getLastName())
+                    .ownerPhone(kennel.getOwner().getPhoneNumber())
+                    .ownerEmail(kennel.getOwner().getEmail())
+                    .images(new ArrayList<>() {{
+                        for (ImageMetadata image : kennel.getImages()) {
+                            add(image.getImageUrl());
+                        }
+                    }})
+                    .paymentRates(kennel.getPaymentRates())
+                    .createdDate(kennel.getCreatedDate())
+                    .build();
+        }
     }
 }
