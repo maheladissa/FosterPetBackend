@@ -17,8 +17,8 @@ public interface KennelRepository extends MongoRepository <Kennel, String> {
 
     Kennel findByKennelID(String kennelId);
 
-    @Query("{ 'kennelLocation' : { $near : { $geometry: { type: 'Point', coordinates: [ ?0, ?1 ] }, $maxDistance: ?2 } } }")
-    List<Kennel> findByLocationNear(double longitude, double latitude, double maxDistance);
+    @Query("{ 'kennelLocation' : { $near : { $geometry: { type: 'Point', coordinates: [ ?0, ?1 ] }, $maxDistance: ?2 } }, 'isActive': true }")
+    List<Kennel> findByLocationNearAndIsActive(double longitude, double latitude, double maxDistance);
 
     Integer countKennelByIsActive(boolean isActive);
 
