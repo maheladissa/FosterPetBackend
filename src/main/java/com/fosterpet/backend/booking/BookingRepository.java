@@ -12,7 +12,7 @@ public interface BookingRepository extends MongoRepository <Booking, String> {
     List<Booking> findAll();
     Booking findByBookingID(String bookingId);
     List<Booking> findByKennelKennelID(String kennelId);
-    List<Booking> findByVolunteerUserId(String volunteerId);
+    List<Booking> findByVolunteerVolunteerId(String volunteerId);
     List<Booking> findByPetPetID(String petId);
 
     Integer countAllByStatus(String ongoing);

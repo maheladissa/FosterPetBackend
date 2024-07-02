@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.volunteer.Volunteer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +30,9 @@ public class Booking {
     @DBRef
     private Kennel kennel;
     @DBRef
-    private User volunteer;
+    private Volunteer volunteer;
+
+
     private Date startDate;
     private Date endDate;
     private Double rate;
