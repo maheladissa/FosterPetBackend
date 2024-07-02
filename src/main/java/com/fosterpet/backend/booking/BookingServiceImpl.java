@@ -5,6 +5,7 @@ import com.fosterpet.backend.kennel.KennelRepository;
 import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.pet.PetRepository;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.volunteer.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,8 @@ public class BookingServiceImpl implements BookingService {
         Kennel kennel = new Kennel();
         kennel.setKennelID(request.getKennelID());
 
-        User volunteer = new User();
-        volunteer.setUserId(request.getVolunteerID());
+        Volunteer volunteer = new Volunteer();
+        volunteer.setVolunteerId(request.getVolunteerID());
 
 
         Booking booking = Booking.builder()
@@ -84,7 +85,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingResponse> getBookingsByVolunteer(String volunteerId) {
-        var bookings = bookingRepository.findByVolunteerUserId(volunteerId);
+        var bookings = bookingRepository.findByVolunteerVolunteerId(volunteerId);
         return buildBookingResponses(bookings);
     }
 
@@ -147,7 +148,7 @@ public class BookingServiceImpl implements BookingService {
                 .petID(booking.getPet().getPetID())
                 .ownerID(booking.getOwner().getUserId())
                 .kennelID(booking.getKennel() != null ? booking.getKennel().getKennelID() : null)
-                .volunteerID(booking.getVolunteer() != null ? booking.getVolunteer().getUserId() : null)
+                .volunteerID(booking.getVolunteer() != null ? booking.getVolunteer().getVolunteerId() : null)
                 .startDate(booking.getStartDate())
                 .endDate(booking.getEndDate())
                 .rate(booking.getRate())
