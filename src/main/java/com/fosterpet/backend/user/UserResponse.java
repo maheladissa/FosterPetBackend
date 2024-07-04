@@ -19,7 +19,7 @@ public class UserResponse {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private ImageMetadata profileImage;
+    private String profileImage;
     private Address address;
     private Instant createdAt;
 }
