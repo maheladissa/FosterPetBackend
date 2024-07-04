@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
-                .profileImage(user.getProfileImage())
+                .profileImage(user.getProfileImage().getImageUrl())
                 .createdAt(user.getCreatedAt())
                 .build();
     }

@@ -2,10 +2,14 @@ package com.fosterpet.backend.booking;
 
 import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.kennel.KennelRepository;
+import com.fosterpet.backend.kennel.KennelResponse;
 import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.pet.PetRepository;
+import com.fosterpet.backend.pet.PetResponse;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.user.UserResponse;
 import com.fosterpet.backend.volunteer.Volunteer;
+import com.fosterpet.backend.volunteer.VolunteerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,10 +149,30 @@ public class BookingServiceImpl implements BookingService {
     private BookingResponse buildBookingResponse(Booking booking) {
         return BookingResponse.builder()
                 .bookingID(booking.getBookingID())
-                .petID(booking.getPet())
-                .ownerID(booking.getOwner())
-                .kennelID(booking.getKennel() != null ? booking.getKennel() : null)
-                .volunteerID(booking.getVolunteer() != null ? booking.getVolunteer() : null)
+                .pet(PetResponse.builder()
+                        .petID(booking.getPet().getPetID())
+                        .petName(booking.getPet().getPetName())
+                        .petType(booking.getPet().getPetType())
+                        .petAddress(booking.getPet().getPetAddress())
+                        .build())
+                .owner(UserResponse.builder()
+                        .userId(booking.getOwner().getUserId())
+                        .firstName(booking.getOwner().getFirstName())
+                        .lastName(booking.getOwner().getLastName())
+                        .build())
+                .kennel(booking.getKennel() != null ?
+                        KennelResponse.builder()
+                                .kennelId(booking.getKennel().getKennelID())
+                                .kennelName(booking.getKennel().getKennelName())
+                                .kennelAddress(booking.getKennel().getKennelAddress())
+                                .build()
+                        : null)
+                .volunteer(booking.getVolunteer() != null ?
+                        VolunteerResponse.builder()
+                                .volunteerId(booking.getVolunteer().getVolunteerId())
+                                .volunteerName(booking.getVolunteer().getUser().getFirstName() + " " + booking.getVolunteer().getUser().getLastName())
+                                .build()
+                        : null)
                 .startDate(booking.getStartDate())
                 .endDate(booking.getEndDate())
                 .rate(booking.getRate())
