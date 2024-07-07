@@ -2,6 +2,7 @@ package com.fosterpet.backend.payment;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fosterpet.backend.booking.Booking;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,9 +23,8 @@ public class Invoice {
     @Id
     private String invoiceId;
     @DBRef
-    private String bookingId;
-    @DBRef
-    private String userId;
+    private Booking booking;
+
     private String paymentIntentId;
     private String status;
     private String paymentMethod;

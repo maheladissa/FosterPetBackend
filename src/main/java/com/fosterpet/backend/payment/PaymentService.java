@@ -2,7 +2,9 @@ package com.fosterpet.backend.payment;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import jdk.dynalink.linker.LinkerServices;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PaymentService {
@@ -15,6 +17,10 @@ public interface PaymentService {
     Invoice createPaymentInvoice(String paymentIntentId) throws StripeException;
 
     Invoice getPaymentInvoice(String invoiceId);
+
+    List<Invoice> getPaymentInvoicesByUserId(String userId);
+
+    List<Invoice> getPaymentInvoicesByKennelId(String kennelId);
 
     PaymentIntent getPaymentIntent(String paymentIntentId) throws StripeException;
 

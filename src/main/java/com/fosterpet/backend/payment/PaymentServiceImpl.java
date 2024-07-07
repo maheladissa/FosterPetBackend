@@ -30,9 +30,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private BookingRepository bookingRepository;
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Override
     public Payment createPayment(String bookingId) {
@@ -120,8 +121,12 @@ public class PaymentServiceImpl implements PaymentService {
 
         PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentIntent.getPaymentMethod());
 
+        String prefix = "BookingId: ";
+        String bookingId = paymentIntent.getDescription().substring(prefix.length());
+
         Invoice invoice = Invoice.builder()
                 .paymentIntentId(paymentIntent.getId())
+                .booking(bookingRepository.findByBookingID(bookingId))
                 .status(paymentIntent.getStatus())
                 .paymentMethod(paymentMethod.getType())
                 .paymentMethodBrand(paymentMethod.getCard().getBrand())
@@ -148,5 +153,18 @@ public class PaymentServiceImpl implements PaymentService {
 
         return PaymentIntent.retrieve(paymentIntentId);
     }
+
+    @Override
+    public List<Invoice> getPaymentInvoicesByUserId(String userId) {
+        List<Invoice> invoices = invoiceRepository.findByBookingOwnerUserId(userId);
+        return invoices;
+    }
+
+    @Override
+    public List<Invoice> getPaymentInvoicesByKennelId(String kennelId) {
+        List<Invoice> invoices = invoiceRepository.findByBookingKennelKennelID(kennelId);
+        return invoices;
+    }
+
 
 }
