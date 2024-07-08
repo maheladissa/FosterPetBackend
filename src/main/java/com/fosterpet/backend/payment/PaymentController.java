@@ -48,4 +48,22 @@ public class PaymentController {
         }
     }
 
+    @GetMapping("/get-invoices-by-user")
+    public ResponseEntity<?> getInvoicesByUser(@RequestParam String userId) {
+        try {
+            return ResponseEntity.ok(paymentService.getPaymentInvoicesByUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-invoices-by-kennel")
+    public ResponseEntity<?> getInvoicesByKennel(@RequestParam String kennelId) {
+        try {
+            return ResponseEntity.ok(paymentService.getPaymentInvoicesByKennelId(kennelId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

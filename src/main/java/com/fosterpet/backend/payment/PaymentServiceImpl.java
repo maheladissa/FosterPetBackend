@@ -139,7 +139,9 @@ public class PaymentServiceImpl implements PaymentService {
                 .paymentDate(Instant.ofEpochSecond(paymentIntent.getCreated()))
                 .build();
 
-        return invoice;
+        var saved = invoiceRepository.save(invoice);
+
+        return saved;
     }
 
     @Override
