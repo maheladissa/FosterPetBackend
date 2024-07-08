@@ -146,7 +146,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Invoice getPaymentInvoice(String invoiceId) {
-        return null;
+        return invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("Invoice not found"));
     }
 
     @Override
@@ -158,14 +158,52 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<Invoice> getPaymentInvoicesByUserId(String userId) {
-        List<Invoice> invoices = invoiceRepository.findByBookingOwnerUserId(userId);
-        return invoices;
+        try {
+            List<Booking> bookings = bookingRepository.findByOwnerUserId(userId);
+            List<Invoice> invoices= new java.util.ArrayList<>();
+            for (Booking booking : bookings) {
+                Invoice invoice = invoiceRepository.findByBookingBookingID(booking.getBookingID());
+                if (invoice != null) invoices.add(invoice);
+            }
+            return invoices;
+        } catch (Exception e) {
+            throw new RuntimeException("Invoices not found");
+        }
     }
 
     @Override
     public List<Invoice> getPaymentInvoicesByKennelId(String kennelId) {
-        List<Invoice> invoices = invoiceRepository.findByBookingKennelKennelID(kennelId);
-        return invoices;
+        try {
+            List<Booking> bookings = bookingRepository.findByKennelKennelID(kennelId);
+            List<Invoice> invoices= new java.util.ArrayList<>();
+            for (Booking booking : bookings) {
+                Invoice invoice = invoiceRepository.findByBookingBookingID(booking.getBookingID());
+                if (invoice != null) invoices.add(invoice);
+            }
+            return invoices;
+        } catch (Exception e) {
+            throw new RuntimeException("Invoices not found");
+        }
+    }
+
+    @Override
+    public List<Invoice> getPaymentInvoicesByVolunteerId(String volunteerId) {
+        try {
+            List<Booking> bookings = bookingRepository.findByVolunteerVolunteerId(volunteerId);
+            List<Invoice> invoices= new java.util.ArrayList<>();
+            for (Booking booking : bookings) {
+                Invoice invoice = invoiceRepository.findByBookingBookingID(booking.getBookingID());
+                if (invoice != null) invoices.add(invoice);
+            }
+            return invoices;
+        } catch (Exception e) {
+            throw new RuntimeException("Invoices not found");
+        }
+    }
+
+    @Override
+    public Invoice getPaymentInvoiceByBookingId(String bookingId) {
+        return invoiceRepository.findByBookingBookingID(bookingId);
     }
 
 

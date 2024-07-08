@@ -22,6 +22,10 @@ public interface PaymentService {
 
     List<Invoice> getPaymentInvoicesByKennelId(String kennelId);
 
+    List<Invoice> getPaymentInvoicesByVolunteerId(String volunteerId);
+
+    Invoice getPaymentInvoiceByBookingId(String bookingId);
+
     PaymentIntent getPaymentIntent(String paymentIntentId) throws StripeException;
 
 }

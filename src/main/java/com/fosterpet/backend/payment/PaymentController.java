@@ -66,4 +66,13 @@ public class PaymentController {
         }
     }
 
+    @GetMapping("/get-invoice-by-booking")
+    public ResponseEntity<?> getInvoiceByBooking(@RequestParam String bookingId) {
+        try {
+            return ResponseEntity.ok(paymentService.getPaymentInvoiceByBookingId(bookingId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

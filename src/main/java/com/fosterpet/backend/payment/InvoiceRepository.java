@@ -9,6 +9,7 @@ import java.util.List;
 public interface InvoiceRepository extends MongoRepository<Invoice, String>{
     List<Invoice> findByBookingOwnerUserId(String userId);
     List<Invoice> findByBookingKennelKennelID(String kennelId);
-    List<Invoice> findByBookingBookingID(String bookingId);
+    Invoice findByBookingBookingID(String bookingId);
     List<Invoice> findByBookingVolunteerVolunteerId(String volunteerId);
+
 }
