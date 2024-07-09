@@ -178,6 +178,13 @@ public class KennelServiceImpl implements KennelService {
         return kennelResponseBuilder(saved);
     }
 
+    @Override
+    public List<KennelResponse> filterKennels(double longitude, double latitude, double maxDistance, String animalType){
+        var kennels = kennelRepository.findByLocationNearAndIsActiveAndAnimalType(longitude, latitude, maxDistance, animalType);
+        return createKennelResponsesFromKennels(kennels);
+    }
+
+
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {
         List<KennelResponse> kennelResponses = new ArrayList<>();
