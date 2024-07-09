@@ -27,4 +27,6 @@ public interface KennelService {
 
     KennelResponse deleteKennel(String kennelId);
 
+    List<KennelResponse> filterKennels(double longitude, double latitude, double maxDistance, String animalType);
+
 }

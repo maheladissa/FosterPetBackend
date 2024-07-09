@@ -23,4 +23,7 @@ public interface KennelRepository extends MongoRepository <Kennel, String> {
     Integer countKennelByIsActive(boolean isActive);
 
     List<Kennel> findByIsApproved(boolean isApproved);
+
+    @Query("{ 'kennelLocation' : { $near : { $geometry: { type: 'Point', coordinates: [ ?0, ?1 ] }, $maxDistance: ?2 } }, 'isActive': true, 'paymentRates.animalType': ?3 }")
+    List<Kennel> findByLocationNearAndIsActiveAndAnimalType(double longitude, double latitude, double maxDistance, String animalType);
 }

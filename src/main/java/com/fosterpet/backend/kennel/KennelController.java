@@ -63,6 +63,16 @@ public class KennelController {
         }
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<?> getKennelsNearAndAnimalType(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance, @RequestParam String animalType){
+        try {
+            return ResponseEntity.ok(kennelService.filterKennels(longitude, latitude, maxDistance, animalType));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/update")
     public ResponseEntity<?> updateKennel(@ModelAttribute KennelRequest request){
         try {
