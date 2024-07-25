@@ -151,4 +151,27 @@ public class AuthenticationService {
         }
     }
 
+    public AuthenticationResponse adminAuthenticate(AuthenticationRequest request) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        if (!user.getIsEmailVerified()){
+            return AuthenticationResponse.builder()
+                    .status("Email not verified")
+                    .build();
+        }
+        else if (user.getRole() != Role.ADMIN){
+            return AuthenticationResponse.builder()
+                    .status("Not an admin")
+                    .build();
+        }
+        else {
+            var jwtToken = jwtService.generateToken(user);
+            return AuthenticationResponse.builder()
+                    .userId(user.getUserId())
+                    .token(jwtToken)
+                    .status("Success")
+                    .build();
+        }
+    }
+
 }
