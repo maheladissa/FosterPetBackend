@@ -121,6 +121,11 @@ public class UserServiceImpl implements UserService {
         return UserResponseBuilder(saved);
     }
 
+    @Override
+    public Long countUsersByTimePeriod(Instant startDate, Instant endDate) {
+        return userRepository.countUsersByTimePeriod(startDate, endDate);
+    }
+
     private UserResponse UserResponseBuilder(User user) {
         return UserResponse.builder()
                 .userId(user.getUserId())

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -143,6 +144,16 @@ public class BookingServiceImpl implements BookingService {
         if ("CONFIRMED".equals(booking.getStatus())){booking.setStatus("ONGOING");}
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
+    }
+
+    @Override
+    public Integer countOngoingBookings() {
+        return bookingRepository.countAllByStatus("ONGOING");
+    }
+
+    @Override
+    public Long countBookingsByStartDate(Date startDate, Date endDate) {
+        return bookingRepository.countBookingsByStartDate(startDate, endDate);
     }
 
 

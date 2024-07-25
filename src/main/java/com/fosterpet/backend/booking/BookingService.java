@@ -1,5 +1,6 @@
 package com.fosterpet.backend.booking;
 
+import java.util.Date;
 import java.util.List;
 
 public interface BookingService {
@@ -28,6 +29,10 @@ public interface BookingService {
     BookingResponse rejectBooking(String bookingId);
 
     BookingResponse ongoingBooking(String bookingId);
+
+    Integer countOngoingBookings();
+
+    Long countBookingsByStartDate(Date startDate, Date endDate);
 
 
 

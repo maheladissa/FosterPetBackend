@@ -1,5 +1,6 @@
 package com.fosterpet.backend.user;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface UserService {
@@ -16,4 +17,6 @@ public interface UserService {
     List<String> getExpoTokensByUserId(String userId);
 
     UserResponse deleteUser(String id);
+
+    Long countUsersByTimePeriod(Instant startDate, Instant endDate);
 }

@@ -128,6 +128,11 @@ public class PetServiceImpl implements PetService {
         return petResponseBuilder(saved);
     }
 
+    @Override
+    public Long countPetsByTimePeriod(Instant startDate, Instant endDate) {
+        return petRepository.countPetsByTimePeriod(startDate, endDate);
+    }
+
     private List<PetResponse> createPetResponsesFromPets(List<Pet> pets) {
         List<PetResponse> petResponses = new ArrayList<>();
         for (Pet pet : pets) {
