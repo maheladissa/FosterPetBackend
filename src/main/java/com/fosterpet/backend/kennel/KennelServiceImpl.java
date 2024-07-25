@@ -184,6 +184,11 @@ public class KennelServiceImpl implements KennelService {
         return createKennelResponsesFromKennels(kennels);
     }
 
+    @Override
+    public Long countKennelsByTimePeriod(String startDate, String endDate){
+        return kennelRepository.countKennelsByTimePeriod(Instant.parse(startDate), Instant.parse(endDate));
+    }
+
 
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {

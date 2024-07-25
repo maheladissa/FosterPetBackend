@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -26,4 +27,7 @@ public interface KennelRepository extends MongoRepository <Kennel, String> {
 
     @Query("{ 'kennelLocation' : { $near : { $geometry: { type: 'Point', coordinates: [ ?0, ?1 ] }, $maxDistance: ?2 } }, 'isActive': true, 'paymentRates.animalType': ?3 }")
     List<Kennel> findByLocationNearAndIsActiveAndAnimalType(double longitude, double latitude, double maxDistance, String animalType);
+
+    @Query(value = "{ 'createdDate': { $gte: ?0, $lte: ?1 } }", count = true)
+    Long countKennelsByTimePeriod(Instant startDate, Instant endDate);
 }

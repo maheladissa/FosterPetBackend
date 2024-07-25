@@ -72,4 +72,16 @@ public class AuthenticationController {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }
+
+    @PostMapping("/admin-login")
+    public ResponseEntity<?> adminAuthenticate(
+            @RequestBody AuthenticationRequest request)
+        {
+            try {
+                return ResponseEntity.ok(authenticationService.adminAuthenticate(request));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
 }

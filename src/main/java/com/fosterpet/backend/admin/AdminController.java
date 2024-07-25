@@ -22,4 +22,14 @@ public class AdminController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/period-filter")
+    public ResponseEntity<?> getPeriodFilterData(String startDate, String endDate){
+        try {
+            return ResponseEntity.ok(adminService.getPeriodFilterData(startDate, endDate));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

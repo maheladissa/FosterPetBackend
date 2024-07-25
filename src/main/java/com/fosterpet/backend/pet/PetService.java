@@ -1,5 +1,6 @@
 package com.fosterpet.backend.pet;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface PetService {
@@ -14,4 +15,6 @@ public interface PetService {
     PetResponse updatePet(PetRequest request);
 
     PetResponse deletePet(String petId);
+
+    Long countPetsByTimePeriod(Instant startDate, Instant endDate);
 }
