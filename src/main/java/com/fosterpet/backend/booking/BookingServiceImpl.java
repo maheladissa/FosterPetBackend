@@ -57,7 +57,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
         var saved = bookingRepository.save(booking);
 
-        return buildBookingResponse(saved);
+        return buildBookingResponse(bookingRepository.findByBookingID(saved.getBookingID()));
     }
 
     @Override
