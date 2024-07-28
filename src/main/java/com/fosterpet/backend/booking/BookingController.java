@@ -40,7 +40,7 @@ public class BookingController {
     }
 
     @GetMapping("/bookingId")
-    public ResponseEntity<?> getBookingById(@PathVariable String bookingId){
+    public ResponseEntity<?> getBookingById(@RequestParam String bookingId){
         try {
             return ResponseEntity.ok(bookingService.getBookingById(bookingId));
         } catch (Exception e) {
