@@ -74,8 +74,9 @@ public class PaymentServiceImpl implements PaymentService {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
 
         Payment payment = createPayment(bookingId);
+        User user = userRepository.findById(payment.getCustomerID()).orElseThrow(() -> new RuntimeException("User not found"));
 
-        Customer customer = Customer.retrieve(payment.getCustomerEmail());
+        Customer customer = Customer.retrieve(user.getStripeCustomerId());
 
         PaymentIntent paymentIntent;
 
