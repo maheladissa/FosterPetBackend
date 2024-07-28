@@ -54,7 +54,9 @@ public class BookingServiceImpl implements BookingService {
                 .rate(request.getKennelID() != null ? kennelRepository.findByKennelID(request.getKennelID()).getRate(petRepository.findByPetID(request.getPetID()).getPetType()) : 0)
                 .status("PENDING")
                 .build();
+        booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
         var saved = bookingRepository.save(booking);
+
         return buildBookingResponse(saved);
     }
 
@@ -125,7 +127,6 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse completeBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
         if ("ONGOING".equals(booking.getStatus())){booking.setStatus("COMPLETED");}
-        booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }

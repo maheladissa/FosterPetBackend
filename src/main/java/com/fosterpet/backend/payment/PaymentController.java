@@ -13,9 +13,9 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/create-payment-intent")
-    public ResponseEntity<?> createPaymentIntent() {
+    public ResponseEntity<?> createPaymentIntent(@RequestParam String bookingId) {
         try {
-            return ResponseEntity.ok(paymentService.createPaymentIntent("6643b0229d659c135875a786"));
+            return ResponseEntity.ok(paymentService.createPaymentIntent(bookingId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
