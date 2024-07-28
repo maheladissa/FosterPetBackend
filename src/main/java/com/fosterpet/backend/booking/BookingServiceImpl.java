@@ -54,7 +54,9 @@ public class BookingServiceImpl implements BookingService {
                 .rate(request.getKennelID() != null ? kennelRepository.findByKennelID(request.getKennelID()).getRate(petRepository.findByPetID(request.getPetID()).getPetType()) : 0)
                 .status("PENDING")
                 .build();
+
         booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
+
         var saved = bookingRepository.save(booking);
 
         return buildBookingResponse(bookingRepository.findByBookingID(saved.getBookingID()));
