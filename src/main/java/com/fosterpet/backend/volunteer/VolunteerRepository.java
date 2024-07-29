@@ -16,4 +16,8 @@ public interface VolunteerRepository extends MongoRepository <Volunteer,String> 
     List<Volunteer> findByLocationNear(double longitude, double latitude, double maxDistance);
 
     Integer countVolunteerByIsActive(Boolean isActive);
+
+    @Query("{ 'volunteerLocation' : { $near : { $geometry: { type: 'Point', coordinates: [ ?0, ?1 ] }, $maxDistance: ?2 } }, 'isActive': true, 'isApproved': true, 'paymentRates.animalType': ?3 }")
+    List<Volunteer> findByLocationNearAndIsActiveAndAnimalType(double longitude, double latitude, double maxDistance, String animalType);
+
 }

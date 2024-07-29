@@ -94,4 +94,14 @@ public class VolunteerController {
         }
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<?> getVolunteersNearAndAnimalType(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double maxDistance, @RequestParam String animalType){
+        try {
+            return ResponseEntity.ok(volunteerService.filterVolunteers(longitude, latitude, maxDistance, animalType));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
