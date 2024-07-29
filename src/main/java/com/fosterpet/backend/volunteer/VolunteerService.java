@@ -12,6 +12,7 @@ public interface VolunteerService {
     VolunteerResponse findById(String volunteerId);
     VolunteerResponse findByUserId(String userId);
     List<VolunteerResponse> getVolunteersNear(double longitude, double latitude, double maxDistance);
+    List<VolunteerResponse> filterVolunteers(double longitude, double latitude, double maxDistance, String animalType);
     VolunteerResponse updatePaymentRate(VolunteerPaymentRateRequest request);
 
     VolunteerResponse deleteVolunteer(String volunteerId);

@@ -120,6 +120,12 @@ public class VolunteerServiceImpl implements VolunteerService{
         return volunteerResponseBuilder(saved);
     }
 
+    @Override
+    public List<VolunteerResponse> filterVolunteers(double longitude, double latitude, double maxDistance, String animalType) {
+        var volunteers = volunteerRepository.findByLocationNearAndIsActiveAndAnimalType(longitude, latitude, maxDistance, animalType);
+        return createVolunteerResponsesFromVolunteers(volunteers);
+    }
+
 
     private VolunteerResponse volunteerResponseBuilder(Volunteer volunteer) {
         return VolunteerResponse.builder()
