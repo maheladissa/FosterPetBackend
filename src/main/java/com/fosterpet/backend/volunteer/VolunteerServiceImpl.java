@@ -70,6 +70,10 @@ public class VolunteerServiceImpl implements VolunteerService{
             volunteer.setUser(user);
             volunteer.setNicNumber(volunteerRequest.getNicNumber());
             volunteer.setImages(new ArrayList<>());
+            volunteer.setVolunteerLocation(Location.builder()
+                    .type("Point")
+                    .coordinates(new double[]{volunteerRequest.getVolunteerLongitude(), volunteerRequest.getVolunteerLatitude()})
+                    .build());
             for (MultipartFile image : volunteerRequest.getImages()) {
                 ImageMetadata imageMetadata = imageMetadataService.save(image);
                 volunteer.getImages().add(imageMetadata);
