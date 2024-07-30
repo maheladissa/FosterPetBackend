@@ -1,5 +1,6 @@
 package com.fosterpet.backend.volunteer;
 
+import com.fosterpet.backend.common.Location;
 import com.fosterpet.backend.common.PaymentRates;
 import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.imagemetadata.ImageMetadataService;
@@ -40,6 +41,10 @@ public class VolunteerServiceImpl implements VolunteerService{
             Volunteer volunteer = Volunteer.builder()
                     .nicNumber(volunteerRequest.getNicNumber())
                     .user(user)
+                    .volunteerLocation(Location.builder()
+                            .type("Point")
+                            .coordinates(new double[]{volunteerRequest.getVolunteerLongitude(), volunteerRequest.getVolunteerLatitude()})
+                            .build())
                     .isActive(true)
                     .build();
 
@@ -134,6 +139,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                 .userId(volunteer.getUser().getUserId())
                 .volunteerName(volunteer.getUser().getFirstName() + " " + volunteer.getUser().getLastName())
                 .volunteerAddress(volunteer.getUser().getAddress())
+                .volunteerLocation(volunteer.getVolunteerLocation())
                 .paymentRates(Optional.ofNullable(volunteer.getPaymentRates())
                         .orElse(null))
                 .images(Optional.ofNullable(volunteer.getImages())

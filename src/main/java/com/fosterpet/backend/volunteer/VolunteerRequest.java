@@ -1,6 +1,7 @@
 package com.fosterpet.backend.volunteer;
 
 
+import com.fosterpet.backend.common.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,6 @@ public class VolunteerRequest {
     private String userId;
     private String nicNumber;
     private List<MultipartFile> images;
+    private Double volunteerLongitude;
+    private Double volunteerLatitude;
 }

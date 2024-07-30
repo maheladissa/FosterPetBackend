@@ -1,6 +1,7 @@
 package com.fosterpet.backend.volunteer;
 
 import com.fosterpet.backend.common.Address;
+import com.fosterpet.backend.common.Location;
 import com.fosterpet.backend.common.PaymentRates;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class VolunteerResponse {
 
     private String volunteerName;
     private Address volunteerAddress;
+    private Location volunteerLocation;
 
     private List<PaymentRates> paymentRates;
 
