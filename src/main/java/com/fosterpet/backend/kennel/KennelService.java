@@ -30,4 +30,6 @@ public interface KennelService {
     List<KennelResponse> filterKennels(double longitude, double latitude, double maxDistance, String animalType);
 
     Long countKennelsByTimePeriod(String startDate, String endDate);
+
+    List<KennelResponse> getAllActiveKennels();
 }

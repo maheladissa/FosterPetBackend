@@ -40,8 +40,10 @@ public class SecurityConfig {
             // other public endpoints of your API may be appended to this array
             "/api/kennel/id",
             "/api/kennel/filter",
+            "/api/kennel/active",
             "/api/volunteer/id",
-            "/api/volunteer/filter"
+            "/api/volunteer/filter",
+            "/api/volunteer/active"
 
     };
 

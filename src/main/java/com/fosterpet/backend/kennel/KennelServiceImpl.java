@@ -189,6 +189,12 @@ public class KennelServiceImpl implements KennelService {
         return kennelRepository.countKennelsByTimePeriod(Instant.parse(startDate), Instant.parse(endDate));
     }
 
+    @Override
+    public List<KennelResponse> getAllActiveKennels(){
+        var kennels = kennelRepository.findByIsActiveAndAndIsApproved(true, true);
+        return createKennelResponsesFromKennels(kennels);
+    }
+
 
 
     private List<KennelResponse> createKennelResponsesFromKennels(List<Kennel> kennels) {

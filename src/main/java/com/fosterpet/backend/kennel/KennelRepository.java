@@ -30,4 +30,6 @@ public interface KennelRepository extends MongoRepository <Kennel, String> {
 
     @Query(value = "{ 'createdDate': { $gte: ?0, $lte: ?1 } }", count = true)
     Long countKennelsByTimePeriod(Instant startDate, Instant endDate);
+
+    List<Kennel> findByIsActiveAndAndIsApproved(boolean isActive, boolean isApproved);
 }

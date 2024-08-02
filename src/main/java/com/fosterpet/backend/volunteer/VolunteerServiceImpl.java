@@ -135,6 +135,11 @@ public class VolunteerServiceImpl implements VolunteerService{
         return createVolunteerResponsesFromVolunteers(volunteers);
     }
 
+    @Override
+    public List<VolunteerResponse> getAllActiveVolunteers() {
+        return createVolunteerResponsesFromVolunteers(volunteerRepository.findByIsApprovedAndAndIsActive(true, true));
+    }
+
 
     private VolunteerResponse volunteerResponseBuilder(Volunteer volunteer) {
         return VolunteerResponse.builder()
