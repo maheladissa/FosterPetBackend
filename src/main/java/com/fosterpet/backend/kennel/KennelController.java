@@ -73,6 +73,16 @@ public class KennelController {
         }
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveKennels(){
+        try {
+            return ResponseEntity.ok(kennelService.getAllActiveKennels());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/update")
     public ResponseEntity<?> updateKennel(@ModelAttribute KennelRequest request){
         try {

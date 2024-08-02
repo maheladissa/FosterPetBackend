@@ -16,4 +16,6 @@ public interface VolunteerService {
     VolunteerResponse updatePaymentRate(VolunteerPaymentRateRequest request);
 
     VolunteerResponse deleteVolunteer(String volunteerId);
+
+    List<VolunteerResponse> getAllActiveVolunteers();
 }

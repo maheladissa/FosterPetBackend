@@ -33,4 +33,5 @@ public class Volunteer {
     private List<ImageMetadata> images;
     private List<PaymentRates> paymentRates;
     private Boolean isActive;
+    private Boolean isApproved;
 }

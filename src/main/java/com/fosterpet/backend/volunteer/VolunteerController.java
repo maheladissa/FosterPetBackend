@@ -44,6 +44,16 @@ public class VolunteerController {
         }
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveVolunteers(){
+        try {
+            return ResponseEntity.ok(volunteerService.getAllActiveVolunteers());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/user")
     public ResponseEntity<?> getVolunteerByUserId(@RequestParam String userId){
         try {
