@@ -39,7 +39,9 @@ public class SecurityConfig {
             "/swagger-ui/**",
             // other public endpoints of your API may be appended to this array
             "/api/kennel/id",
-            "/api/kennel/filter"
+            "/api/kennel/filter",
+            "/api/volunteer/id",
+            "/api/volunteer/filter"
 
     };
 
