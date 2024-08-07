@@ -44,8 +44,10 @@ public class SecurityConfig {
             "/api/volunteer/id",
             "/api/volunteer/filter",
             "/api/volunteer/active",
-            "/api/review/**"
-
+            "/api/review/kennel",
+            "/api/review/volunteer",
+            "/api/review/kennel/average",
+            "/api/review/volunteer/average"
     };
 
     @Bean
