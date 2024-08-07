@@ -21,4 +21,5 @@ public class KennelRequest {
     private Double kennelLatitude;
     private String ownerId;
     private List<MultipartFile> images;
+    private MultipartFile profileImage;
 }

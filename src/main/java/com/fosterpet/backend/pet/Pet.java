@@ -39,6 +39,8 @@ public class Pet {
     private String petVaccinationStatus;
     @DBRef
     private List<ImageMetadata> petImages;
+    @DBRef
+    private ImageMetadata profileImage;
     private Instant createdAt;
     private Boolean isActive;
 

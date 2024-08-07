@@ -30,5 +30,6 @@ public class PetResponse {
     private String ownerPhone;
     private String ownerEmail;
     private List<String> petImages;
+    private String profileImage;
     private Instant createdAt;
 }

@@ -31,6 +31,8 @@ public class Volunteer {
     private String nicNumber;
     @DBRef
     private List<ImageMetadata> images;
+    @DBRef
+    private ImageMetadata profileImage;
     private List<PaymentRates> paymentRates;
     private Boolean isActive;
     private Boolean isApproved;

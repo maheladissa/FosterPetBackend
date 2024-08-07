@@ -37,6 +37,8 @@ public class VolunteerServiceImpl implements VolunteerService{
                 }
             }
 
+            ImageMetadata profileImage = imageMetadataService.save(volunteerRequest.getProfileImage());
+
 
             Volunteer volunteer = Volunteer.builder()
                     .nicNumber(volunteerRequest.getNicNumber())
@@ -45,7 +47,9 @@ public class VolunteerServiceImpl implements VolunteerService{
                             .type("Point")
                             .coordinates(new double[]{volunteerRequest.getVolunteerLongitude(), volunteerRequest.getVolunteerLatitude()})
                             .build())
+                    .profileImage(profileImage)
                     .isActive(true)
+                    .isApproved(false)
                     .build();
 
             if (!images.isEmpty()) {
@@ -140,6 +144,14 @@ public class VolunteerServiceImpl implements VolunteerService{
         return createVolunteerResponsesFromVolunteers(volunteerRepository.findByIsApprovedAndAndIsActive(true, true));
     }
 
+    @Override
+    public VolunteerResponse approveVolunteer(String volunteerId) {
+        var volunteer = volunteerRepository.findByVolunteerId(volunteerId);
+        volunteer.setIsApproved(true);
+        var saved = volunteerRepository.save(volunteer);
+        return volunteerResponseBuilder(saved);
+    }
+
 
     private VolunteerResponse volunteerResponseBuilder(Volunteer volunteer) {
         return VolunteerResponse.builder()
@@ -149,6 +161,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                 .volunteerName(volunteer.getUser().getFirstName() + " " + volunteer.getUser().getLastName())
                 .volunteerAddress(volunteer.getUser().getAddress())
                 .volunteerLocation(volunteer.getVolunteerLocation())
+                .profileImage(volunteer.getProfileImage().getImageUrl())
                 .paymentRates(Optional.ofNullable(volunteer.getPaymentRates())
                         .orElse(null))
                 .images(Optional.ofNullable(volunteer.getImages())

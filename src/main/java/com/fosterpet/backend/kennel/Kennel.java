@@ -33,6 +33,8 @@ public class Kennel {
     private Location kennelLocation;
     @DBRef
     private List<ImageMetadata> images;
+    @DBRef
+    private ImageMetadata profileImage;
     private List<PaymentRates> paymentRates;
     private Boolean isApproved;
     private Boolean isActive;
