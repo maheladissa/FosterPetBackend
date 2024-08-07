@@ -54,6 +54,16 @@ public class VolunteerController {
         }
     }
 
+    @PostMapping("/approve")
+    public ResponseEntity<?> approveVolunteer(@RequestParam String volunteerId){
+        try {
+            return ResponseEntity.ok(volunteerService.approveVolunteer(volunteerId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/user")
     public ResponseEntity<?> getVolunteerByUserId(@RequestParam String userId){
         try {

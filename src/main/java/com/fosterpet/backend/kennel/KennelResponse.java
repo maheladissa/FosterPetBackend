@@ -24,5 +24,6 @@ public class KennelResponse {
     private String ownerPhone;
     private String ownerEmail;
     private List<String> images;
+    private String profileImage;
     private List<PaymentRates> paymentRates;
 }

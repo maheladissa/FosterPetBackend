@@ -33,6 +33,7 @@ public class KennelServiceImpl implements KennelService {
                 ImageMetadata imageMetadata = imageMetadataService.save(image);
                 images.add(imageMetadata);
             }
+            ImageMetadata profileImage = imageMetadataService.save(request.getProfileImage());
 
             Kennel kennel = Kennel.builder()
                     .kennelName(request.getKennelName())
@@ -48,6 +49,7 @@ public class KennelServiceImpl implements KennelService {
                             .build())
                     .owner(owner)
                     .images(images)
+                    .profileImage(profileImage)
                     .isActive(true)
                     .isApproved(false)
                     .createdDate(Instant.now())
@@ -97,6 +99,11 @@ public class KennelServiceImpl implements KennelService {
                     images.add(imageMetadata);
                 }
                 kennel.setImages(images);
+            }
+
+            if (request.getProfileImage() != null) {
+                ImageMetadata profileImage = imageMetadataService.save(request.getProfileImage());
+                kennel.setProfileImage(profileImage);
             }
 
             if (request.getKennelName() != null) {
@@ -223,6 +230,7 @@ public class KennelServiceImpl implements KennelService {
                         add(image.getImageUrl());
                     }
                 }})
+                .profileImage(kennel.getProfileImage().getImageUrl())
                 .paymentRates(kennel.getPaymentRates())
                 .createdDate(kennel.getCreatedDate())
                 .build();

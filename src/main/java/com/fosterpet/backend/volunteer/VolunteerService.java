@@ -18,4 +18,6 @@ public interface VolunteerService {
     VolunteerResponse deleteVolunteer(String volunteerId);
 
     List<VolunteerResponse> getAllActiveVolunteers();
+
+    VolunteerResponse approveVolunteer(String volunteerId);
 }

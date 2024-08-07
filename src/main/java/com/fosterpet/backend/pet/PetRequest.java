@@ -30,4 +30,5 @@ public class PetRequest {
     private String petVaccinationStatus;
     private String ownerId;
     private List<MultipartFile> petImages;
+    private MultipartFile profileImage;
 }

@@ -31,6 +31,7 @@ public class PetServiceImpl implements PetService {
                 ImageMetadata imageMetadata = imageMetadataService.save(image);
                 images.add(imageMetadata);
             }
+            ImageMetadata profileImage = imageMetadataService.save(request.getProfileImage());
 
             Pet pet = Pet.builder()
                     .petType(request.getPetType())
@@ -49,6 +50,7 @@ public class PetServiceImpl implements PetService {
                     .petVaccinationStatus(request.getPetVaccinationStatus())
                     .owner(owner)
                     .petImages(images)
+                    .profileImage(profileImage)
                     .createdAt(Instant.now())
                     .build();
 
@@ -110,6 +112,11 @@ public class PetServiceImpl implements PetService {
             if(request.getPetMediConditions() != null) pet.setPetMediConditions(request.getPetMediConditions());
             if(request.getPetVaccinationStatus() != null) pet.setPetVaccinationStatus(request.getPetVaccinationStatus());
 
+            if (request.getProfileImage() != null) {
+                ImageMetadata profileImage = imageMetadataService.save(request.getProfileImage());
+                pet.setProfileImage(profileImage);
+            }
+
 
             var saved = petRepository.save(pet);
 
@@ -165,6 +172,7 @@ public class PetServiceImpl implements PetService {
                         add(image.getImageUrl());
                     }
                 }})
+                .profileImage(pet.getProfileImage().getImageUrl())
                 .build();
     }
 }

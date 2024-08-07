@@ -19,6 +19,8 @@ public class VolunteerRequest {
     private String userId;
     private String nicNumber;
     private List<MultipartFile> images;
+    private MultipartFile profileImage;
     private Double volunteerLongitude;
     private Double volunteerLatitude;
+
 }
