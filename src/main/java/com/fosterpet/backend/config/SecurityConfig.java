@@ -43,7 +43,8 @@ public class SecurityConfig {
             "/api/kennel/active",
             "/api/volunteer/id",
             "/api/volunteer/filter",
-            "/api/volunteer/active"
+            "/api/volunteer/active",
+            "/api/review/**"
 
     };
 
