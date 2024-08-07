@@ -69,19 +69,29 @@ public class VolunteerServiceImpl implements VolunteerService{
     public VolunteerResponse update(VolunteerRequest volunteerRequest) {
         try {
             Volunteer volunteer = volunteerRepository.findByVolunteerId(volunteerRequest.getVolunteerId());
-            User user = new User();
-            user.setUserId(volunteerRequest.getUserId());
-            volunteer.setUser(user);
-            volunteer.setNicNumber(volunteerRequest.getNicNumber());
-            volunteer.setImages(new ArrayList<>());
-            volunteer.setVolunteerLocation(Location.builder()
-                    .type("Point")
-                    .coordinates(new double[]{volunteerRequest.getVolunteerLongitude(), volunteerRequest.getVolunteerLatitude()})
-                    .build());
-            for (MultipartFile image : volunteerRequest.getImages()) {
-                ImageMetadata imageMetadata = imageMetadataService.save(image);
-                volunteer.getImages().add(imageMetadata);
+
+            if(volunteerRequest.getProfileImage() != null) {
+                ImageMetadata profileImage = imageMetadataService.save(volunteerRequest.getProfileImage());
+                volunteer.setProfileImage(profileImage);
             }
+
+            if (volunteerRequest.getImages() != null) {
+                for (MultipartFile image : volunteerRequest.getImages()) {
+                    ImageMetadata imageMetadata = imageMetadataService.save(image);
+                    volunteer.getImages().add(imageMetadata);
+                }
+            }
+
+            if(volunteerRequest.getNicNumber() != null) {
+                volunteer.setNicNumber(volunteerRequest.getNicNumber());
+            }
+            if(volunteerRequest.getVolunteerLatitude() != null && volunteerRequest.getVolunteerLongitude() != null) {
+                volunteer.setVolunteerLocation(Location.builder()
+                        .type("Point")
+                        .coordinates(new double[]{volunteerRequest.getVolunteerLongitude(), volunteerRequest.getVolunteerLatitude()})
+                        .build());
+            }
+
             var saved = volunteerRepository.save(volunteer);
             return volunteerResponseBuilder(saved);
         }
