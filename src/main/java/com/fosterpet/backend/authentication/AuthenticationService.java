@@ -3,6 +3,7 @@ package com.fosterpet.backend.authentication;
 import com.fosterpet.backend.common.AzureIdentityGenerator;
 import com.fosterpet.backend.config.JwtService;
 import com.fosterpet.backend.payment.PaymentService;
+import com.fosterpet.backend.session.SessionService;
 import com.fosterpet.backend.user.EmailVerificationService;
 import com.fosterpet.backend.user.Role;
 import com.fosterpet.backend.user.User;
@@ -28,6 +29,7 @@ public class AuthenticationService {
     private final EmailVerificationService emailVerificationService;
     private final AzureIdentityGenerator azureIdentityGenerator;
     private final PaymentService paymentService;
+    private final SessionService sessionService;
 
     public AuthenticationResponse register(RegisterRequest request) throws StripeException {
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -63,7 +65,7 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request, String deviceType, String os, String expoDeviceToken) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         if (!user.getIsEmailVerified()){
@@ -73,6 +75,14 @@ public class AuthenticationService {
         }
         else {
             var jwtToken = jwtService.generateToken(user);
+            sessionService.createSession(
+                    user.getUserId(),
+                    jwtToken,
+                    jwtService.extractExpiration(jwtToken).toInstant(),
+                    deviceType,
+                    os,
+                    expoDeviceToken
+            );
             return AuthenticationResponse.builder()
                     .userId(user.getUserId())
                     .token(jwtToken)

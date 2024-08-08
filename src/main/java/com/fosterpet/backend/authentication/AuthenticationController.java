@@ -26,10 +26,13 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(
-            @RequestBody AuthenticationRequest request)
+            @RequestBody AuthenticationRequest request,
+            @RequestHeader(value = "Device-Type", defaultValue = "Unknown Device") String deviceType,
+            @RequestHeader(value = "OS", defaultValue = "Unknown OS") String os,
+            @RequestHeader(value = "Expo-Token", defaultValue = "null") String expoDeviceToken)
         {
             try {
-                return ResponseEntity.ok(authenticationService.authenticate(request));
+                return ResponseEntity.ok(authenticationService.authenticate(request, deviceType, os, expoDeviceToken));
             }
             catch (Exception e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
