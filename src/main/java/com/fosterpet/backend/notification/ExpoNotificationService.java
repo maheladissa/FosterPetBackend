@@ -56,22 +56,11 @@ public class ExpoNotificationService {
         String okTicketMessagesString = okTicketMessages.stream().map(
                 p -> "Title: " + p.message.getTitle() + ", Id:" + p.ticket.getId()
         ).collect(Collectors.joining(","));
-        System.out.println(
-                "Recieved OK ticket for " +
-                        okTicketMessages.size() +
-                        " messages: " + okTicketMessagesString
-        );
 
         List<ExpoPushMessageTicketPair<ExpoPushMessage>> errorTicketMessages = client.filterAllMessagesWithError(zippedMessagesTickets);
         String errorTicketMessagesString = errorTicketMessages.stream().map(
                 p -> "Title: " + p.message.getTitle() + ", Error: " + p.ticket.getDetails().getError()
         ).collect(Collectors.joining(","));
-        System.out.println(
-                "Recieved ERROR ticket for " +
-                        errorTicketMessages.size() +
-                        " messages: " +
-                        errorTicketMessagesString
-        );
 
 
         // Countdown 30s
@@ -80,7 +69,6 @@ public class ExpoNotificationService {
             System.out.print("Waiting for " + wait + " seconds. " + i + "s\r");
             Thread.sleep(1000);
         }
-        System.out.println("Fetching reciepts...");
 
         List<String> ticketIds = (client.getTicketIdsFromPairs(okTicketMessages));
         CompletableFuture<List<ExpoPushReceipt>> receiptFutures = client.getPushNotificationReceiptsAsync(ticketIds);
@@ -92,18 +80,6 @@ public class ExpoNotificationService {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-
-        System.out.println(
-                "Recieved " + receipts.size() + " receipts:");
-
-        for (ExpoPushReceipt reciept : receipts) {
-            System.out.println(
-                    "Receipt for id: " +
-                            reciept.getId() +
-                            " had status: " +
-                            reciept.getStatus());
-
         }
 
 

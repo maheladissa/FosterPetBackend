@@ -38,15 +38,24 @@ public class NotificationServiceImpl implements NotificationService {
                     .isRead(false)
                     .build();
 
-            var saved = notificationRepository.save(notification);
-
             List<String> receiverList = userService.getExpoTokensByUserId(request.getReceiverId());
 
-            ExpoNotification expoNotification = ExpoNotification.builder()
-                    .to(receiverList)
-                    .title(request.getHeading())
-                    .body(request.getMessage())
-                    .build();
+            String expoNotification = expoPushNotificationService.sendExpoNotification(receiverList, request.getHeading(), request.getMessage());
+
+            if (expoNotification.equals("Notification sent successfully")){
+                var saved = notificationRepository.save(notification);
+                return NotificationResponse.builder()
+                        .notificationID(saved.getNotificationID())
+                        .senderName(saved.getSender().getFirstName()+" "+saved.getSender().getLastName())
+                        .receiverId(saved.getReceiver().getUserId())
+                        .heading(saved.getHeading())
+                        .message(saved.getMessage())
+                        .type(saved.getType())
+                        .createdAt(saved.getCreatedAt().toString())
+                        .isRead(saved.isRead())
+                        .build();
+            }
+
 
             return null;
 
