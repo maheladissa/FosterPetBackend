@@ -118,13 +118,21 @@ public class UserServiceImpl implements UserService {
     public List<String> getExpoTokensByUserId(String userId) {
         List<Session> sessions = sessionService.findByUserId(userId);
 
-        Set<String> expoTokens = new HashSet<>();
-
-        for (Session session : sessions) {
-            expoTokens.add(session.getExpoDeviceToken());
+        if (sessions.isEmpty()) {
+            return new ArrayList<>();
         }
+        else if (sessions.size() == 1) {
+            return List.of(sessions.get(0).getExpoDeviceToken());
+        }
+        else {
+            Set<String> expoTokens = new HashSet<>();
 
-        return new ArrayList<>(expoTokens);
+            for (Session session : sessions) {
+                expoTokens.add(session.getExpoDeviceToken());
+            }
+
+            return new ArrayList<>(expoTokens);
+        }
     }
 
     @Override

@@ -39,23 +39,23 @@ public class NotificationServiceImpl implements NotificationService {
                     .build();
 
             List<String> receiverList = userService.getExpoTokensByUserId(request.getReceiverId());
+            if (!(receiverList.isEmpty() || receiverList == null)){
+                String expoNotification = expoPushNotificationService.sendExpoNotification(receiverList, request.getHeading(), request.getMessage());
 
-            String expoNotification = expoPushNotificationService.sendExpoNotification(receiverList, request.getHeading(), request.getMessage());
-
-            if (expoNotification.equals("Notification sent successfully")){
-                var saved = notificationRepository.save(notification);
-                return NotificationResponse.builder()
-                        .notificationID(saved.getNotificationID())
-                        .senderName(saved.getSender().getFirstName()+" "+saved.getSender().getLastName())
-                        .receiverId(saved.getReceiver().getUserId())
-                        .heading(saved.getHeading())
-                        .message(saved.getMessage())
-                        .type(saved.getType())
-                        .createdAt(saved.getCreatedAt().toString())
-                        .isRead(saved.isRead())
-                        .build();
+                if (expoNotification.equals("Notification sent successfully")){
+                    var saved = notificationRepository.save(notification);
+                    return NotificationResponse.builder()
+                            .notificationID(saved.getNotificationID())
+                            .senderName(saved.getSender().getFirstName()+" "+saved.getSender().getLastName())
+                            .receiverId(saved.getReceiver().getUserId())
+                            .heading(saved.getHeading())
+                            .message(saved.getMessage())
+                            .type(saved.getType())
+                            .createdAt(saved.getCreatedAt().toString())
+                            .isRead(saved.isRead())
+                            .build();
+                }
             }
-
 
             return null;
 
