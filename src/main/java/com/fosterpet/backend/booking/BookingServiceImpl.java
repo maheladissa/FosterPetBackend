@@ -3,10 +3,13 @@ package com.fosterpet.backend.booking;
 import com.fosterpet.backend.kennel.Kennel;
 import com.fosterpet.backend.kennel.KennelRepository;
 import com.fosterpet.backend.kennel.KennelResponse;
+import com.fosterpet.backend.notification.Notification;
+import com.fosterpet.backend.notification.NotificationService;
 import com.fosterpet.backend.pet.Pet;
 import com.fosterpet.backend.pet.PetRepository;
 import com.fosterpet.backend.pet.PetResponse;
 import com.fosterpet.backend.user.User;
+import com.fosterpet.backend.user.UserRepository;
 import com.fosterpet.backend.user.UserResponse;
 import com.fosterpet.backend.volunteer.Volunteer;
 import com.fosterpet.backend.volunteer.VolunteerResponse;
@@ -28,6 +31,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private PetRepository petRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public BookingResponse save(BookingRequest request) {
@@ -58,6 +64,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setTotal(booking.getRate() * (booking.getEndDate().getTime() - booking.getStartDate().getTime()) / (1000 * 60 * 60));
 
         var saved = bookingRepository.save(booking);
+
+        notificationService.bookingRequestKennelNotification(kennelRepository.findByKennelID(request.getKennelID()).getOwner().getUserId(), petRepository.findByPetID(request.getPetID()).getPetName(), petRepository.findByPetID(request.getPetID()).getOwner().getFirstName());
 
         return buildBookingResponse(bookingRepository.findByBookingID(saved.getBookingID()));
     }
@@ -104,6 +112,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setStartDate(request.getStartDate());
         booking.setEndDate(request.getEndDate());
         var saved = bookingRepository.save(booking);
+        notificationService.bookingUpdateKennelNotification(kennelRepository.findByKennelID(request.getKennelID()).getOwner().getUserId(), petRepository.findByPetID(request.getPetID()).getPetName(), petRepository.findByPetID(request.getPetID()).getOwner().getFirstName());
         return buildBookingResponse(saved);
     }
 
@@ -113,6 +122,8 @@ public class BookingServiceImpl implements BookingService {
         if ("PENDING".equals(booking.getStatus())){
             booking.setStatus("CONFIRMED");
         }
+        notificationService.bookingConfirmationKennelNotification(kennelRepository.findByKennelID(booking.getKennel().getKennelID()).getOwner().getUserId(), booking.getPet().getPetName(), booking.getOwner().getFirstName());
+        notificationService.bookingConfirmationUserNotification(booking.getOwner().getUserId(), booking.getKennel().getKennelName());
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }
@@ -121,6 +132,8 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse cancelBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
         if ("PENDING".equals(booking.getStatus())){booking.setStatus("CANCELLED");}
+        notificationService.bookingUpdateUserNotification(booking.getOwner().getUserId(), booking.getKennel().getKennelName());
+        notificationService.bookingUpdateKennelNotification(booking.getKennel().getKennelID(), booking.getPet().getPetName(), booking.getOwner().getFirstName());
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }
@@ -130,6 +143,7 @@ public class BookingServiceImpl implements BookingService {
         var booking = bookingRepository.findByBookingID(bookingId);
         if ("ONGOING".equals(booking.getStatus())){booking.setStatus("COMPLETED");}
         var saved = bookingRepository.save(booking);
+        notificationService.paymentReceivedKennelNotification(kennelRepository.findByKennelID(booking.getKennel().getKennelID()).getOwner().getUserId(), booking.getBookingID());
         return buildBookingResponse(saved);
     }
 
@@ -137,6 +151,8 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse rejectBooking(String bookingId) {
         var booking = bookingRepository.findByBookingID(bookingId);
         if ("PENDING".equals(booking.getStatus())){booking.setStatus("REJECTED");}
+        notificationService.bookingUpdateUserNotification(booking.getOwner().getUserId(), booking.getKennel().getKennelName());
+        notificationService.bookingUpdateKennelNotification(booking.getKennel().getKennelID(), booking.getPet().getPetName(), booking.getOwner().getFirstName());
         var saved = bookingRepository.save(booking);
         return buildBookingResponse(saved);
     }
