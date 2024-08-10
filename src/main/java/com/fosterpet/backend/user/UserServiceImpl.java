@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -116,13 +118,13 @@ public class UserServiceImpl implements UserService {
     public List<String> getExpoTokensByUserId(String userId) {
         List<Session> sessions = sessionService.findByUserId(userId);
 
-        List<String> expoTokens = new ArrayList<>();
+        Set<String> expoTokens = new HashSet<>();
 
         for (Session session : sessions) {
             expoTokens.add(session.getExpoDeviceToken());
         }
 
-        return expoTokens;
+        return new ArrayList<>(expoTokens);
     }
 
     @Override

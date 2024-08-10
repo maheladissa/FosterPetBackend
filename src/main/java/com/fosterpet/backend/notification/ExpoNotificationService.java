@@ -62,14 +62,6 @@ public class ExpoNotificationService {
                 p -> "Title: " + p.message.getTitle() + ", Error: " + p.ticket.getDetails().getError()
         ).collect(Collectors.joining(","));
 
-
-        // Countdown 30s
-        int wait = 5;
-        for (int i = wait; i >= 0; i--) {
-            System.out.print("Waiting for " + wait + " seconds. " + i + "s\r");
-            Thread.sleep(1000);
-        }
-
         List<String> ticketIds = (client.getTicketIdsFromPairs(okTicketMessages));
         CompletableFuture<List<ExpoPushReceipt>> receiptFutures = client.getPushNotificationReceiptsAsync(ticketIds);
 

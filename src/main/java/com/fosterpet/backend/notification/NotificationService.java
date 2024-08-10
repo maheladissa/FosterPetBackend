@@ -24,5 +24,8 @@ public interface NotificationService {
     NotificationResponse chatMessageNotification(String receiverId, String senderName, String message);
 
 
+    //System
+    NotificationResponse sendPushNotification(String receiverId, String title, String message);
+
 
 }
