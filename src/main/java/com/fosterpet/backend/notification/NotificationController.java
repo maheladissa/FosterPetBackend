@@ -37,4 +37,14 @@ public class NotificationController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/sendNotification")
+    public ResponseEntity<?> sendNotification(@RequestBody NotificationRequest request){
+        try {
+            return ResponseEntity.ok(notificationService.sendPushNotification(request.getReceiverId(), request.getHeading(), request.getMessage()));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

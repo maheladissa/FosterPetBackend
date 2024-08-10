@@ -216,5 +216,17 @@ public class NotificationServiceImpl implements NotificationService {
         return save(request);
     }
 
+    @Override
+    public NotificationResponse sendPushNotification(String receiverId, String title, String message) {
+        NotificationRequest request = NotificationRequest.builder()
+                .senderId("000000000000000000000000")
+                .receiverId(receiverId)
+                .heading(title)
+                .message(message)
+                .type(NotificationType.SYSTEM)
+                .build();
+        return save(request);
+    }
+
 
 }
