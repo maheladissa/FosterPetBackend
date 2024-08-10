@@ -2,6 +2,8 @@ package com.fosterpet.backend.user;
 
 import com.fosterpet.backend.common.Address;
 import com.fosterpet.backend.imagemetadata.ImageMetadataService;
+import com.fosterpet.backend.session.Session;
+import com.fosterpet.backend.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ImageMetadataService imageMetadataService;
+
+    @Autowired
+    private SessionService sessionService;
 
     @Override
     public UserResponse save(UserRequest userRequest){
@@ -109,8 +114,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getExpoTokensByUserId(String userId) {
-        var user = userRepository.findByUserId(userId);
-        return null;
+        List<Session> sessions = sessionService.findByUserId(userId);
+
+        List<String> expoTokens = new ArrayList<>();
+
+        for (Session session : sessions) {
+            expoTokens.add(session.getExpoDeviceToken());
+        }
+
+        return expoTokens;
     }
 
     @Override
