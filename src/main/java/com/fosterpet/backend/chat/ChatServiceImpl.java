@@ -223,6 +223,12 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
+    public String getChatThreadByUserAndKennel(String userId, String kennelId) {
+        Chat chat = chatRepository.findByUserUserIdAndKennelKennelID(userId, kennelId);
+        return chat.getChatThreadId();
+    }
+
+    @Override
     public List<ChatPreviewResponse> getChatPreviewByUser(String userId) {
         System.out.println(userId);
         List<Chat> chats = chatRepository.findByUserUserId(userId);

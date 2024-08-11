@@ -38,6 +38,15 @@ public class ChatController {
         }
     }
 
+    @GetMapping("/get-chat-thread-by-user-and-kennel")
+    public ResponseEntity<?> getChatThreadByUserAndKennel(@RequestParam String userId, @RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(chatService.getChatThreadByUserAndKennel(userId, kennelId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/send-message")
     public ResponseEntity<?> sendMessage(@ModelAttribute ChatMessageRequest chatMessageRequest) {
         try {
