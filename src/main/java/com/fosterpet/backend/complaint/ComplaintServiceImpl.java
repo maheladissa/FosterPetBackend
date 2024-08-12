@@ -109,7 +109,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .build();
         var saved = complaintRepository.save(complaint);
 
-        return buildComplaintResponse(saved);
+        return buildComplaintResponse(complaintRepository.findByComplaintId(saved.getComplaintId()));
 
     }
 
