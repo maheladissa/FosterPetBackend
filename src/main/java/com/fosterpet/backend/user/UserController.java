@@ -74,4 +74,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/time-period")
+    public ResponseEntity<?> getUsersByTimePeriod(@RequestParam String startDate, @RequestParam String endDate){
+        try {
+            return ResponseEntity.ok(userService.findUsersByTimePeriod(startDate, endDate));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

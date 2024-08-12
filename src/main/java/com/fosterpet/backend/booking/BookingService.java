@@ -34,6 +34,8 @@ public interface BookingService {
 
     Long countBookingsByStartDate(Date startDate, Date endDate);
 
+    List<BookingResponse> getBookingsByStatus(String status);
+
 
 
 }

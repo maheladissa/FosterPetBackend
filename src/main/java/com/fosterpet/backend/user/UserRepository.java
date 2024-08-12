@@ -23,4 +23,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @Query(value = "{ 'createdAt': { $gte: ?0, $lte: ?1 } }", count = true)
     Long countUsersByTimePeriod(Instant startDate, Instant endDate);
+
+    @Query(value = "{ 'createdAt': { $gte: ?0, $lte: ?1 } }")
+    List<User> findUsersByTimePeriod(Instant startDate, Instant endDate);
 }

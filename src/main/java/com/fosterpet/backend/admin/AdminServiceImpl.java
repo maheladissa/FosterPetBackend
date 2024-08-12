@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -54,12 +57,26 @@ public class AdminServiceImpl implements AdminService{
 
         Integer completedFostering = bookingRepository.countAllByStatus("COMPLETED");
 
+        Integer pendingFostering = bookingRepository.countAllByStatus("PENDING");
+
+        Integer canceledFostering = bookingRepository.countAllByStatus("CANCELED") + bookingRepository.countAllByStatus("REJECTED");
+
+        Integer activeKennels = kennelRepository.countKennelByIsActive(true);
+
+        Integer activeVolunteers = volunteerRepository.countVolunteerByIsActive(true);
+
+        List<Integer> payment = Arrays.asList(100, 200, 150, 200, 150, 50, 300);
 
         return DashboardResponse.builder()
                 .activeUsers(activeUsers)
                 .activeAgents(activeAgents)
+                .totalKennels(activeKennels)
+                .totalVolunteers(activeVolunteers)
                 .ongoingFostering(ongoingFostering)
+                .weeklyPayment(payment)
                 .completedFostering(completedFostering)
+                .canceledFostering(canceledFostering)
+                .pendingFostering(pendingFostering)
                 .build();
     }
 

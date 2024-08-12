@@ -175,6 +175,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.countBookingsByStartDate(startDate, endDate);
     }
 
+    @Override
+    public List<BookingResponse> getBookingsByStatus(String status) {
+        var bookings = bookingRepository.getBookingByStatus(status);
+        return buildBookingResponses(bookings);
+    }
+
 
     private BookingResponse buildBookingResponse(Booking booking) {
         return BookingResponse.builder()

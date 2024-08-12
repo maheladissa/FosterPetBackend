@@ -124,4 +124,24 @@ public class VolunteerController {
         }
     }
 
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectVolunteer(@RequestParam String volunteerId){
+        try {
+            return ResponseEntity.ok(volunteerService.rejectVolunteer(volunteerId));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/time-period")
+    public ResponseEntity<?> getVolunteersByTimePeriod(@RequestParam String startDate, @RequestParam String endDate){
+        try {
+            return ResponseEntity.ok(volunteerService.getVolunteerByTimePeriod(startDate, endDate));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

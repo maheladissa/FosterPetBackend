@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -160,6 +161,24 @@ public class VolunteerServiceImpl implements VolunteerService{
         volunteer.setIsApproved(true);
         var saved = volunteerRepository.save(volunteer);
         return volunteerResponseBuilder(saved);
+    }
+
+    @Override
+    public VolunteerResponse rejectVolunteer(String volunteerId) {
+        var volunteer = volunteerRepository.findByVolunteerId(volunteerId);
+        volunteer.setIsApproved(false);
+        var saved = volunteerRepository.save(volunteer);
+        return volunteerResponseBuilder(saved);
+    }
+
+    @Override
+    public Long countVolunteersByTimePeriod(String startDate, String endDate) {
+        return volunteerRepository.getVolunteerByTimePeriod(Instant.parse(startDate), Instant.parse(endDate)).stream().count();
+    }
+
+    @Override
+    public List<VolunteerResponse> getVolunteerByTimePeriod(String startDate, String endDate) {
+        return createVolunteerResponsesFromVolunteers(volunteerRepository.getVolunteerByTimePeriod(Instant.parse(startDate), Instant.parse(endDate)));
     }
 
 

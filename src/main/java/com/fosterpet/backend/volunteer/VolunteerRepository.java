@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -21,4 +22,7 @@ public interface VolunteerRepository extends MongoRepository <Volunteer,String> 
     List<Volunteer> findByLocationNearAndIsActiveAndAnimalType(double longitude, double latitude, double maxDistance, String animalType);
 
     List<Volunteer> findByIsApprovedAndAndIsActive(Boolean isApproved, Boolean isActive);
+
+    @Query("{ 'createdDate': { $gte: ?0, $lte: ?1 } }")
+    List<Volunteer> getVolunteerByTimePeriod(Instant startDate, Instant endDate);
 }

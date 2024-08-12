@@ -31,5 +31,9 @@ public interface KennelService {
 
     Long countKennelsByTimePeriod(String startDate, String endDate);
 
+    List<KennelResponse> getKennelByTimePeriod(String startDate, String endDate);
+
     List<KennelResponse> getAllActiveKennels();
+
+    Integer countKennelsByIsActive(boolean isActive);
 }

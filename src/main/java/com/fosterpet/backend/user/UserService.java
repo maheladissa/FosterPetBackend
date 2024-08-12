@@ -19,4 +19,6 @@ public interface UserService {
     UserResponse deleteUser(String id);
 
     Long countUsersByTimePeriod(Instant startDate, Instant endDate);
+
+    List<UserResponse> findUsersByTimePeriod(String startDate, String endDate);
 }

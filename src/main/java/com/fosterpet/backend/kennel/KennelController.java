@@ -154,5 +154,15 @@ public class KennelController {
         }
     }
 
+    @GetMapping("/time-period")
+    public ResponseEntity<?> countKennelsByTimePeriod(@RequestParam String startDate, @RequestParam String endDate){
+        try {
+            return ResponseEntity.ok(kennelService.getKennelByTimePeriod(startDate, endDate));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 }

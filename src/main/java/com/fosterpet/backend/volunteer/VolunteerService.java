@@ -20,4 +20,10 @@ public interface VolunteerService {
     List<VolunteerResponse> getAllActiveVolunteers();
 
     VolunteerResponse approveVolunteer(String volunteerId);
+
+    VolunteerResponse rejectVolunteer(String volunteerId);
+
+    Long countVolunteersByTimePeriod(String startDate, String endDate);
+
+    List<VolunteerResponse> getVolunteerByTimePeriod(String startDate, String endDate);
 }

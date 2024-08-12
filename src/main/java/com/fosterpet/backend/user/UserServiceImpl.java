@@ -148,6 +148,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.countUsersByTimePeriod(startDate, endDate);
     }
 
+    @Override
+    public List<UserResponse> findUsersByTimePeriod(String startDate, String endDate) {
+        return createUserResponsesFromUsers(userRepository.findUsersByTimePeriod(Instant.parse(startDate), Instant.parse(endDate)));
+    }
+
     private UserResponse UserResponseBuilder(User user) {
         return UserResponse.builder()
                 .userId(user.getUserId())

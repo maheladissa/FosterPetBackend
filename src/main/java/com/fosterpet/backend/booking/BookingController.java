@@ -128,4 +128,13 @@ public class BookingController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/status")
+    public ResponseEntity<?> getBookingsByStatus(@RequestParam String status){
+        try {
+            return ResponseEntity.ok(bookingService.getBookingsByStatus(status));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

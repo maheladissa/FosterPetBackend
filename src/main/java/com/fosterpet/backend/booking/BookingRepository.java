@@ -21,4 +21,6 @@ public interface BookingRepository extends MongoRepository <Booking, String> {
 
     @Query(value = "{ 'startDate': { $gte: ?0, $lte: ?1 } }", count = true)
     Long countBookingsByStartDate(Date startDate, Date endDate);
+
+    List<Booking> getBookingByStatus(String status);
 }
