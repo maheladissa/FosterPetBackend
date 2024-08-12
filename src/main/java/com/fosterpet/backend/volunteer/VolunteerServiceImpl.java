@@ -198,6 +198,9 @@ public class VolunteerServiceImpl implements VolunteerService{
                                 .map(ImageMetadata::getImageUrl)
                                 .collect(Collectors.toList()))
                         .orElse(null))
+                .isActive(volunteer.getIsActive())
+                .isApproved(volunteer.getIsApproved())
+                .createdAt(volunteer.getCreatedDate())
                 .build();
     }
 
