@@ -43,7 +43,7 @@ public class ChatServiceImpl implements ChatService{
     private VolunteerRepository volunteerRepository;
 
     @Override
-    public String createChatThread(String userId, String kennelId, String volunteerId) {
+    public Chat createChatThread(String userId, String kennelId, String volunteerId) {
 
         User user1 = userRepository.findByUserId(userId);
         User user2;
@@ -81,9 +81,9 @@ public class ChatServiceImpl implements ChatService{
                 .volunteer(volunteerId != null ? volunteerRepository.findByVolunteerId(volunteerId) : null)
                 .build();
 
-        chatRepository.save(chat);
+        var saved = chatRepository.save(chat);
 
-        return chatThreadId;
+        return saved;
     }
 
     @Override
@@ -223,9 +223,9 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public String getChatThreadByUserAndKennel(String userId, String kennelId) {
+    public Chat getChatThreadByUserAndKennel(String userId, String kennelId) {
         Chat chat = chatRepository.findByUserUserIdAndKennelKennelID(userId, kennelId);
-        return chat.getChatThreadId();
+        return chat;
     }
 
     @Override
