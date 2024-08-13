@@ -39,7 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
                     .build();
 
             List<String> receiverList = userService.getExpoTokensByUserId(request.getReceiverId());
-            if (!(receiverList.isEmpty() || receiverList == null)){
+            if (!(receiverList.isEmpty())){
                 String expoNotification = expoPushNotificationService.sendExpoNotification(receiverList, request.getHeading(), request.getMessage());
 
                 if (expoNotification.equals("Notification sent successfully")){
