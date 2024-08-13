@@ -23,8 +23,6 @@ public class JwtService {
     @Autowired
     private Environment environment;
 
-    private Long expiration = 1000L * 60 * 60 * 24 * 90;
-
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -49,7 +47,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration ))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 20 ))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
