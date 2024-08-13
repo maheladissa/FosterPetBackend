@@ -17,6 +17,8 @@ public interface ChatService {
 
     List<ChatPreviewResponse> getChatPreviewByUser(String userId);
 
+    List<ChatPreviewResponse> getChatPreviewByKennel(String kennelId);
+
     Chat getChatThreadByUserAndKennel(String userId, String kennelId);
 
 }
