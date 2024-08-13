@@ -3,7 +3,7 @@ package com.fosterpet.backend.chat;
 import java.util.List;
 
 public interface ChatService {
-    String createChatThread(String userId, String kennelId, String volunteerId);
+    Chat createChatThread(String userId, String kennelId, String volunteerId);
 
     List<String> getAllChatThreads();
 
@@ -17,6 +17,6 @@ public interface ChatService {
 
     List<ChatPreviewResponse> getChatPreviewByUser(String userId);
 
-    String getChatThreadByUserAndKennel(String userId, String kennelId);
+    Chat getChatThreadByUserAndKennel(String userId, String kennelId);
 
 }
