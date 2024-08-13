@@ -95,6 +95,15 @@ public class ChatController {
         }
     }
 
+    @GetMapping("/get-chat-previews-by-kennel")
+    public ResponseEntity<?> getChatPreviewByKennel(@RequestParam String kennelId){
+        try {
+            return ResponseEntity.ok(chatService.getChatPreviewByKennel(kennelId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 
 }
