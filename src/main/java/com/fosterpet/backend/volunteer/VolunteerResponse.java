@@ -27,4 +27,8 @@ public class VolunteerResponse {
     private String nicNumber;
     private List<String> images;
     private String profileImage;
+
+    private Boolean isActive;
+    private Boolean isApproved;
+
 }

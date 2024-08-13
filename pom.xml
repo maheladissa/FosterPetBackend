@@ -15,6 +15,10 @@
     <description>FosterPet-Backend</description>
     <properties>
         <java.version>17</java.version>
+        <sonar.projectKey>FosterPet</sonar.projectKey>
+        <sonar.projectName>'FosterPet'</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.token>sqp_ef6cb6c62467317cc4a8962c6a6a389915c161bf</sonar.token>
     </properties>
     <dependencyManagement>
         <dependencies>
