@@ -290,5 +290,66 @@ public class ChatServiceImpl implements ChatService{
         return chatPreviewResponses;
     }
 
+    @Override
+    public List<ChatPreviewResponse> getChatPreviewByKennel(String kennelId) {
+        List<Chat> chats = chatRepository.findByKennelKennelID(kennelId);
+        ArrayList<ChatPreviewResponse> chatPreviewResponses = new ArrayList<>();
+        chats.forEach(chat -> {
+            ChatThreadClient chatThreadClient = chatClient.getChatThreadClient(chat.getChatThreadId());
+            PagedIterable<ChatMessage> chatMessages = chatThreadClient.listMessages();
+            ChatMessage lastMessage = chatMessages.iterator().next();
+            String attachmentUrl = (lastMessage.getMetadata() == null) ? null : lastMessage.getMetadata().get("attachmentUrl");
+            String senderDisplayName = lastMessage.getSenderDisplayName();
+            // Split the string based on the colon separator
+            String[] parts = senderDisplayName.split(":");
+
+            String senderName;
+            String senderId;
+            String senderType;
+
+            if (parts.length == 2) {
+                // Assign the parts to the respective variables
+                senderType = parts[0];
+                senderId = parts[1];
+
+                // Check the senderType and assign the sender object accordingly
+                if (senderType.equals("User")) {
+                    User sender = userRepository.findByUserId(senderId);
+                    senderName = sender.getFirstName() + " " + sender.getLastName();
+                } else if (senderType.equals("Kennel")) {
+                    Kennel sender = kennelRepository.findByKennelID(senderId);
+                    senderName = sender.getKennelName();
+                } else if (senderType.equals("Volunteer")) {
+                    Volunteer sender = volunteerRepository.findByVolunteerId(senderId);
+                    senderName = sender.getUser().getFirstName() + " " + sender.getUser().getLastName();
+                } else {
+                    // Handle the case where the senderType is not recognized
+                    throw new IllegalArgumentException("Invalid senderType");
+                }
+
+                // Now you have senderType and senderId extracted from senderDisplayName
+            } else {
+                // Handle the case where the format is unexpected
+                throw new IllegalArgumentException("Invalid senderDisplayName format");
+            }
+            chatPreviewResponses.add(ChatPreviewResponse.builder()
+                    .chatThreadId(chat.getChatThreadId())
+                    .chatThreadName(chat.getKennel() != null ?
+                            chat.getKennel().getKennelName() :
+                            chat.getVolunteer().getUser().getFirstName() + " " + chat.getVolunteer().getUser().getLastName())
+
+                    .lastMessage(ChatMessageResponse.builder()
+                            .id(lastMessage.getId())
+                            .senderName(senderName)
+                            .senderId(senderId)
+                            .message(lastMessage.getContent().getMessage())
+                            .attachment(attachmentUrl)
+                            .time(lastMessage.getCreatedOn().toString())
+                            .build())
+                    .build());
+        });
+        return chatPreviewResponses;
+    }
+
 
 }
