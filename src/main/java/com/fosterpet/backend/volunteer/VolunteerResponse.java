@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -28,8 +27,4 @@ public class VolunteerResponse {
     private String nicNumber;
     private List<String> images;
     private String profileImage;
-
-    private Boolean isActive;
-    private Boolean isApproved;
-    private Instant createdAt;
 }

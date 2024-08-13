@@ -47,7 +47,7 @@ public class ChatServiceImpl implements ChatService{
 
         User user1 = userRepository.findByUserId(userId);
         User user2;
-        if (kennelId != null) {
+        if (kennelId != "") {
             Kennel kennel = kennelRepository.findByKennelID(kennelId);
             user2 = kennel.getOwner();
         }
@@ -77,8 +77,8 @@ public class ChatServiceImpl implements ChatService{
         Chat chat = Chat.builder()
                 .chatThreadId(chatThreadId)
                 .user(user1)
-                .kennel(kennelId != null ? kennelRepository.findByKennelID(kennelId) : null)
-                .volunteer(volunteerId != null ? volunteerRepository.findByVolunteerId(volunteerId) : null)
+                .kennel(kennelId != "" ? kennelRepository.findByKennelID(kennelId) : null)
+                .volunteer(volunteerId != "" ? volunteerRepository.findByVolunteerId(volunteerId) : null)
                 .build();
 
         chatRepository.save(chat);
