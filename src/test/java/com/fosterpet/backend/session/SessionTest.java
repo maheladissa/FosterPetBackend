@@ -7,7 +7,7 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SessionTest {
+class SessionTest {
     private Session session;
     private final String sessionId = "testSessionId";
     private final String userId = "testUserId";

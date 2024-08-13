@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class PetTest {
+class PetTest {
     private Pet pet;
     private final String petID = "testPetId";
     private final User owner = mock(User.class);

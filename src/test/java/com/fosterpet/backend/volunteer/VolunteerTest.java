@@ -7,19 +7,14 @@ import com.fosterpet.backend.user.User;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.Instant;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 
-public class VolunteerTest {
+class VolunteerTest {
     private Volunteer volunteer;
     private final String volunteerId = "testVolunteerId";
     private final User user = mock(User.class);

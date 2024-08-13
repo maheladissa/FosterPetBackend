@@ -1,7 +1,6 @@
 package com.fosterpet.backend.volunteer;
 
 import com.fosterpet.backend.common.Location;
-import com.fosterpet.backend.common.PaymentRates;
 import com.fosterpet.backend.imagemetadata.ImageMetadata;
 import com.fosterpet.backend.imagemetadata.ImageMetadataService;
 import com.fosterpet.backend.user.User;
@@ -16,7 +15,6 @@ import java.time.Instant;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class VolunteerServiceImplTest {

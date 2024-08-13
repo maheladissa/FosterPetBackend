@@ -14,7 +14,7 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class UserTest {
+class UserTest {
     private User user;
     private final String userId = "testUserId";
     private final String firstName = "John";
