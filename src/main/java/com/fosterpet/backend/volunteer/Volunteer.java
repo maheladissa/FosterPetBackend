@@ -14,6 +14,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -36,4 +37,5 @@ public class Volunteer {
     private List<PaymentRates> paymentRates;
     private Boolean isActive;
     private Boolean isApproved;
+    private Instant createdDate;
 }
